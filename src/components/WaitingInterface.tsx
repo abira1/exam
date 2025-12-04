@@ -19,6 +19,7 @@ export function WaitingInterface({
   const [countdown, setCountdown] = useState<number | null>(null);
   const [isWaiting, setIsWaiting] = useState(true);
   const [hasStartedCountdown, setHasStartedCountdown] = useState(false);
+  const [waitMessage, setWaitMessage] = useState('Waiting for the instructor to start...');
 
   // Listen for exam start signal from Firebase
   useEffect(() => {
@@ -30,10 +31,38 @@ export function WaitingInterface({
       try {
         const snapshot = await get(ref(db, 'exam/status'));
         
-        if (snapshot.exists() && snapshot.val().isStarted === true) {
-          setIsWaiting(false);
-          setHasStartedCountdown(true);
-          setCountdown(3); // Start at 3
+        if (snapshot.exists()) {
+          const data = snapshot.val();
+          
+          if (data.isStarted === true) {
+            // Check if exam has start time restriction
+            if (data.startTime) {
+              const startTime = new Date(data.startTime).getTime();
+              const now = Date.now();
+              
+              if (now < startTime) {
+                // Too early - show waiting message with time
+                const remainingMs = startTime - now;
+                const remainingMins = Math.ceil(remainingMs / 60000);
+                setWaitMessage(`Exam will start at ${new Date(data.startTime).toLocaleTimeString()}. Please wait...`);
+                return;
+              }
+              
+              // Check if exam has already ended
+              if (data.endTime) {
+                const endTime = new Date(data.endTime).getTime();
+                if (now >= endTime) {
+                  setWaitMessage('Exam has ended. You can no longer take this exam.');
+                  return;
+                }
+              }
+            }
+            
+            // Exam is ready to start
+            setIsWaiting(false);
+            setHasStartedCountdown(true);
+            setCountdown(3); // Start at 3
+          }
         }
       } catch (error) {
         console.error('Error checking exam status:', error);
