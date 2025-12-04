@@ -29,23 +29,57 @@ export function ExamPage({
   const [startTime] = useState(Date.now());
   const [examEndTime, setExamEndTime] = useState<number | null>(null);
   const [isTimeWarning, setIsTimeWarning] = useState(false);
+  // Fetch exam times from Firebase
   useEffect(() => {
-    const timer = setInterval(() => {
-      setTimeRemaining(prev => {
-        const [mins, secs] = prev.split(':').map(Number);
-        const totalSeconds = mins * 60 + secs - 1;
-        if (totalSeconds <= 0) {
-          clearInterval(timer);
-          handleSubmit();
-          return '00:00';
+    const fetchExamTimes = async () => {
+      const db = getDatabase(app);
+      try {
+        const snapshot = await get(ref(db, 'exam/status'));
+        if (snapshot.exists()) {
+          const data = snapshot.val();
+          if (data.endTime) {
+            setExamEndTime(new Date(data.endTime).getTime());
+          }
         }
-        const newMins = Math.floor(totalSeconds / 60);
-        const newSecs = totalSeconds % 60;
-        return `${String(newMins).padStart(2, '0')}:${String(newSecs).padStart(2, '0')}`;
-      });
-    }, 1000);
-    return () => clearInterval(timer);
+      } catch (error) {
+        console.error('Error fetching exam times:', error);
+      }
+    };
+    
+    fetchExamTimes();
   }, []);
+
+  // Timer that calculates remaining time based on end time
+  useEffect(() => {
+    if (!examEndTime) return;
+
+    const timer = setInterval(() => {
+      const now = Date.now();
+      const remainingMs = examEndTime - now;
+      
+      if (remainingMs <= 0) {
+        clearInterval(timer);
+        setTimeRemaining('00:00');
+        handleSubmit();
+        return;
+      }
+
+      const totalSeconds = Math.floor(remainingMs / 1000);
+      const mins = Math.floor(totalSeconds / 60);
+      const secs = totalSeconds % 60;
+      
+      // Check if less than or equal to 5 minutes (300 seconds)
+      if (totalSeconds <= 300) {
+        setIsTimeWarning(true);
+      } else {
+        setIsTimeWarning(false);
+      }
+      
+      setTimeRemaining(`${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`);
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [examEndTime]);
   const handleAnswerChange = (questionNumber: number, value: string) => {
     setAnswers(prev => ({
       ...prev,
