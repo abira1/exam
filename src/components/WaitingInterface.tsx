@@ -42,8 +42,6 @@ export function WaitingInterface({
               
               if (now < startTime) {
                 // Too early - show waiting message with time
-                const remainingMs = startTime - now;
-                const remainingMins = Math.ceil(remainingMs / 60000);
                 setWaitMessage(`Exam will start at ${new Date(data.startTime).toLocaleTimeString()}. Please wait...`);
                 return;
               }
