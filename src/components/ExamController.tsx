@@ -43,7 +43,12 @@ export function ExamController() {
   };
 
   const startExam = async () => {
-    // Validation for duration-only flow
+    // Validation
+    if (!selectedTrackId) {
+      setError('Please select an exam track.');
+      return;
+    }
+
     const minutes = Number(durationMinutes);
     if (!minutes || isNaN(minutes) || minutes <= 0) {
       setError('Please enter a valid duration in minutes.');
@@ -53,20 +58,26 @@ export function ExamController() {
     setIsLoading(true);
     setError(null);
     try {
+      const selectedTrack = availableTracks.find(t => t.id === selectedTrackId);
       const startDate = new Date();
       const endDate = new Date(startDate.getTime() + minutes * 60000);
 
       await set(ref(db, 'exam/status'), {
         isStarted: true,
+        activeTrackId: selectedTrackId,
+        trackName: selectedTrack?.name || 'Unknown Exam',
         startedAt: startDate.toISOString(),
         startTime: startDate.toISOString(),
         endTime: endDate.toISOString(),
-        durationMinutes: minutes,
-        name: EXAM_NAME
+        durationMinutes: minutes
       });
       setIsExamRunning(true);
-      setCurrentExamTimes({ startTime: startDate.toISOString(), endTime: endDate.toISOString() });
-      setSuccess(`Exam started for ${minutes} minute${minutes > 1 ? 's' : ''}. Students can begin now.`);
+      setCurrentExamTimes({ 
+        startTime: startDate.toISOString(), 
+        endTime: endDate.toISOString(),
+        trackName: selectedTrack?.name
+      });
+      setSuccess(`Exam "${selectedTrack?.name}" started for ${minutes} minute${minutes > 1 ? 's' : ''}. Students can begin now.`);
       setTimeout(() => setSuccess(null), 3000);
     } catch (err) {
       setError('Failed to start exam. Please try again.');
