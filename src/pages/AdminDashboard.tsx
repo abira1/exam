@@ -21,7 +21,11 @@ export function AdminDashboard() {
   const [currentExamName, setCurrentExamName] = useState<string>('No exam running');
   useEffect(() => {
     loadSubmissions();
-    const interval = setInterval(loadSubmissions, 30000);
+    loadExamStatus();
+    const interval = setInterval(() => {
+      loadSubmissions();
+      loadExamStatus();
+    }, 30000);
     return () => clearInterval(interval);
   }, []);
   useEffect(() => {
@@ -30,6 +34,22 @@ export function AdminDashboard() {
   const loadSubmissions = () => {
     const data = storage.getSubmissions();
     setSubmissions(data);
+  };
+  const loadExamStatus = async () => {
+    try {
+      const db = getDatabase(app);
+      const snapshot = await get(ref(db, 'exam/status'));
+      if (snapshot.exists()) {
+        const data = snapshot.val();
+        if (data.isStarted && data.trackName) {
+          setCurrentExamName(data.trackName);
+        } else {
+          setCurrentExamName('No exam running');
+        }
+      }
+    } catch (error) {
+      console.error('Error loading exam status:', error);
+    }
   };
   const handleRefresh = () => {
     setIsRefreshing(true);
