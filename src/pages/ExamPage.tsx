@@ -34,27 +34,61 @@ export function ExamPage({
   const [examData, setExamData] = useState<Section[] | null>(null);
   const [isLoadingTrack, setIsLoadingTrack] = useState(true);
   const [trackError, setTrackError] = useState<string | null>(null);
-  // Fetch exam times and audio from Firebase
+  // Fetch exam track, times and audio from Firebase
   useEffect(() => {
     const fetchExamData = async () => {
       const db = getDatabase(app);
+      setIsLoadingTrack(true);
+      setTrackError(null);
+      
       try {
-        // Fetch exam times
+        // Fetch exam status to get active track
         const snapshot = await get(ref(db, 'exam/status'));
         if (snapshot.exists()) {
           const data = snapshot.val();
+          
+          // Get active track ID
+          const activeTrackId = data.activeTrackId;
+          if (!activeTrackId) {
+            setTrackError('No active exam track. Please wait for admin to start the exam.');
+            setIsLoadingTrack(false);
+            return;
+          }
+
+          // Load track data
+          const track = getTrackById(activeTrackId);
+          if (!track) {
+            setTrackError('Invalid exam track. Please contact administrator.');
+            setIsLoadingTrack(false);
+            return;
+          }
+
+          setCurrentTrack(track);
+          setExamData(track.sections);
+
+          // Set audio URL (prioritize track-specific audio, fallback to uploaded audio)
+          if (track.audioURL) {
+            setAudioURL(track.audioURL);
+          } else {
+            // Fallback: Check if admin uploaded audio
+            const audio = await audioService.getAudioURL();
+            if (audio) {
+              setAudioURL(audio);
+            }
+          }
+
+          // Set exam end time
           if (data.endTime) {
             setExamEndTime(new Date(data.endTime).getTime());
           }
-        }
-
-        // Fetch audio URL
-        const audio = await audioService.getAudioURL();
-        if (audio) {
-          setAudioURL(audio);
+        } else {
+          setTrackError('Exam not started yet. Please wait for admin to start the exam.');
         }
       } catch (error) {
         console.error('Error fetching exam data:', error);
+        setTrackError('Error loading exam. Please refresh the page.');
+      } finally {
+        setIsLoadingTrack(false);
       }
     };
     
