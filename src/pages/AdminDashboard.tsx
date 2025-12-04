@@ -110,6 +110,45 @@ export function AdminDashboard() {
       total: 40
     };
   };
+
+  const getMarkingStats = (submission: ExamSubmission) => {
+    if (!submission.marks) {
+      return { correct: 0, incorrect: 0, unmarked: 40, total: 40 };
+    }
+    let correct = 0;
+    let incorrect = 0;
+    let unmarked = 0;
+    
+    for (let i = 1; i <= 40; i++) {
+      const mark = submission.marks[i];
+      if (mark === 'correct') correct++;
+      else if (mark === 'incorrect') incorrect++;
+      else unmarked++;
+    }
+    
+    return { correct, incorrect, unmarked, total: 40 };
+  };
+
+  const handleMarkQuestion = (submissionId: string, questionNumber: number, mark: 'correct' | 'incorrect' | null) => {
+    storage.updateMark(submissionId, questionNumber, mark);
+    loadSubmissions();
+  };
+
+  const handlePublishResult = (submissionId: string) => {
+    const success = storage.publishResult(submissionId);
+    if (success) {
+      loadSubmissions();
+      alert('Result published successfully!');
+    } else {
+      alert('Please mark all 40 questions before publishing the result.');
+    }
+  };
+
+  const isAllMarked = (submission: ExamSubmission): boolean => {
+    if (!submission.marks) return false;
+    const stats = getMarkingStats(submission);
+    return stats.unmarked === 0;
+  };
   const SortIcon = ({
     field
   }: {
