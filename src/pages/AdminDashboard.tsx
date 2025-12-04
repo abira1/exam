@@ -190,7 +190,7 @@ export function AdminDashboard() {
                 <h1 className="text-xl font-bold text-gray-900">
                   Admin Dashboard
                 </h1>
-                <p className="text-sm text-blue-600 font-medium">{EXAM_NAME}</p>
+                <p className="text-sm text-blue-600 font-medium">{currentExamName}</p>
               </div>
             </div>
             <div className="flex items-center gap-4">
