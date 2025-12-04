@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+import { getDatabase, ref, get } from 'firebase/database';
+import { app } from '../firebase';
 import { ExamHeader } from '../components/ExamHeader';
 import { TableGapQuestion } from '../components/TableGapQuestion';
 import { MultipleChoiceQuestion } from '../components/MultipleChoiceQuestion';
@@ -23,8 +25,10 @@ export function ExamPage({
 }: ExamPageProps) {
   const [answers, setAnswers] = useState<Record<number, string>>({});
   const [currentSection, setCurrentSection] = useState(0);
-  const [timeRemaining, setTimeRemaining] = useState('60:00');
+  const [timeRemaining, setTimeRemaining] = useState('--:--');
   const [startTime] = useState(Date.now());
+  const [examEndTime, setExamEndTime] = useState<number | null>(null);
+  const [isTimeWarning, setIsTimeWarning] = useState(false);
   useEffect(() => {
     const timer = setInterval(() => {
       setTimeRemaining(prev => {
