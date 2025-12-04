@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Play, Square, AlertCircle, CheckCircle, Loader } from 'lucide-react';
+import { Play, Square, AlertCircle, CheckCircle, Loader, Clock } from 'lucide-react';
 import { getDatabase, ref, set, get } from 'firebase/database';
 import { app } from '../firebase';
 
@@ -10,6 +10,9 @@ export function ExamController() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+  const [startTime, setStartTime] = useState('');
+  const [endTime, setEndTime] = useState('');
+  const [currentExamTimes, setCurrentExamTimes] = useState<{startTime?: string, endTime?: string}>({});
 
   const db = getDatabase(app);
 
