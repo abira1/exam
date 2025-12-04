@@ -334,15 +334,30 @@ export function AdminDashboard() {
                             </span>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
-                            <span className="text-lg font-semibold text-blue-600">
-                              {submission.score}%
-                            </span>
+                            <div className="flex flex-col gap-1">
+                              <span className="text-lg font-semibold text-blue-600">
+                                {submission.score}%
+                              </span>
+                              {submission.resultPublished && submission.manualScore !== undefined && (
+                                <span className="text-sm font-semibold text-green-600">
+                                  Manual: {submission.manualScore}%
+                                </span>
+                              )}
+                            </div>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
-                            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                              <CheckCircleIcon className="w-3 h-3" />
-                              Completed
-                            </span>
+                            <div className="flex flex-col gap-1">
+                              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                <CheckCircleIcon className="w-3 h-3" />
+                                Completed
+                              </span>
+                              {submission.resultPublished && (
+                                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
+                                  <SendIcon className="w-3 h-3" />
+                                  Published
+                                </span>
+                              )}
+                            </div>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
                             <button onClick={() => toggleExpand(submission.id)} className="text-blue-600 hover:text-blue-800 font-medium text-sm flex items-center gap-1">
