@@ -155,14 +155,20 @@ export function ExamController() {
       <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-6 mb-6 border border-blue-200">
         <div className="space-y-3">
           <div>
-            <p className="text-sm text-gray-600 mb-1">Current Exam</p>
-            <p className="text-2xl font-bold text-gray-900">{EXAM_NAME}</p>
+            <p className="text-sm text-gray-600 mb-1">
+              {isExamRunning ? 'Currently Running Exam' : 'Exam Status'}
+            </p>
+            <p className="text-2xl font-bold text-gray-900">
+              {isExamRunning && currentExamTimes.trackName 
+                ? currentExamTimes.trackName 
+                : 'No exam running'}
+            </p>
           </div>
           <div className="flex items-center gap-3">
             <div className={`w-3 h-3 rounded-full ${isExamRunning ? 'bg-green-500 animate-pulse' : 'bg-gray-400'}`}></div>
             <p className="text-sm font-medium text-gray-700">
               Status: <span className={isExamRunning ? 'text-green-600 font-semibold' : 'text-gray-600'}>
-                {isExamRunning ? 'RUNNING - Students taking exam' : 'NOT STARTED - Waiting for students'}
+                {isExamRunning ? 'RUNNING - Students taking exam' : 'NOT STARTED - Select and start exam'}
               </span>
             </p>
           </div>
