@@ -98,7 +98,8 @@ export function ExamController() {
       await set(ref(db, 'exam/status'), {
         isStarted: false,
         stoppedAt: new Date().toISOString(),
-        name: EXAM_NAME
+        activeTrackId: null,
+        trackName: null
       });
       setIsExamRunning(false);
       setCurrentExamTimes({});
