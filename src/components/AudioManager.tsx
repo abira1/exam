@@ -1,14 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { Upload, Trash2, Music, CheckCircle, AlertCircle, Loader } from 'lucide-react';
+import { Upload, Trash2, Music, CheckCircle, AlertCircle, Loader, Link } from 'lucide-react';
 import { audioService } from '../services/audioService';
+
+type UploadMethod = 'file' | 'url';
 
 export function AudioManager() {
   const [audioURL, setAudioURL] = useState<string | null>(null);
-  const [audioMetadata, setAudioMetadata] = useState<{ fileName: string; uploadedAt: string; size: number } | null>(null);
+  const [audioMetadata, setAudioMetadata] = useState<{ fileName: string; uploadedAt: string; size: number; uploadType?: string } | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+  const [uploadMethod, setUploadMethod] = useState<UploadMethod>('file');
+  const [urlInput, setUrlInput] = useState('');
 
   // Load audio on component mount
   useEffect(() => {
