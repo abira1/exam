@@ -167,9 +167,44 @@ export function ExamPage({
     alert('Exam submitted successfully!');
     onSubmit();
   };
+  // Loading state
+  if (isLoadingTrack) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <Loader className="w-12 h-12 animate-spin mx-auto mb-4 text-blue-600" />
+          <p className="text-gray-600 text-lg">Loading exam...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Error state
+  if (trackError || !examData || !currentTrack) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center max-w-md mx-auto p-6">
+          <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <Loader className="w-8 h-8 text-orange-600" />
+          </div>
+          <h2 className="text-xl font-bold text-gray-900 mb-2">Exam Not Available</h2>
+          <p className="text-gray-600 mb-4">
+            {trackError || 'Unable to load exam data. Please contact your administrator.'}
+          </p>
+          <button
+            onClick={() => window.location.reload()}
+            className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+          >
+            Refresh Page
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return <div className="min-h-screen bg-gray-50 pb-16">
       <ExamHeader 
-        trackName={`${EXAM_NAME} | ${studentName} (${studentId})`} 
+        trackName={`${currentTrack.name} | ${studentName} (${studentId})`} 
         questionType="Listening" 
         timeRemaining={timeRemaining}
         isTimeWarning={isTimeWarning}
