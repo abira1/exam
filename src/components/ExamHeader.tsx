@@ -6,13 +6,15 @@ interface ExamHeaderProps {
   timeRemaining: string;
   studentName?: string;
   studentId?: string;
+  isTimeWarning?: boolean;
 }
 export function ExamHeader({
   trackName,
   questionType,
   timeRemaining,
   studentName,
-  studentId
+  studentId,
+  isTimeWarning = false
 }: ExamHeaderProps) {
   return <header className="bg-white border-b border-gray-200 sticky top-0 z-10">
       <div className="max-w-5xl mx-auto px-6 py-4">
@@ -29,9 +31,9 @@ export function ExamHeader({
                 </div>}
             </div>
           </div>
-          <div className="flex items-center gap-2 text-gray-700">
+          <div className={`flex items-center gap-2 ${isTimeWarning ? 'text-red-600 animate-pulse' : 'text-gray-700'}`} data-testid="exam-timer">
             <ClockIcon className="w-5 h-5" />
-            <span className="font-mono text-lg">{timeRemaining}</span>
+            <span className="font-mono text-lg font-bold">{timeRemaining}</span>
           </div>
         </div>
       </div>
