@@ -8,10 +8,10 @@ import { SentenceCompletionQuestion } from '../components/SentenceCompletionQues
 import { DropdownQuestion } from '../components/DropdownQuestion';
 import { QuestionNavigator } from '../components/QuestionNavigator';
 import { audioService } from '../services/audioService';
-import { examData } from '../data/examData';
+import { getTrackById, Track } from '../data/tracks';
+import { Section } from '../data/examData';
 import { storage, ExamSubmission } from '../utils/storage';
-
-const EXAM_NAME = 'P-L-2 Application for membership';
+import { Loader } from 'lucide-react';
 
 interface ExamPageProps {
   studentId: string;
