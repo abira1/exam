@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
-import { Play, Square, AlertCircle, CheckCircle, Loader, Clock } from 'lucide-react';
+import { Play, Square, AlertCircle, CheckCircle, Loader, Clock, List } from 'lucide-react';
 import { getDatabase, ref, set, get } from 'firebase/database';
 import { app } from '../firebase';
-
-const EXAM_NAME = 'P-L-2 Application for membership';
+import { getTrackOptions } from '../data/tracks';
 
 export function ExamController() {
   const [isExamRunning, setIsExamRunning] = useState(false);
@@ -11,7 +10,9 @@ export function ExamController() {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [durationMinutes, setDurationMinutes] = useState<string>('60');
-  const [currentExamTimes, setCurrentExamTimes] = useState<{startTime?: string, endTime?: string}>({});
+  const [currentExamTimes, setCurrentExamTimes] = useState<{startTime?: string, endTime?: string, trackName?: string}>({});
+  const [selectedTrackId, setSelectedTrackId] = useState<string>('track-1');
+  const [availableTracks] = useState(getTrackOptions());
 
   const db = getDatabase(app);
 
