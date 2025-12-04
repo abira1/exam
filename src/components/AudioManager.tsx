@@ -168,25 +168,82 @@ export function AudioManager() {
         </div>
       ) : (
         <div className="space-y-6">
-          {/* Upload Section */}
-          <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 bg-gray-50 hover:bg-gray-100 transition-colors">
-            <label className="cursor-pointer">
-              <div className="flex flex-col items-center justify-center gap-2">
-                <Upload className="w-8 h-8 text-gray-400" />
-                <span className="text-sm font-medium text-gray-700">
-                  {isUploading ? "Uploading..." : "Click to upload audio"}
-                </span>
-                <span className="text-xs text-gray-500">MP3, WAV, OGG or other audio formats</span>
-              </div>
-              <input
-                type="file"
-                accept="audio/*"
-                onChange={handleFileUpload}
-                disabled={isUploading}
-                className="hidden"
-              />
-            </label>
+          {/* Upload Method Tabs */}
+          <div className="flex gap-2 border-b border-gray-200">
+            <button
+              onClick={() => setUploadMethod('file')}
+              className={`flex items-center gap-2 px-4 py-2 font-medium transition-colors ${
+                uploadMethod === 'file'
+                  ? 'text-blue-600 border-b-2 border-blue-600'
+                  : 'text-gray-600 hover:text-gray-900'
+              }`}
+            >
+              <Upload className="w-4 h-4" />
+              File Upload
+            </button>
+            <button
+              onClick={() => setUploadMethod('url')}
+              className={`flex items-center gap-2 px-4 py-2 font-medium transition-colors ${
+                uploadMethod === 'url'
+                  ? 'text-blue-600 border-b-2 border-blue-600'
+                  : 'text-gray-600 hover:text-gray-900'
+              }`}
+            >
+              <Link className="w-4 h-4" />
+              URL Upload
+            </button>
           </div>
+
+          {/* Upload Section */}
+          {uploadMethod === 'file' ? (
+            <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 bg-gray-50 hover:bg-gray-100 transition-colors">
+              <label className="cursor-pointer">
+                <div className="flex flex-col items-center justify-center gap-2">
+                  <Upload className="w-8 h-8 text-gray-400" />
+                  <span className="text-sm font-medium text-gray-700">
+                    {isUploading ? "Uploading..." : "Click to upload audio file"}
+                  </span>
+                  <span className="text-xs text-gray-500">MP3, WAV, OGG or other audio formats (Max 50MB)</span>
+                </div>
+                <input
+                  type="file"
+                  accept="audio/*"
+                  onChange={handleFileUpload}
+                  disabled={isUploading}
+                  className="hidden"
+                />
+              </label>
+            </div>
+          ) : (
+            <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 bg-gray-50">
+              <div className="flex flex-col items-center gap-4">
+                <Link className="w-8 h-8 text-gray-400" />
+                <div className="w-full max-w-md space-y-3">
+                  <label className="block text-sm font-medium text-gray-700">
+                    Enter Audio URL
+                  </label>
+                  <input
+                    type="url"
+                    value={urlInput}
+                    onChange={(e) => setUrlInput(e.target.value)}
+                    placeholder="https://example.com/audio.mp3"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    disabled={isUploading}
+                  />
+                  <button
+                    onClick={handleURLUpload}
+                    disabled={isUploading || !urlInput.trim()}
+                    className="w-full bg-blue-600 text-white py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {isUploading ? "Saving..." : "Save Audio URL"}
+                  </button>
+                </div>
+                <span className="text-xs text-gray-500">
+                  Provide a direct link to an audio file hosted online
+                </span>
+              </div>
+            </div>
+          )}
 
           {/* Current Audio Info */}
           {audioURL && audioMetadata && (
