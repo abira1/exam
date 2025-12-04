@@ -70,6 +70,38 @@ export function AudioManager() {
     }
   };
 
+  const handleURLUpload = async () => {
+    if (!urlInput.trim()) {
+      setError("Please enter a valid URL");
+      return;
+    }
+
+    // Basic URL validation
+    try {
+      new URL(urlInput);
+    } catch (e) {
+      setError("Please enter a valid URL format");
+      return;
+    }
+
+    setIsUploading(true);
+    setError(null);
+    try {
+      const url = await audioService.uploadAudioByURL(urlInput);
+      setAudioURL(url);
+      const metadata = await audioService.getAudioMetadata();
+      setAudioMetadata(metadata);
+      setSuccess("Audio URL saved successfully!");
+      setUrlInput('');
+      setTimeout(() => setSuccess(null), 3000);
+    } catch (err) {
+      setError("Failed to save audio URL. Please try again.");
+      console.error(err);
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
   const handleDelete = async () => {
     if (!confirm("Are you sure you want to delete the current audio?")) return;
 
