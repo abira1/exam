@@ -22,12 +22,36 @@ export const audioService = {
         url: downloadURL,
         fileName: file.name,
         uploadedAt: new Date().toISOString(),
-        size: file.size
+        size: file.size,
+        uploadType: 'file'
       });
       
       return downloadURL;
     } catch (error) {
       console.error("Error uploading audio:", error);
+      throw error;
+    }
+  },
+
+  // Upload audio via URL (no storage upload needed)
+  async uploadAudioByURL(audioURL: string): Promise<string> {
+    try {
+      // Extract filename from URL or use a default
+      const urlParts = audioURL.split('/');
+      const fileName = urlParts[urlParts.length - 1].split('?')[0] || 'external-audio';
+      
+      // Save URL to Realtime Database
+      await set(dbRef(database, AUDIO_DB_PATH), {
+        url: audioURL,
+        fileName: fileName,
+        uploadedAt: new Date().toISOString(),
+        size: 0, // Unknown size for external URLs
+        uploadType: 'url'
+      });
+      
+      return audioURL;
+    } catch (error) {
+      console.error("Error uploading audio by URL:", error);
       throw error;
     }
   },
