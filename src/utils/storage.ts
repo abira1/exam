@@ -8,6 +8,11 @@ export interface ExamSubmission {
   timeSpent: string;
   status: 'completed';
   score?: number;
+  marks?: Record<number, 'correct' | 'incorrect' | null>;
+  manualScore?: number;
+  resultPublished?: boolean;
+  publishedAt?: string;
+  markedBy?: string;
 }
 export const storage = {
   getSubmissions(): ExamSubmission[] {
