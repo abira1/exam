@@ -37,6 +37,12 @@ export function WaitingInterface({
         
         if (snapshot.exists()) {
           const data = snapshot.val();
+          
+          // Update exam name if available
+          if (data.trackName) {
+            setCurrentExamName(data.trackName);
+          }
+          
           if (data.isStarted === true) {
             const now = Date.now();
 
