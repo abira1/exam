@@ -5,8 +5,6 @@ import { ExamPage } from './ExamPage';
 import { WaitingInterface } from '../components/WaitingInterface';
 import { storage } from '../utils/storage';
 
-const EXAM_NAME = 'P-L-2 Application for membership';
-
 export function HomePage() {
   const [isExamStarted, setIsExamStarted] = useState(false);
   const [isWaiting, setIsWaiting] = useState(false);
