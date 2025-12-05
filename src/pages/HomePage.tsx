@@ -12,28 +12,11 @@ export function HomePage() {
   const [isWaiting, setIsWaiting] = useState(false);
   const [studentId, setStudentId] = useState('');
   const [studentName, setStudentName] = useState('');
-  const [isCheckingExamStatus, setIsCheckingExamStatus] = useState(true);
+  const [isCheckingExamStatus, setIsCheckingExamStatus] = useState(false);
+  const [hasLoggedIn, setHasLoggedIn] = useState(false);
 
-  // Check if exam is already running when component mounts
-  useEffect(() => {
-    const checkIfExamRunning = async () => {
-      try {
-        const db = getDatabase(app);
-        const snapshot = await get(ref(db, 'exam/status'));
-        if (snapshot.exists() && snapshot.val().isStarted === true) {
-          // Exam is already running, skip waiting
-          setIsExamStarted(true);
-          setIsWaiting(false);
-        }
-      } catch (error) {
-        console.error('Error checking exam status:', error);
-      } finally {
-        setIsCheckingExamStatus(false);
-      }
-    };
-
-    checkIfExamRunning();
-  }, []);
+  // Don't auto-check exam status on mount - always show login first
+  // This ensures students always enter their information before accessing exam
 
   const handleStudentLogin = async (e: React.FormEvent) => {
     e.preventDefault();
