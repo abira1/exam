@@ -44,22 +44,29 @@ export function ExamPage({
       try {
         // Fetch exam status to get active track
         const snapshot = await get(ref(db, 'exam/status'));
+        
+        console.log('Firebase exam/status snapshot exists:', snapshot.exists());
+        console.log('Firebase exam/status data:', snapshot.val());
+        
         if (snapshot.exists()) {
           const data = snapshot.val();
           
           // Get active track ID
           const activeTrackId = data.activeTrackId;
+          console.log('Active Track ID:', activeTrackId);
+          
           if (!activeTrackId) {
-            setTrackError('No active exam track. Please wait for admin to start the exam.');
+            setTrackError('No active exam track selected. Please ask admin to start the exam with a track selected.');
             setIsLoadingTrack(false);
             return;
           }
 
           // Load track data from hardcoded tracks
           const track = getTrackById(activeTrackId);
+          console.log('Track loaded:', track?.name);
 
           if (!track) {
-            setTrackError('Invalid exam track. Please contact administrator.');
+            setTrackError(`Invalid exam track ID: ${activeTrackId}. Please contact administrator.`);
             setIsLoadingTrack(false);
             return;
           }
@@ -84,11 +91,12 @@ export function ExamPage({
             setExamEndTime(new Date(data.endTime).getTime());
           }
         } else {
+          console.log('No exam/status found in Firebase');
           setTrackError('Exam not started yet. Please wait for admin to start the exam.');
         }
       } catch (error) {
         console.error('Error fetching exam data:', error);
-        setTrackError('Error loading exam. Please refresh the page.');
+        setTrackError(`Error loading exam: ${error instanceof Error ? error.message : 'Unknown error'}. Please refresh the page.`);
       } finally {
         setIsLoadingTrack(false);
       }
