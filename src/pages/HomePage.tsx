@@ -101,7 +101,7 @@ export function HomePage() {
       <WaitingInterface
         studentName={studentName}
         studentId={studentId}
-        examName={EXAM_NAME}
+        examName={currentExamName}
         onCountdownComplete={handleWaitingComplete}
       />
     );
