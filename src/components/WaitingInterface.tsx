@@ -176,7 +176,7 @@ export function WaitingInterface({
                     </div>
                     <div className="text-sm">
                       <span className="text-gray-600">Exam: </span>
-                      <span className="font-semibold text-gray-900">{examName}</span>
+                      <span className="font-semibold text-gray-900">{currentExamName}</span>
                     </div>
                   </div>
                 </div>
