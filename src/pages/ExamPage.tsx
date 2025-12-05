@@ -55,8 +55,17 @@ export function ExamPage({
             return;
           }
 
-          // Load track data
-          const track = getTrackById(activeTrackId);
+          // Load track data from Firebase first
+          const trackSnapshot = await get(ref(db, `tracks/${activeTrackId}`));
+          let track: Track | null = null;
+          
+          if (trackSnapshot.exists()) {
+            track = trackSnapshot.val();
+          } else {
+            // Fallback to hardcoded tracks
+            track = getTrackById(activeTrackId);
+          }
+
           if (!track) {
             setTrackError('Invalid exam track. Please contact administrator.');
             setIsLoadingTrack(false);
