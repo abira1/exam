@@ -79,7 +79,7 @@ export function WaitingInterface({
             // Exam is ready to start immediately
             setIsWaiting(false);
             setHasStartedCountdown(true);
-            setCountdown(3); // Start at 3
+            setCountdown(5); // Start at 5
           }
         }
       } catch (error) {
