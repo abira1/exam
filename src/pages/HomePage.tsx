@@ -115,7 +115,7 @@ export function HomePage() {
             IELTS Listening Exam
           </h1>
           <h2 className="text-lg font-semibold text-blue-600 mb-3">
-            {EXAM_NAME}
+            {currentExamName}
           </h2>
           <p className="text-gray-600">
             Enter your details to begin the examination
