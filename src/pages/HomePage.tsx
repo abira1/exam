@@ -21,8 +21,10 @@ export function HomePage() {
   const handleStudentLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     if (studentId.trim() && studentName.trim()) {
+      setIsCheckingExamStatus(true);
       storage.setCurrentStudentId(studentId.trim());
       storage.setCurrentStudentName(studentName.trim());
+      setHasLoggedIn(true);
       
       // Check if exam is already running
       try {
@@ -38,7 +40,10 @@ export function HomePage() {
         }
       } catch (error) {
         console.error('Error checking exam status:', error);
+        // On error, show waiting interface
         setIsWaiting(true);
+      } finally {
+        setIsCheckingExamStatus(false);
       }
     }
   };
