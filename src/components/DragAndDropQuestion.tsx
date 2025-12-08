@@ -57,7 +57,9 @@ export function DragAndDropQuestion({
   };
 
   const isOptionUsed = (optionValue: string) => {
-    return Object.values(answers).includes(optionValue);
+    // Only check if option is used within THIS drag-and-drop question's items
+    const dragAndDropQuestionNumbers = items.map(item => item.questionNumber);
+    return dragAndDropQuestionNumbers.some(qNum => answers[qNum] === optionValue);
   };
 
   const getOptionLabel = (value: string) => {
