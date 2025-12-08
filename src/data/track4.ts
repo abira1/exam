@@ -262,6 +262,10 @@ export const track4: Track = {
               text: 'Choose the (25)............. from the volunteers'
             },
             {
+              text: 'Rehearse',
+              isPlainText: true
+            },
+            {
               questionNumber: 26,
               text: 'Collect (26)............. and organize food and transport'
             }
