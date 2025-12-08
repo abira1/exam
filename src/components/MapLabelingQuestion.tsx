@@ -73,15 +73,15 @@ export function MapLabelingQuestion({
         <p className="text-sm text-gray-700 italic">{instruction}</p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Left side - Map with labels */}
-        <div className="space-y-3">
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+        {/* Left side - Map with labels (3 columns width - larger) */}
+        <div className="lg:col-span-3 space-y-3">
           <h3 className="text-lg font-semibold text-gray-900 mb-4">Map</h3>
-          <div className="relative border-2 border-gray-300 rounded-lg overflow-hidden bg-white">
+          <div className="relative border-2 border-gray-300 rounded-lg overflow-hidden bg-white shadow-lg">
             <img 
               src={imageUrl} 
               alt="Map for labeling" 
-              className="w-full h-auto"
+              className="w-full h-auto max-h-[800px] object-contain"
               data-testid="map-image"
             />
             
@@ -98,18 +98,18 @@ export function MapLabelingQuestion({
                 onDragOver={(e) => handleDragOver(e, label.questionNumber)}
                 onDragLeave={handleDragLeave}
                 onDrop={(e) => handleDrop(e, label.questionNumber)}
-                className={`min-w-[120px] transition-all ${
+                className={`min-w-[100px] transition-all ${
                   hoveredQuestion === label.questionNumber
-                    ? 'scale-110'
+                    ? 'scale-110 z-10'
                     : ''
                 }`}
                 data-testid={`map-drop-zone-${label.questionNumber}`}
               >
                 <div
-                  className={`border-2 border-dashed rounded-lg p-2 transition-all ${
+                  className={`border-2 border-dashed rounded-lg p-2 transition-all shadow-md ${
                     hoveredQuestion === label.questionNumber
                       ? 'border-blue-500 bg-blue-100'
-                      : 'border-gray-800 bg-white bg-opacity-90'
+                      : 'border-gray-800 bg-white bg-opacity-95'
                   }`}
                 >
                   <div className="text-center">
@@ -129,7 +129,7 @@ export function MapLabelingQuestion({
                       </button>
                     </div>
                   ) : (
-                    <div className="text-gray-400 text-xs text-center mt-1">Drop here</div>
+                    <div className="text-gray-400 text-xs text-center mt-1">Drop</div>
                   )}
                 </div>
               </div>
@@ -137,28 +137,39 @@ export function MapLabelingQuestion({
           </div>
         </div>
 
-        {/* Right side - Options */}
-        <div className="space-y-3">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Options</h3>
-          <div className="space-y-2">
+        {/* Right side - Options (1 column width - smaller and responsive) */}
+        <div className="lg:col-span-1 space-y-3">
+          <h3 className="text-base font-semibold text-gray-900 mb-3">Options</h3>
+          <div className="bg-blue-50 border border-blue-200 rounded p-2 mb-3">
+            <p className="text-xs text-gray-700 leading-relaxed">
+              {options.map((opt, idx) => (
+                <span key={opt.value} className="block mb-1">
+                  <span className="font-semibold">{opt.value}.</span> {opt.label}
+                </span>
+              ))}
+            </p>
+          </div>
+          <div className="space-y-2 max-h-[600px] overflow-y-auto pr-2">
             {options.map((option) => (
               <div
                 key={option.value}
                 draggable={!isOptionUsed(option.value)}
                 onDragStart={(e) => handleDragStart(e, option.value)}
-                className={`p-3 rounded-lg border-2 transition-all ${
+                className={`p-2 rounded border-2 transition-all text-xs ${
                   isOptionUsed(option.value)
                     ? 'bg-gray-100 border-gray-300 opacity-50 cursor-not-allowed'
-                    : 'bg-white border-gray-300 cursor-move hover:border-blue-500 hover:bg-blue-50'
+                    : 'bg-white border-gray-300 cursor-move hover:border-blue-500 hover:bg-blue-50 hover:shadow-sm'
                 } ${
                   draggedOption === option.value ? 'opacity-50' : ''
                 }`}
                 data-testid={`map-draggable-${option.value}`}
               >
-                <span className="text-gray-900 font-medium">
-                  {option.value}.
-                </span>{' '}
-                <span className="text-gray-700">{option.label}</span>
+                <div className="flex items-start gap-1">
+                  <span className="text-gray-900 font-bold flex-shrink-0">
+                    {option.value}.
+                  </span>
+                  <span className="text-gray-700">{option.label}</span>
+                </div>
               </div>
             ))}
           </div>
