@@ -59,7 +59,9 @@ export function FlowChartQuestion({
   };
 
   const isOptionUsed = (optionValue: string) => {
-    return Object.values(answers).includes(optionValue);
+    // Only check if option is used within THIS flowchart's question numbers
+    const flowchartQuestionNumbers = steps.map(step => step.questionNumber);
+    return flowchartQuestionNumbers.some(qNum => answers[qNum] === optionValue);
   };
 
   const getOptionLabel = (value: string) => {
