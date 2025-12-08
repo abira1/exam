@@ -40,48 +40,68 @@ export function TableGapQuestion({
     questionNumber: number;
   }, isLabel: boolean = false, rowIndex?: number, isValueCell: boolean = false) => {
     
-    // If this is a value cell and the label has gaps, don't render the separate input
-    if (isValueCell && rowIndex !== undefined && rowLabelHasGap(rowIndex)) {
-      return null;
-    }
-
-    if (typeof content === 'object' && 'questionNumber' in content) {
-      return <div className="flex items-center gap-2">
-          <span className="text-gray-500 font-medium">
-            ({content.questionNumber})
-          </span>
-          <input type="text" value={answers[content.questionNumber] || ''} onChange={e => onAnswerChange(content.questionNumber, e.target.value)} className="flex-1 px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Type your answer" data-testid={`table-gap-input-${content.questionNumber}`} />
-        </div>;
-    }
-
-    // Check if the content is a string that contains "_______"
-    if (typeof content === 'string' && content.includes('_______')) {
-      const questionNumber = rowIndex !== undefined ? findQuestionNumberForRow(rowIndex) : null;
-      
+    // If this is a value cell and the row has a question number, don't render separate input
+    if (isValueCell && rowIndex !== undefined) {
+      const questionNumber = findQuestionNumberForRow(rowIndex);
       if (questionNumber !== null) {
-        // Split the text by "_______" and insert inline input fields
-        const parts = content.split('_______');
-        
-        return (
-          <span className={isLabel ? 'font-medium' : ''}>
-            {parts.map((part, index) => (
-              <React.Fragment key={index}>
-                {part}
-                {index < parts.length - 1 && (
-                  <input
-                    type="text"
-                    value={answers[questionNumber] || ''}
-                    onChange={e => onAnswerChange(questionNumber, e.target.value)}
-                    className="inline-block mx-1 px-2 py-1 border-b-2 border-gray-400 bg-transparent focus:outline-none focus:border-blue-500 focus:bg-blue-50 transition-colors min-w-[120px] max-w-[200px]"
-                    placeholder=""
-                    data-testid={`table-gap-inline-input-${questionNumber}`}
-                    style={{ width: 'auto' }}
-                  />
-                )}
-              </React.Fragment>
-            ))}
-          </span>
-        );
+        return null; // Hide the value column for all question rows
+      }
+    }
+
+    // Handle value cells that are just strings (no question number)
+    if (isValueCell && typeof content === 'string') {
+      return <span>{content}</span>;
+    }
+
+    // Handle label cells
+    if (isLabel && typeof content === 'string' && rowIndex !== undefined) {
+      const questionNumber = findQuestionNumberForRow(rowIndex);
+      
+      // If this row has a question number, format it with inline input
+      if (questionNumber !== null) {
+        // Check if label contains "_______"
+        if (content.includes('_______')) {
+          // Split by "______" and insert question number + input
+          const parts = content.split('_______');
+          
+          return (
+            <span className="font-medium">
+              {parts.map((part, index) => (
+                <React.Fragment key={index}>
+                  {part}
+                  {index < parts.length - 1 && (
+                    <>
+                      <span className="text-gray-500 font-medium">({questionNumber})</span>
+                      <input
+                        type="text"
+                        value={answers[questionNumber] || ''}
+                        onChange={e => onAnswerChange(questionNumber, e.target.value)}
+                        className="inline-block mx-1 px-2 py-1 border-b-2 border-gray-400 bg-transparent focus:outline-none focus:border-blue-500 focus:bg-blue-50 transition-colors min-w-[120px] max-w-[200px]"
+                        placeholder=""
+                        data-testid={`table-gap-inline-input-${questionNumber}`}
+                      />
+                    </>
+                  )}
+                </React.Fragment>
+              ))}
+            </span>
+          );
+        } else {
+          // No "______" in label, add question number and input at the end
+          return (
+            <span className="font-medium">
+              {content} <span className="text-gray-500 font-medium">({questionNumber})</span>
+              <input
+                type="text"
+                value={answers[questionNumber] || ''}
+                onChange={e => onAnswerChange(questionNumber, e.target.value)}
+                className="inline-block mx-1 px-2 py-1 border-b-2 border-gray-400 bg-transparent focus:outline-none focus:border-blue-500 focus:bg-blue-50 transition-colors min-w-[120px] max-w-[200px]"
+                placeholder=""
+                data-testid={`table-gap-inline-input-${questionNumber}`}
+              />
+            </span>
+          );
+        }
       }
     }
     
