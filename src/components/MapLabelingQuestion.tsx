@@ -57,7 +57,9 @@ export function MapLabelingQuestion({
   };
 
   const isOptionUsed = (optionValue: string) => {
-    return Object.values(answers).includes(optionValue);
+    // Only check if option is used within THIS map's question numbers
+    const mapQuestionNumbers = labels.map(label => label.questionNumber);
+    return mapQuestionNumbers.some(qNum => answers[qNum] === optionValue);
   };
 
   const getOptionLabel = (value: string) => {
