@@ -243,27 +243,27 @@ export const track4: Track = {
           steps: [
             {
               questionNumber: 21,
-              text: 'visit locations and discuss'
+              text: 'Visit locations and discuss (21).............'
             },
             {
               questionNumber: 22,
-              text: 'contact the _______ about roadworks'
+              text: 'Contact the (22)............. about roadworks'
             },
             {
               questionNumber: 23,
-              text: 'plan the'
+              text: 'Plan the (23).............'
             },
             {
               questionNumber: 24,
-              text: 'hold auditions and recheck availability of the'
+              text: 'Hold auditions and recheck availability of the (24).............'
             },
             {
               questionNumber: 25,
-              text: 'choose the _______ from the volunteers'
+              text: 'Choose the (25)............. from the volunteers'
             },
             {
               questionNumber: 26,
-              text: 'rehearse, then collect _______ and organize food and transport'
+              text: 'Collect (26)............. and organize food and transport'
             }
           ],
           options: [
