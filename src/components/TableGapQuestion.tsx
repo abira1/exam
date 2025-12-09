@@ -21,26 +21,32 @@ export function TableGapQuestion({
   answers,
   onAnswerChange
 }: TableGapQuestionProps) {
-  // Helper function to check if a row's label contains "_______"
-  const rowLabelHasGap = (rowIndex: number): boolean => {
+  // Helper to get question number from either label or value of a row
+  const getRowQuestionNumber = (rowIndex: number): { qNum: number | null, location: 'label' | 'value' | null } => {
     const row = rows[rowIndex];
-    return typeof row.label === 'string' && row.label.includes('_______');
-  };
-
-  // Helper function to find the question number in the value field for a given row
-  const findQuestionNumberForRow = (rowIndex: number): number | null => {
-    const row = rows[rowIndex];
-    if (typeof row.value === 'object' && 'questionNumber' in row.value) {
-      return row.value.questionNumber;
-    }
-    return null;
-  };
-
-  const renderCell = (content: string | {
-    questionNumber: number;
-  }, isLabel: boolean = false, rowIndex?: number, isValueCell: boolean = false) => {
     
-    // Handle case where content itself is an object with questionNumber
+    // Check value first
+    if (typeof row.value === 'object' && 'questionNumber' in row.value) {
+      return { qNum: row.value.questionNumber, location: 'value' };
+    }
+    
+    // Check label
+    if (typeof row.label === 'object' && 'questionNumber' in row.label) {
+      return { qNum: row.label.questionNumber, location: 'label' };
+    }
+    
+    return { qNum: null, location: null };
+  };
+
+  const renderCell = (content: string | { questionNumber: number }, isLabel: boolean, rowIndex?: number) => {
+    if (rowIndex === undefined) {
+      // Shouldn't happen, but handle gracefully
+      return typeof content === 'string' ? <span className={isLabel ? 'font-medium' : ''}>{content}</span> : null;
+    }
+
+    const { qNum, location } = getRowQuestionNumber(rowIndex);
+    
+    // Case 1: This cell contains the questionNumber object directly
     if (typeof content === 'object' && 'questionNumber' in content) {
       const questionNumber = content.questionNumber;
       return (
@@ -58,30 +64,14 @@ export function TableGapQuestion({
       );
     }
     
-    // If this is a value cell and the row has a question number, don't render separate input
-    if (isValueCell && rowIndex !== undefined) {
-      const questionNumber = findQuestionNumberForRow(rowIndex);
-      if (questionNumber !== null) {
-        return null; // Hide the value column for all question rows
-      }
-    }
-
-    // Handle value cells that are just strings (no question number)
-    if (isValueCell && typeof content === 'string') {
-      return <span>{content}</span>;
-    }
-
-    // Handle label cells
-    if (isLabel && typeof content === 'string' && rowIndex !== undefined) {
-      const questionNumber = findQuestionNumberForRow(rowIndex);
-      
-      // If this row has a question number, format it with inline input
-      if (questionNumber !== null) {
+    // Case 2: String content
+    if (typeof content === 'string') {
+      // If this row has questionNumber in VALUE field and we're rendering LABEL cell
+      // Show the label with inline input
+      if (isLabel && location === 'value' && qNum !== null) {
         // Check if label contains "_______"
         if (content.includes('_______')) {
-          // Split by "______" and insert question number + input
           const parts = content.split('_______');
-          
           return (
             <span className="font-medium">
               {parts.map((part, index) => (
@@ -89,14 +79,14 @@ export function TableGapQuestion({
                   {part}
                   {index < parts.length - 1 && (
                     <>
-                      <span className="text-gray-500 font-medium">({questionNumber})</span>
+                      <span className="text-gray-500 font-medium">({qNum})</span>
                       <input
                         type="text"
-                        value={answers[questionNumber] || ''}
-                        onChange={e => onAnswerChange(questionNumber, e.target.value)}
+                        value={answers[qNum] || ''}
+                        onChange={e => onAnswerChange(qNum, e.target.value)}
                         className="inline-block mx-1 px-2 py-1 border-b-2 border-gray-400 bg-transparent focus:outline-none focus:border-blue-500 focus:bg-blue-50 transition-colors min-w-[120px] max-w-[200px]"
                         placeholder=""
-                        data-testid={`table-gap-inline-input-${questionNumber}`}
+                        data-testid={`table-gap-inline-input-${qNum}`}
                       />
                     </>
                   )}
@@ -105,25 +95,34 @@ export function TableGapQuestion({
             </span>
           );
         } else {
-          // No "______" in label, add question number and input at the end
+          // No gap in label, show input at end
           return (
             <span className="font-medium">
-              {content} <span className="text-gray-500 font-medium">({questionNumber})</span>
+              {content} <span className="text-gray-500 font-medium">({qNum})</span>
               <input
                 type="text"
-                value={answers[questionNumber] || ''}
-                onChange={e => onAnswerChange(questionNumber, e.target.value)}
+                value={answers[qNum] || ''}
+                onChange={e => onAnswerChange(qNum, e.target.value)}
                 className="inline-block mx-1 px-2 py-1 border-b-2 border-gray-400 bg-transparent focus:outline-none focus:border-blue-500 focus:bg-blue-50 transition-colors min-w-[120px] max-w-[200px]"
                 placeholder=""
-                data-testid={`table-gap-inline-input-${questionNumber}`}
+                data-testid={`table-gap-inline-input-${qNum}`}
               />
             </span>
           );
         }
       }
+      
+      // If this row has questionNumber in VALUE field and we're rendering VALUE cell
+      // Don't render anything (input is already in label cell)
+      if (!isLabel && location === 'value' && qNum !== null) {
+        return null;
+      }
+      
+      // Normal string content
+      return <span className={isLabel ? 'font-medium' : ''}>{content}</span>;
     }
     
-    return <span className={isLabel ? 'font-medium' : ''}>{typeof content === 'string' ? content : ''}</span>;
+    return null;
   };
   return <div className="space-y-4">
       <div className="bg-gray-50 border border-gray-200 rounded p-4">
