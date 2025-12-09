@@ -49,83 +49,122 @@ export function ExamPage({
       setTrackError(null);
       
       try {
+        console.log('=== FETCHING EXAM DATA ===');
+        console.log('Student ID:', studentId);
+        console.log('Student Name:', studentName);
+        
         // Fetch exam status to get active track
         const snapshot = await get(ref(db, 'exam/status'));
         
         console.log('Firebase exam/status snapshot exists:', snapshot.exists());
-        console.log('Firebase exam/status data:', snapshot.val());
         
-        if (snapshot.exists()) {
-          const data = snapshot.val();
-          
-          // Get active track ID
-          const activeTrackId = data.activeTrackId;
-          console.log('Active Track ID:', activeTrackId);
-          
-          // Get exam code if available
-          const examCode = data.examCode;
-          console.log('Active Exam Code:', examCode);
-          if (examCode) {
-            setCurrentExamCode(examCode);
-            
-            // Check if student has already submitted for this exam
-            const existingSubmissions = await storage.getSubmissions();
-            const hasSubmitted = existingSubmissions.some(
-              sub => sub.studentId === studentId && sub.examCode === examCode
-            );
-            
-            if (hasSubmitted) {
-              setTrackError('You have already submitted this exam. You cannot take the same exam twice.');
-              setIsLoadingTrack(false);
-              return;
-            }
-            
-            // Note: Batch verification can be added here if needed
-            // const sessionSnapshot = await get(ref(db, `examSessions/${examCode}`));
-            // This would check if student's batch is in session.allowedBatches
-          }
-          
-          if (!activeTrackId) {
-            setTrackError('No active exam track selected. Please ask admin to start the exam with a track selected.');
-            setIsLoadingTrack(false);
-            return;
-          }
-
-          // Load track data from hardcoded tracks
-          const track = getTrackById(activeTrackId);
-          console.log('Track loaded:', track?.name);
-
-          if (!track) {
-            setTrackError(`Invalid exam track ID: ${activeTrackId}. Please contact administrator.`);
-            setIsLoadingTrack(false);
-            return;
-          }
-
-          setCurrentTrack(track);
-          setExamData(track.sections);
-
-          // Load audio URL from Firebase (per-track audio URL)
-          const audioSnapshot = await get(ref(db, `tracks/${activeTrackId}/audioURL`));
-          if (audioSnapshot.exists()) {
-            setAudioURL(audioSnapshot.val());
-          } else {
-            // Fallback: Check if admin uploaded global audio
-            const audio = await audioService.getAudioURL();
-            if (audio) {
-              setAudioURL(audio);
-            }
-          }
-
-          // Set exam end time
-          if (data.endTime) {
-            setExamEndTime(new Date(data.endTime).getTime());
-          }
-        } else {
-          console.log('No exam/status found in Firebase');
+        if (!snapshot.exists()) {
+          console.log('❌ No exam/status found in Firebase');
           setTrackError('Exam not started yet. Please wait for admin to start the exam.');
+          setIsLoadingTrack(false);
+          return;
         }
+        
+        const data = snapshot.val();
+        console.log('Firebase exam/status data:', JSON.stringify(data, null, 2));
+        
+        // Check if exam is started
+        if (!data.isStarted) {
+          console.log('❌ Exam is not started (isStarted = false)');
+          setTrackError('Exam not started yet. Please wait for admin to start the exam.');
+          setIsLoadingTrack(false);
+          return;
+        }
+        
+        // Get active track ID
+        const activeTrackId = data.activeTrackId;
+        console.log('Active Track ID:', activeTrackId);
+        
+        if (!activeTrackId) {
+          console.log('❌ No active track ID');
+          setTrackError('No active exam track selected. Please ask admin to start the exam with a track selected.');
+          setIsLoadingTrack(false);
+          return;
+        }
+        
+        // Get exam code if available
+        const examCode = data.examCode;
+        console.log('Active Exam Code:', examCode);
+        
+        if (examCode) {
+          setCurrentExamCode(examCode);
+          
+          // Check if student has already submitted for this exam
+          console.log('Checking if student already submitted...');
+          const existingSubmissions = await storage.getSubmissions();
+          console.log('Total existing submissions:', existingSubmissions.length);
+          
+          const hasSubmitted = existingSubmissions.some(
+            sub => sub.studentId === studentId && sub.examCode === examCode
+          );
+          
+          console.log('Student has already submitted:', hasSubmitted);
+          
+          if (hasSubmitted) {
+            console.log('❌ Student already submitted this exam');
+            setTrackError('You have already submitted this exam. You cannot take the same exam twice.');
+            setIsLoadingTrack(false);
+            return;
+          }
+          
+          // Note: Batch verification can be added here if needed
+          // const sessionSnapshot = await get(ref(db, `examSessions/${examCode}`));
+          // This would check if student's batch is in session.allowedBatches
+        }
+
+        // Load track data from hardcoded tracks
+        console.log('Loading track data for:', activeTrackId);
+        const track = getTrackById(activeTrackId);
+        
+        if (!track) {
+          console.log('❌ Invalid track ID');
+          setTrackError(`Invalid exam track ID: ${activeTrackId}. Please contact administrator.`);
+          setIsLoadingTrack(false);
+          return;
+        }
+        
+        console.log('✓ Track loaded:', track.name);
+        console.log('✓ Track has', track.sections.length, 'sections');
+
+        setCurrentTrack(track);
+        setExamData(track.sections);
+
+        // Load audio URL from Firebase (per-track audio URL)
+        console.log('Loading audio URL...');
+        const audioSnapshot = await get(ref(db, `tracks/${activeTrackId}/audioURL`));
+        if (audioSnapshot.exists()) {
+          const audioURL = audioSnapshot.val();
+          console.log('✓ Track audio URL found:', audioURL);
+          setAudioURL(audioURL);
+        } else {
+          console.log('No track-specific audio, checking global audio...');
+          // Fallback: Check if admin uploaded global audio
+          const audio = await audioService.getAudioURL();
+          if (audio) {
+            console.log('✓ Global audio URL found:', audio);
+            setAudioURL(audio);
+          } else {
+            console.log('⚠ No audio URL found');
+          }
+        }
+
+        // Set exam end time
+        if (data.endTime) {
+          const endTime = new Date(data.endTime).getTime();
+          console.log('✓ Exam end time:', new Date(endTime).toLocaleString());
+          setExamEndTime(endTime);
+        } else {
+          console.log('⚠ No exam end time set');
+        }
+        
+        console.log('=== EXAM DATA LOADED SUCCESSFULLY ===');
       } catch (error) {
-        console.error('Error fetching exam data:', error);
+        console.error('❌ Error fetching exam data:', error);
         setTrackError(`Error loading exam: ${error instanceof Error ? error.message : 'Unknown error'}. Please refresh the page.`);
       } finally {
         setIsLoadingTrack(false);
