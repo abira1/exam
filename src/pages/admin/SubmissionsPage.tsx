@@ -666,11 +666,109 @@ export function SubmissionsPage() {
               <p className="text-gray-600">Choose an exam session to view submissions</p>
             </div>
             
-            {/* Placeholder for Phase 3 */}
-            <div className="bg-white rounded-lg border border-gray-200 p-12 text-center">
-              <p className="text-gray-500 font-medium mb-2">Exam sessions view - Coming in Phase 3</p>
-              <p className="text-sm text-gray-400">This will show all exam codes for the selected track</p>
-            </div>
+            {(() => {
+              const examCodes = getExamCodesForTrack(currentTrackId);
+              
+              if (examCodes.length === 0) {
+                return (
+                  <div className="bg-white rounded-lg border border-gray-200 p-12 text-center">
+                    <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <FolderIcon size={32} />
+                    </div>
+                    <p className="text-gray-500 font-medium mb-2">No exam sessions found</p>
+                    <p className="text-sm text-gray-400">
+                      There are no exam sessions for this track yet
+                    </p>
+                  </div>
+                );
+              }
+              
+              return (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {examCodes.map((examCode) => {
+                    const examSubmissions = getExamCodeSubmissions(examCode);
+                    const gradedCount = examSubmissions.filter((s) => s.marks && Object.keys(s.marks).length > 0).length;
+                    const publishedCount = examSubmissions.filter((s) => s.resultPublished).length;
+                    const pendingCount = examSubmissions.length - gradedCount;
+                    
+                    // Get the first submission date as the exam session date
+                    const firstSubmission = examSubmissions.reduce((earliest, current) => {
+                      const currentTime = current.submittedAt ? new Date(current.submittedAt).getTime() : 0;
+                      const earliestTime = earliest.submittedAt ? new Date(earliest.submittedAt).getTime() : 0;
+                      return currentTime < earliestTime ? current : earliest;
+                    }, examSubmissions[0]);
+                    
+                    const sessionDate = firstSubmission?.submittedAt 
+                      ? new Date(firstSubmission.submittedAt)
+                      : null;
+                    
+                    const formatDate = (date: Date | null) => {
+                      if (!date) return 'Date not available';
+                      
+                      const options: Intl.DateTimeFormatOptions = {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                      };
+                      
+                      return date.toLocaleDateString('en-US', options);
+                    };
+                    
+                    return (
+                      <button
+                        key={examCode}
+                        onClick={() => handleNavigateToExamCode(examCode)}
+                        className="bg-white rounded-lg border-2 border-gray-200 p-6 text-left transition-all hover:border-blue-400 hover:shadow-lg hover:scale-105 group"
+                        data-testid={`exam-folder-${examCode}`}
+                      >
+                        <div className="flex items-start gap-4 mb-4">
+                          <div className="flex-shrink-0">
+                            <FolderIcon size={40} className="text-blue-500 group-hover:text-blue-600 transition-colors" />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <h3 className="text-xl font-mono font-bold text-gray-900 mb-1 break-all">
+                              {examCode}
+                            </h3>
+                            <p className="text-sm text-gray-500">
+                              {formatDate(sessionDate)}
+                            </p>
+                          </div>
+                        </div>
+                        
+                        <div className="mb-4">
+                          <div className="flex items-center justify-between text-sm">
+                            <span className="text-gray-600">Total Submissions</span>
+                            <span className="font-semibold text-gray-900">{examSubmissions.length}</span>
+                          </div>
+                        </div>
+                        
+                        <div className="pt-4 border-t border-gray-100">
+                          <div className="flex flex-wrap gap-2">
+                            {gradedCount > 0 && (
+                              <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">
+                                ✓ {gradedCount} Graded
+                              </span>
+                            )}
+                            {publishedCount > 0 && (
+                              <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-700">
+                                ⬆ {publishedCount} Published
+                              </span>
+                            )}
+                            {pendingCount > 0 && (
+                              <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-orange-100 text-orange-700">
+                                ⏳ {pendingCount} Pending
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+              );
+            })()}
           </div>
         )}
 
