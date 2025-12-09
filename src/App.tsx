@@ -1,38 +1,104 @@
-import React, { useEffect, useState } from 'react';
-import { HomePage } from './pages/HomePage';
+import React, { useEffect } from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { AuthProvider } from './contexts/AuthContext';
+import { ProtectedRoute } from './components/ProtectedRoute';
+import { initializeDatabase } from './utils/initializeDatabase';
+
+// Pages
+import { NewHomePage } from './pages/NewHomePage';
+import { StudentLogin } from './components/StudentLogin';
+import { StaffLogin } from './components/StaffLogin';
+import { StudentDashboard } from './pages/student/StudentDashboard';
+import { TeacherDashboard } from './pages/teacher/TeacherDashboard';
 import { AdminDashboard } from './pages/AdminDashboard';
-import { AdminLogin } from './components/AdminLogin';
+import { ExamPage } from './pages/ExamPage';
 
 export function App() {
-  const [isAdminRoute, setIsAdminRoute] = useState(false);
-  const [isAdminAuthenticated, setIsAdminAuthenticated] = useState(false);
-
   useEffect(() => {
-    // Check if URL is /admin
-    const isAdmin = window.location.pathname === '/admin';
-    setIsAdminRoute(isAdmin);
-    
-    // Check if admin password was saved in sessionStorage
-    if (isAdmin && sessionStorage.getItem('adminAuth') === 'true') {
-      setIsAdminAuthenticated(true);
-    }
+    // Initialize database with default admin on app load
+    initializeDatabase();
   }, []);
 
-  const handleAdminAuth = () => {
-    sessionStorage.setItem('adminAuth', 'true');
-    setIsAdminAuthenticated(true);
+  return (
+    <AuthProvider>
+      <BrowserRouter>
+        <Routes>
+          {/* Public Routes */}
+          <Route path="/" element={<NewHomePage />} />
+          <Route path="/student/login" element={<StudentLogin />} />
+          <Route path="/staff/login" element={<StaffLogin />} />
+
+          {/* Student Routes (Protected) */}
+          <Route
+            path="/student/dashboard"
+            element={
+              <ProtectedRoute role="student">
+                <StudentDashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/student/exam/:examCode"
+            element={
+              <ProtectedRoute role="student">
+                <ExamPageWrapper />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Admin Routes (Protected) */}
+          <Route
+            path="/admin/dashboard"
+            element={
+              <ProtectedRoute role="admin">
+                <AdminDashboard />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Teacher Routes (Protected) */}
+          <Route
+            path="/teacher/dashboard"
+            element={
+              <ProtectedRoute role="teacher">
+                <TeacherDashboard />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Legacy admin route redirect */}
+          <Route path="/admin" element={<Navigate to="/staff/login" replace />} />
+
+          {/* 404 - Redirect to home */}
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
+  );
+}
+
+// Wrapper for ExamPage to pass props from auth context
+function ExamPageWrapper() {
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
+  if (!user || !user.studentId) {
+    return <Navigate to="/student/dashboard" replace />;
+  }
+
+  const handleSubmit = () => {
+    navigate('/student/dashboard');
   };
 
-  // If on admin route but not authenticated, show login
-  if (isAdminRoute && !isAdminAuthenticated) {
-    return <AdminLogin onAuthSuccess={handleAdminAuth} />;
-  }
-
-  // If on admin route and authenticated, show dashboard
-  if (isAdminRoute && isAdminAuthenticated) {
-    return <AdminDashboard />;
-  }
-
-  // Otherwise show home page
-  return <HomePage />;
+  return (
+    <ExamPage
+      studentId={user.studentId}
+      studentName={user.name}
+      onSubmit={handleSubmit}
+    />
+  );
 }
+
+// Import at top of wrapper
+import { useAuth } from './contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
