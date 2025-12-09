@@ -195,30 +195,61 @@ export const examSessionService = {
   // Start exam
   async startExam(examCode: string): Promise<boolean> {
     try {
+      console.log('Starting exam:', examCode);
+      
       const session = await this.getExamSessionByCode(examCode);
-      if (!session) return false;
+      if (!session) {
+        console.error('Exam session not found:', examCode);
+        return false;
+      }
+
+      console.log('Found exam session:', session);
+
+      // Ensure submission folder exists (in case it wasn't created during scheduling)
+      const submissionFolderPath = `submissions/${session.trackId}/${examCode}`;
+      const metadataRef = ref(db, `${submissionFolderPath}/_metadata`);
+      const metadataSnapshot = await get(metadataRef);
+      
+      if (!metadataSnapshot.exists()) {
+        console.log('Submission folder does not exist. Creating now...');
+        await set(metadataRef, {
+          trackId: session.trackId,
+          trackName: session.trackName,
+          examCode: examCode,
+          createdAt: new Date().toISOString(),
+          createdBy: session.createdBy,
+          totalSubmissions: 0
+        });
+        console.log('✓ Submission folder created');
+      } else {
+        console.log('✓ Submission folder already exists');
+      }
 
       // Update exam session
       await this.updateExamSession(examCode, {
         status: 'active',
         startedAt: new Date().toISOString()
       });
+      console.log('✓ Exam session updated to active');
 
       // Update global exam status to include examCode
-      await set(ref(db, 'exam/status'), {
+      const examStatus = {
         isStarted: true,
         activeTrackId: session.trackId,
         trackName: session.trackName,
-        examCode: examCode, // NEW: Include exam code
+        examCode: examCode,
         startTime: new Date().toISOString(),
         endTime: new Date(Date.now() + session.duration * 60000).toISOString(),
         duration: session.duration,
         startedBy: session.createdBy
-      });
+      };
+      
+      await set(ref(db, 'exam/status'), examStatus);
+      console.log('✓ Global exam status updated:', examStatus);
 
       return true;
     } catch (error) {
-      console.error('Error starting exam:', error);
+      console.error('❌ Error starting exam:', error);
       return false;
     }
   },
