@@ -16,9 +16,9 @@ export function TeacherDashboard() {
     loadSubmissions();
   }, []);
 
-  const loadSubmissions = () => {
+  const loadSubmissions = async () => {
     setIsLoading(true);
-    const allSubmissions = storage.getSubmissions();
+    const allSubmissions = await storage.getSubmissions();
     
     // Filter by assigned tracks if teacher has assigned tracks
     if (user?.assignedTracks && user.assignedTracks.length > 0) {
