@@ -277,6 +277,18 @@ export function AdminDashboard() {
               <Play className="w-4 h-4" />
               Exam Control
             </button>
+            <button
+              onClick={() => setActiveTab('role-management')}
+              className={`px-4 py-2 font-medium transition-colors flex items-center gap-2 ${
+                activeTab === 'role-management'
+                  ? 'text-blue-600 border-b-2 border-blue-600'
+                  : 'text-gray-600 hover:text-gray-900'
+              }`}
+              data-testid="role-management-tab"
+            >
+              <Shield className="w-4 h-4" />
+              Role Management
+            </button>
           </div>
         </div>
       </header>
@@ -286,6 +298,8 @@ export function AdminDashboard() {
           <TrackManagement />
         ) : activeTab === 'exam-control' ? (
           <ExamControlPage />
+        ) : activeTab === 'role-management' ? (
+          <RoleManagement currentUserEmail={useAuth().user?.email || ''} />
         ) : (
           <>
         <div className="mb-6">
