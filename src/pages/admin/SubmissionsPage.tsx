@@ -51,6 +51,9 @@ export function SubmissionsPage() {
   
   // Export dropdown
   const [showExportMenu, setShowExportMenu] = useState(false);
+  
+  // Print preview
+  const [printSubmission, setPrintSubmission] = useState<ExamSubmission | null>(null);
 
   useEffect(() => {
     loadSubmissions();
