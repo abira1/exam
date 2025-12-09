@@ -14,6 +14,7 @@ import { AdminDashboard } from './pages/AdminDashboard';
 import { ExamPage } from './pages/ExamPage';
 import { StudentsPage } from './pages/admin/StudentsPage';
 import { StudentProfilePage } from './pages/admin/StudentProfilePage';
+import { BatchesPage } from './pages/admin/BatchesPage';
 
 export function App() {
   useEffect(() => {
