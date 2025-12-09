@@ -421,7 +421,7 @@ export function SubmissionsPage() {
 
         {/* Track Cards Overview */}
         <div className="mb-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {allTracks.map((track) => {
+          {displayTracks.map((track) => {
             const trackSubmissions = submissions.filter((s) => s.trackId === track.id);
             const isSelected = selectedTrackId === track.id;
             return (
