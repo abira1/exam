@@ -317,6 +317,55 @@ export function SubmissionsPage() {
               </div>
             </div>
             <div className="flex items-center gap-4">
+              {/* Export Dropdown */}
+              <div className="relative">
+                <button
+                  onClick={() => setShowExportMenu(!showExportMenu)}
+                  className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+                  data-testid="export-button"
+                >
+                  <Download className="w-4 h-4" />
+                  <span className="text-sm font-medium">Export</span>
+                </button>
+                
+                {showExportMenu && (
+                  <div className="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-lg border border-gray-200 z-20">
+                    <div className="py-2">
+                      <button
+                        onClick={handleExportFiltered}
+                        className="w-full px-4 py-2 text-left text-sm hover:bg-gray-50 flex items-center gap-2"
+                      >
+                        <FileSpreadsheet className="w-4 h-4 text-green-600" />
+                        <div>
+                          <div className="font-medium text-gray-900">Export Filtered ({filteredSubmissions.length})</div>
+                          <div className="text-xs text-gray-500">Current view with filters</div>
+                        </div>
+                      </button>
+                      <button
+                        onClick={handleExportAll}
+                        className="w-full px-4 py-2 text-left text-sm hover:bg-gray-50 flex items-center gap-2"
+                      >
+                        <FileSpreadsheet className="w-4 h-4 text-blue-600" />
+                        <div>
+                          <div className="font-medium text-gray-900">Export All ({submissions.length})</div>
+                          <div className="text-xs text-gray-500">All submissions</div>
+                        </div>
+                      </button>
+                      <button
+                        onClick={handleExportSummary}
+                        className="w-full px-4 py-2 text-left text-sm hover:bg-gray-50 flex items-center gap-2"
+                      >
+                        <FileSpreadsheet className="w-4 h-4 text-purple-600" />
+                        <div>
+                          <div className="font-medium text-gray-900">Export Summary</div>
+                          <div className="text-xs text-gray-500">Track-wise statistics</div>
+                        </div>
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+              
               <button
                 onClick={() => setShowFilters(!showFilters)}
                 className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
