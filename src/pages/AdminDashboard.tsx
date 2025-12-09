@@ -10,6 +10,7 @@ import { ExamController } from '../components/ExamController';
 type AnswerFilter = 'all' | 'answered' | 'unanswered';
 type TabType = 'submissions' | 'tracks' | 'exam-control';
 export function AdminDashboard() {
+  const navigate = useNavigate();
   const [submissions, setSubmissions] = useState<ExamSubmission[]>([]);
   const [filteredSubmissions, setFilteredSubmissions] = useState<ExamSubmission[]>([]);
   const [expandedId, setExpandedId] = useState<string | null>(null);
