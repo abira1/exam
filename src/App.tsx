@@ -116,7 +116,3 @@ function ExamPageWrapper() {
     />
   );
 }
-
-// Import at top of wrapper
-import { useAuth } from './contexts/AuthContext';
-import { useNavigate } from 'react-router-dom';
