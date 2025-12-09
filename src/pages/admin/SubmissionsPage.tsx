@@ -47,7 +47,7 @@ export function SubmissionsPage() {
 
   useEffect(() => {
     loadSubmissions();
-  }, []);
+  }, [user]);
 
   useEffect(() => {
     filterAndSortSubmissions();
@@ -60,7 +60,13 @@ export function SubmissionsPage() {
   }, [submissions]);
 
   const loadSubmissions = () => {
-    const data = storage.getSubmissions();
+    let data = storage.getSubmissions();
+    
+    // Filter by assigned tracks if user is a teacher
+    if (role === 'teacher' && user?.assignedTracks && user.assignedTracks.length > 0) {
+      data = data.filter(s => user.assignedTracks!.includes(s.trackId));
+    }
+    
     setSubmissions(data);
   };
 
