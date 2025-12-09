@@ -43,7 +43,7 @@ export function ExamPage({
   const [isLoadingTrack, setIsLoadingTrack] = useState(true);
   const [trackError, setTrackError] = useState<string | null>(null);
   const [currentExamCode, setCurrentExamCode] = useState<string | null>(null);
-  const [currentBatchId] = useState<string | null>(null);
+  const [currentBatchId] = useState<string | null>(studentBatchId || null);
   
   // Fetch exam track, times and audio from Firebase
   useEffect(() => {
@@ -56,69 +56,111 @@ export function ExamPage({
         console.log('=== FETCHING EXAM DATA ===');
         console.log('Student ID:', studentId);
         console.log('Student Name:', studentName);
+        console.log('Student Batch ID:', studentBatchId);
+        console.log('Requested Exam Code:', examCode);
         
-        // Fetch exam status to get active track
-        const snapshot = await get(ref(db, 'exam/status'));
+        // Step 1: Fetch the specific exam session
+        const examSessionSnapshot = await get(ref(db, `examSessions/${examCode}`));
         
-        console.log('Firebase exam/status snapshot exists:', snapshot.exists());
+        if (!examSessionSnapshot.exists()) {
+          console.log('❌ Exam session not found:', examCode);
+          setTrackError('Exam session not found. Please check with admin.');
+          setIsLoadingTrack(false);
+          return;
+        }
         
-        if (!snapshot.exists()) {
-          console.log('❌ No exam/status found in Firebase');
+        const examSession = examSessionSnapshot.val();
+        console.log('✓ Exam session found:', JSON.stringify(examSession, null, 2));
+        
+        // Step 2: Check if exam session is active
+        if (examSession.status !== 'active') {
+          console.log('❌ Exam session is not active. Status:', examSession.status);
           setTrackError('Exam not started yet. Please wait for admin to start the exam.');
           setIsLoadingTrack(false);
           return;
         }
         
-        const data = snapshot.val();
-        console.log('Firebase exam/status data:', JSON.stringify(data, null, 2));
+        console.log('✓ Exam session is active');
         
-        // Check if exam is started
-        if (!data.isStarted) {
-          console.log('❌ Exam is not started (isStarted = false)');
-          setTrackError('Exam not started yet. Please wait for admin to start the exam.');
-          setIsLoadingTrack(false);
-          return;
-        }
-        
-        // Get active track ID
-        const activeTrackId = data.activeTrackId;
-        console.log('Active Track ID:', activeTrackId);
-        
-        if (!activeTrackId) {
-          console.log('❌ No active track ID');
-          setTrackError('No active exam track selected. Please ask admin to start the exam with a track selected.');
-          setIsLoadingTrack(false);
-          return;
-        }
-        
-        // Get exam code if available
-        const examCode = data.examCode;
-        console.log('Active Exam Code:', examCode);
-        
-        if (examCode) {
-          setCurrentExamCode(examCode);
+        // Step 3: Check if student's batch is allowed
+        if (studentBatchId && examSession.allowedBatches) {
+          const isBatchAllowed = examSession.allowedBatches.includes(studentBatchId);
+          console.log('Student batch allowed:', isBatchAllowed);
+          console.log('Allowed batches:', examSession.allowedBatches);
           
-          // Check if student has already submitted for this exam
-          console.log('Checking if student already submitted...');
-          const existingSubmissions = await storage.getSubmissions();
-          console.log('Total existing submissions:', existingSubmissions.length);
-          
-          const hasSubmitted = existingSubmissions.some(
-            sub => sub.studentId === studentId && sub.examCode === examCode
-          );
-          
-          console.log('Student has already submitted:', hasSubmitted);
-          
-          if (hasSubmitted) {
-            console.log('❌ Student already submitted this exam');
-            setTrackError('You have already submitted this exam. You cannot take the same exam twice.');
+          if (!isBatchAllowed) {
+            console.log('❌ Student batch not allowed for this exam');
+            setTrackError('You are not enrolled in a batch that is allowed to take this exam.');
             setIsLoadingTrack(false);
             return;
           }
           
-          // Note: Batch verification can be added here if needed
-          // const sessionSnapshot = await get(ref(db, `examSessions/${examCode}`));
-          // This would check if student's batch is in session.allowedBatches
+          console.log('✓ Student batch is allowed');
+        }
+        
+        // Step 4: Fetch global exam status to verify it matches
+        const globalStatusSnapshot = await get(ref(db, 'exam/status'));
+        
+        if (!globalStatusSnapshot.exists()) {
+          console.log('❌ No global exam status found in Firebase');
+          setTrackError('Exam not started yet. Please wait for admin to start the exam.');
+          setIsLoadingTrack(false);
+          return;
+        }
+        
+        const globalStatus = globalStatusSnapshot.val();
+        console.log('Global exam status:', JSON.stringify(globalStatus, null, 2));
+        
+        // Check if exam is started globally
+        if (!globalStatus.isStarted) {
+          console.log('❌ Exam is not started globally (isStarted = false)');
+          setTrackError('Exam not started yet. Please wait for admin to start the exam.');
+          setIsLoadingTrack(false);
+          return;
+        }
+        
+        // Check if the global exam code matches the requested exam code
+        if (globalStatus.examCode && globalStatus.examCode !== examCode) {
+          console.log('❌ Global exam code mismatch. Global:', globalStatus.examCode, 'Requested:', examCode);
+          setTrackError('This exam is not currently active. A different exam is running.');
+          setIsLoadingTrack(false);
+          return;
+        }
+        
+        console.log('✓ Global exam status validated');
+        
+        // Step 5: Check if student has already submitted for this exam
+        console.log('Checking if student already submitted...');
+        const existingSubmissions = await storage.getSubmissions();
+        console.log('Total existing submissions:', existingSubmissions.length);
+        
+        const hasSubmitted = existingSubmissions.some(
+          sub => sub.studentId === studentId && sub.examCode === examCode
+        );
+        
+        console.log('Student has already submitted:', hasSubmitted);
+        
+        if (hasSubmitted) {
+          console.log('❌ Student already submitted this exam');
+          setTrackError('You have already submitted this exam. You cannot take the same exam twice.');
+          setIsLoadingTrack(false);
+          return;
+        }
+        
+        console.log('✓ Student has not submitted yet');
+        
+        // Step 6: Set exam code
+        setCurrentExamCode(examCode);
+        
+        // Step 7: Get active track ID from exam session
+        const activeTrackId = examSession.trackId;
+        console.log('Active Track ID:', activeTrackId);
+        
+        if (!activeTrackId) {
+          console.log('❌ No active track ID in exam session');
+          setTrackError('No active exam track. Please contact administrator.');
+          setIsLoadingTrack(false);
+          return;
         }
 
         // Load track data from hardcoded tracks
