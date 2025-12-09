@@ -30,6 +30,9 @@ export function StudentDashboard() {
       // Fetch all exam sessions
       const allSessions = await examSessionService.getAllExamSessions();
       
+      // Get all submissions first
+      const allSubmissions = await storage.getSubmissions();
+      
       // Filter upcoming exams for student's batch
       const upcoming = allSessions.filter(session => {
         // Show scheduled or active exams that include student's batch
@@ -37,7 +40,7 @@ export function StudentDashboard() {
         const isBatchAllowed = user?.batchId && session.allowedBatches.includes(user.batchId);
         
         // Check if student has already submitted for this exam
-        const hasSubmitted = storage.getSubmissions().some(
+        const hasSubmitted = allSubmissions.some(
           sub => sub.studentId === user?.studentId && sub.examCode === session.examCode
         );
         
@@ -46,7 +49,6 @@ export function StudentDashboard() {
       setUpcomingExams(upcoming);
 
       // Get student's submissions
-      const allSubmissions = storage.getSubmissions();
       const studentSubmissions = allSubmissions.filter(
         sub => sub.studentId === user?.studentId
       );
