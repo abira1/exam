@@ -21,7 +21,7 @@ import {
 } from 'lucide-react';
 import { storage, ExamSubmission } from '../../utils/storage';
 import { allTracks } from '../../data/tracks';
-import { examSessionService } from '../../services/examSessionService';
+import { examSessionService, ExamSession } from '../../services/examSessionService';
 import { useAuth } from '../../contexts/AuthContext';
 import { exportToExcel, exportSummaryToExcel } from '../../utils/exportExcel';
 import { PrintableResult } from '../../components/PrintableResult';
