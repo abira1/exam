@@ -1,15 +1,17 @@
 import { useEffect, useState, Fragment } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ChevronDownIcon, ChevronUpIcon, CheckCircleIcon, ShieldCheckIcon, SearchIcon, RefreshCwIcon, AlertCircleIcon, Music, Play, CheckIcon, XIcon, SendIcon, List, Users, Download } from 'lucide-react';
+import { ChevronDownIcon, ChevronUpIcon, CheckCircleIcon, ShieldCheckIcon, SearchIcon, RefreshCwIcon, AlertCircleIcon, Music, Play, CheckIcon, XIcon, SendIcon, List, Users, Download, Shield } from 'lucide-react';
 import { getDatabase, ref, get } from 'firebase/database';
 import { app } from '../firebase';
 import { storage, ExamSubmission } from '../utils/storage';
 import { TrackManagement } from '../components/TrackManagement';
 import { ExamControlPage } from './admin/ExamControlPage';
+import { RoleManagement } from '../components/RoleManagement';
 import { exportToExcel } from '../utils/exportExcel';
+import { useAuth } from '../contexts/AuthContext';
 
 type AnswerFilter = 'all' | 'answered' | 'unanswered';
-type TabType = 'submissions' | 'tracks' | 'exam-control';
+type TabType = 'submissions' | 'tracks' | 'exam-control' | 'role-management';
 export function AdminDashboard() {
   const navigate = useNavigate();
   const [submissions, setSubmissions] = useState<ExamSubmission[]>([]);
