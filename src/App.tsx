@@ -50,6 +50,14 @@ export function App() {
               </ProtectedRoute>
             }
           />
+          <Route
+            path="/student/results/:submissionId"
+            element={
+              <ProtectedRoute role="student">
+                <ResultDetailPage />
+              </ProtectedRoute>
+            }
+          />
 
           {/* Admin Routes (Protected) */}
           <Route
