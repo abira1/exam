@@ -19,8 +19,10 @@ import { allTracks } from '../../data/tracks';
 import { format } from 'date-fns';
 import { getDatabase, ref, set } from 'firebase/database';
 import { app } from '../../firebase';
+import { useNavigate } from 'react-router-dom';
 
 export function ExamControlPage() {
+  const navigate = useNavigate();
   const [selectedTrackId, setSelectedTrackId] = useState<string>('');
   const [examDate, setExamDate] = useState<string>(format(new Date(), 'yyyy-MM-dd'));
   const [startTime, setStartTime] = useState<string>('10:00');
