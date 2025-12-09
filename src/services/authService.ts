@@ -1,6 +1,8 @@
 import { getDatabase, ref, get, set } from 'firebase/database';
-import { app } from '../firebase';
+import { app, auth, googleProvider } from '../firebase';
+import { signInWithPopup, signOut, User as FirebaseUser } from 'firebase/auth';
 import bcrypt from 'bcryptjs';
+import { createEmailKey } from '../utils/initializeAuthorizedUsers';
 
 export interface User {
   userId: string;
@@ -29,6 +31,7 @@ export interface User {
   enrollmentDate?: string;
   createdAt?: string;
   lastLoginAt?: string;
+  photoURL?: string;
 }
 
 export interface AuthResponse {
@@ -40,7 +43,87 @@ export interface AuthResponse {
 const db = getDatabase(app);
 
 export const authService = {
-  // Student Login
+  // Google Sign-In for Staff (Admin/Teacher)
+  async loginWithGoogle(): Promise<AuthResponse> {
+    try {
+      const result = await signInWithPopup(auth, googleProvider);
+      const firebaseUser = result.user;
+
+      if (!firebaseUser.email) {
+        return { success: false, error: 'No email associated with this Google account' };
+      }
+
+      // Check if user is authorized
+      const emailKey = createEmailKey(firebaseUser.email);
+      const authorizedUserRef = ref(db, `authorizedUsers/${emailKey}`);
+      const authorizedUserSnapshot = await get(authorizedUserRef);
+
+      if (!authorizedUserSnapshot.exists()) {
+        // Sign out immediately if not authorized
+        await signOut(auth);
+        return { 
+          success: false, 
+          error: 'Access Denied. Your email is not authorized. Please contact an administrator.' 
+        };
+      }
+
+      const authorizedUser = authorizedUserSnapshot.val();
+
+      if (authorizedUser.status !== 'active') {
+        await signOut(auth);
+        return { 
+          success: false, 
+          error: 'Your account is inactive. Please contact administrator.' 
+        };
+      }
+
+      // Update last login
+      await set(ref(db, `authorizedUsers/${emailKey}/lastLoginAt`), new Date().toISOString());
+
+      // Create user object
+      const user: User = {
+        userId: firebaseUser.uid,
+        role: authorizedUser.role,
+        name: firebaseUser.displayName || firebaseUser.email,
+        email: firebaseUser.email,
+        status: 'active',
+        photoURL: firebaseUser.photoURL || undefined,
+        password: '', // Not used for Google auth
+        permissions: authorizedUser.role === 'admin' ? {
+          manageStudents: true,
+          manageBatches: true,
+          manageTracks: true,
+          manageAudio: true,
+          createExamSessions: true,
+          viewAllSubmissions: true,
+          gradeSubmissions: true,
+          publishResults: true,
+          exportResults: true,
+          manageUsers: true
+        } : {
+          viewAllSubmissions: true,
+          gradeSubmissions: true,
+          publishResults: false,
+          exportResults: true,
+          manageUsers: false
+        },
+        assignedTracks: authorizedUser.assignedTracks || []
+      };
+
+      return { success: true, user };
+    } catch (error: any) {
+      console.error('Google login error:', error);
+      
+      // Handle user cancellation
+      if (error.code === 'auth/popup-closed-by-user' || error.code === 'auth/cancelled-popup-request') {
+        return { success: false, error: 'Login cancelled' };
+      }
+      
+      return { success: false, error: 'Failed to sign in with Google. Please try again.' };
+    }
+  },
+
+  // Student Login (unchanged)
   async loginStudent(studentId: string, password: string): Promise<AuthResponse> {
     try {
       const snapshot = await get(ref(db, `students/${studentId}`));
@@ -83,65 +166,6 @@ export const authService = {
     }
   },
 
-  // Staff (Admin/Teacher) Login
-  async loginStaff(username: string, password: string): Promise<AuthResponse> {
-    try {
-      // Get all users
-      const snapshot = await get(ref(db, 'users'));
-      
-      if (!snapshot.exists()) {
-        return { success: false, error: 'Invalid username or password' };
-      }
-
-      const users = snapshot.val();
-      let foundUser: any = null;
-      let userId: string = '';
-
-      // Find user by username
-      for (const [id, user] of Object.entries(users)) {
-        if ((user as any).username === username) {
-          foundUser = user;
-          userId = id;
-          break;
-        }
-      }
-
-      if (!foundUser) {
-        return { success: false, error: 'Invalid username or password' };
-      }
-
-      if (foundUser.status !== 'active') {
-        return { success: false, error: 'Your account is inactive. Please contact administrator.' };
-      }
-
-      const isPasswordValid = await bcrypt.compare(password, foundUser.password);
-      
-      if (!isPasswordValid) {
-        return { success: false, error: 'Invalid username or password' };
-      }
-
-      // Update last login
-      await set(ref(db, `users/${userId}/lastLoginAt`), new Date().toISOString());
-
-      const user: User = {
-        userId: userId,
-        username: foundUser.username,
-        role: foundUser.role,
-        name: foundUser.name,
-        email: foundUser.email,
-        status: foundUser.status,
-        permissions: foundUser.permissions,
-        assignedTracks: foundUser.assignedTracks || [],
-        password: '' // Don't send password back
-      };
-
-      return { success: true, user };
-    } catch (error) {
-      console.error('Staff login error:', error);
-      return { success: false, error: 'Login failed. Please try again.' };
-    }
-  },
-
   // Verify token (check if user exists in sessionStorage)
   verifyToken(): User | null {
     const userJson = sessionStorage.getItem('currentUser');
@@ -161,7 +185,12 @@ export const authService = {
   },
 
   // Logout
-  logout(): void {
+  async logout(): Promise<void> {
+    try {
+      await signOut(auth);
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
     sessionStorage.removeItem('currentUser');
     sessionStorage.removeItem('adminAuth');
   }
