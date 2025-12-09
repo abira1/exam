@@ -92,7 +92,9 @@ export function HomePage() {
 
   // Only show exam if student has logged in and exam is started
   if (isExamStarted && hasLoggedIn && studentId && studentName) {
-    return <ExamPage studentId={studentId} studentName={studentName} onSubmit={handleExamSubmit} />;
+    // Note: This HomePage is legacy. The app now uses StudentDashboard and proper routing.
+    // Temporarily passing empty examCode to fix build error
+    return <ExamPage studentId={studentId} studentName={studentName} examCode="" onSubmit={handleExamSubmit} />;
   }
 
   // Show waiting interface if student logged in but exam hasn't started
