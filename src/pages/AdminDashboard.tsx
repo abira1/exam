@@ -226,6 +226,14 @@ export function AdminDashboard() {
               Batches
             </button>
             <button
+              onClick={() => navigate('/admin/submissions')}
+              className="px-4 py-2 font-medium transition-colors flex items-center gap-2 text-gray-600 hover:text-gray-900"
+              data-testid="submissions-tab"
+            >
+              <CheckCircleIcon className="w-4 h-4" />
+              Submissions
+            </button>
+            <button
               onClick={() => setActiveTab('submissions')}
               className={`px-4 py-2 font-medium transition-colors flex items-center gap-2 ${
                 activeTab === 'submissions'
@@ -234,7 +242,7 @@ export function AdminDashboard() {
               }`}
             >
               <CheckCircleIcon className="w-4 h-4" />
-              Submissions
+              Legacy Submissions
             </button>
             <button
               onClick={() => setActiveTab('tracks')}
