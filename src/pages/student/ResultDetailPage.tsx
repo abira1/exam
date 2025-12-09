@@ -289,6 +289,14 @@ export function ResultDetailPage() {
           <p className="mt-2">Student: {submission.studentName} ({submission.studentId})</p>
         </div>
       </main>
+
+      {/* Printable Result Modal */}
+      {showPrintPreview && (
+        <PrintableResult
+          submission={submission}
+          onClose={() => setShowPrintPreview(false)}
+        />
+      )}
     </div>
   );
 }
