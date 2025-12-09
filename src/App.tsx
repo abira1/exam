@@ -122,8 +122,8 @@ export function App() {
             }
           />
 
-          {/* Legacy admin route redirect */}
-          <Route path="/admin" element={<Navigate to="/staff/login" replace />} />
+          {/* Admin route - shows Google login */}
+          <Route path="/admin" element={<StaffLogin />} />
 
           {/* 404 - Redirect to home */}
           <Route path="*" element={<Navigate to="/" replace />} />
