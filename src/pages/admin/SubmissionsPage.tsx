@@ -21,6 +21,7 @@ import { allTracks } from '../../data/tracks';
 import { examSessionService } from '../../services/examSessionService';
 import { useAuth } from '../../contexts/AuthContext';
 import { exportToExcel, exportSummaryToExcel } from '../../utils/exportExcel';
+import { PrintableResult } from '../../components/PrintableResult';
 
 type AnswerFilter = 'all' | 'answered' | 'unanswered';
 type SortField = 'name' | 'id' | 'time' | 'score';
