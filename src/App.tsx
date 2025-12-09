@@ -137,8 +137,13 @@ export function App() {
 function ExamPageWrapper() {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const { examCode } = useParams<{ examCode: string }>();
 
   if (!user || !user.studentId) {
+    return <Navigate to="/student/dashboard" replace />;
+  }
+
+  if (!examCode) {
     return <Navigate to="/student/dashboard" replace />;
   }
 
@@ -150,6 +155,8 @@ function ExamPageWrapper() {
     <ExamPage
       studentId={user.studentId}
       studentName={user.name}
+      studentBatchId={user.batchId}
+      examCode={examCode}
       onSubmit={handleSubmit}
     />
   );
