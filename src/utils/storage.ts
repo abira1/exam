@@ -3,6 +3,9 @@ export interface ExamSubmission {
   studentId: string;
   studentName: string;
   trackName: string;
+  trackId: string; // NEW: Track ID for filtering
+  examCode?: string; // NEW: Exam session code
+  batchId?: string; // NEW: Student's batch ID
   answers: Record<number, string>;
   submittedAt: string;
   timeSpent: string;
