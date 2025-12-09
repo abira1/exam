@@ -224,10 +224,14 @@ export function SubmissionsPage() {
     return sortDirection === 'asc' ? <ChevronUpIcon className="w-4 h-4" /> : <ChevronDownIcon className="w-4 h-4" />;
   };
 
-  // Get track-based stats
+  // Get track-based stats (filter by assigned tracks for teachers)
   const getTrackStats = () => {
     const stats: Record<string, { total: number; avgScore: number }> = {};
-    allTracks.forEach((track) => {
+    const tracksToShow = role === 'teacher' && user?.assignedTracks && user.assignedTracks.length > 0
+      ? allTracks.filter(t => user.assignedTracks!.includes(t.id))
+      : allTracks;
+      
+    tracksToShow.forEach((track) => {
       const trackSubmissions = submissions.filter((s) => s.trackId === track.id);
       stats[track.id] = {
         total: trackSubmissions.length,
@@ -241,6 +245,16 @@ export function SubmissionsPage() {
   };
 
   const trackStats = getTrackStats();
+  
+  // Get filtered tracks for display (show only assigned tracks for teachers)
+  const getDisplayTracks = () => {
+    if (role === 'teacher' && user?.assignedTracks && user.assignedTracks.length > 0) {
+      return allTracks.filter(t => user.assignedTracks!.includes(t.id));
+    }
+    return allTracks;
+  };
+  
+  const displayTracks = getDisplayTracks();
 
   const clearFilters = () => {
     setSelectedTrackId('all');
