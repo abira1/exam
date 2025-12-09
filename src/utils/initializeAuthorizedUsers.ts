@@ -16,8 +16,7 @@ export const initializeAuthorizedUsers = async () => {
       'shahsultanweb@gmail.com'
     ];
 
-    // Check if authorized users node exists
-    const authUsersSnapshot = await get(ref(db, 'authorizedUsers'));
+    // Initialize authorized users node
     
     for (const email of defaultAdmins) {
       const emailKey = createEmailKey(email);
