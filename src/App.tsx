@@ -57,6 +57,22 @@ export function App() {
               </ProtectedRoute>
             }
           />
+          <Route
+            path="/admin/students"
+            element={
+              <ProtectedRoute role="admin">
+                <StudentsPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/students/:studentId"
+            element={
+              <ProtectedRoute role="admin">
+                <StudentProfilePage />
+              </ProtectedRoute>
+            }
+          />
 
           {/* Teacher Routes (Protected) */}
           <Route
