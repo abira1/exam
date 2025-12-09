@@ -43,7 +43,7 @@ export function StudentProfilePage() {
       if (studentData) {
         setStudent(studentData);
         // Load submissions for this student
-        const allSubmissions = storage.getSubmissions();
+        const allSubmissions = await storage.getSubmissions();
         const studentSubmissions = allSubmissions.filter(
           s => s.studentId === studentId
         );
