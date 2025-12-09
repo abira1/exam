@@ -173,10 +173,27 @@ export const examSessionService = {
   // Start exam
   async startExam(examCode: string): Promise<boolean> {
     try {
+      const session = await this.getExamSessionByCode(examCode);
+      if (!session) return false;
+
+      // Update exam session
       await this.updateExamSession(examCode, {
         status: 'active',
         startedAt: new Date().toISOString()
       });
+
+      // Update global exam status to include examCode
+      await set(ref(db, 'exam/status'), {
+        isStarted: true,
+        activeTrackId: session.trackId,
+        trackName: session.trackName,
+        examCode: examCode, // NEW: Include exam code
+        startTime: new Date().toISOString(),
+        endTime: new Date(Date.now() + session.duration * 60000).toISOString(),
+        duration: session.duration,
+        startedBy: session.createdBy
+      });
+
       return true;
     } catch (error) {
       console.error('Error starting exam:', error);
