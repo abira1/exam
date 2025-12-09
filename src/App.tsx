@@ -23,6 +23,8 @@ export function App() {
   useEffect(() => {
     // Initialize database with default admin on app load
     initializeDatabase();
+    // Initialize authorized users for Google OAuth
+    initializeAuthorizedUsers();
   }, []);
 
   return (
