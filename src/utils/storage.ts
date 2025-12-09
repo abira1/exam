@@ -96,5 +96,49 @@ export const storage = {
   calculateScore(answers: Record<number, string>): number {
     const answeredCount = Object.keys(answers).filter(key => answers[Number(key)].trim() !== '').length;
     return Math.round(answeredCount / 40 * 100);
+  },
+  
+  // NEW: Get submissions by exam code
+  getSubmissionsByExamCode(examCode: string): ExamSubmission[] {
+    const allSubmissions = this.getSubmissions();
+    return allSubmissions.filter(s => s.examCode === examCode);
+  },
+  
+  // NEW: Get submissions by track ID
+  getSubmissionsByTrackId(trackId: string): ExamSubmission[] {
+    const allSubmissions = this.getSubmissions();
+    return allSubmissions.filter(s => s.trackId === trackId);
+  },
+  
+  // NEW: Get submissions grouped by track
+  getSubmissionsGroupedByTrack(): Record<string, ExamSubmission[]> {
+    const allSubmissions = this.getSubmissions();
+    const grouped: Record<string, ExamSubmission[]> = {};
+    
+    allSubmissions.forEach(submission => {
+      const trackId = submission.trackId || 'unknown';
+      if (!grouped[trackId]) {
+        grouped[trackId] = [];
+      }
+      grouped[trackId].push(submission);
+    });
+    
+    return grouped;
+  },
+  
+  // NEW: Get submission stats by exam code
+  getSubmissionStatsByExamCode(examCode: string): {
+    total: number;
+    graded: number;
+    published: number;
+    pending: number;
+  } {
+    const submissions = this.getSubmissionsByExamCode(examCode);
+    return {
+      total: submissions.length,
+      graded: submissions.filter(s => s.marks && Object.keys(s.marks).length > 0).length,
+      published: submissions.filter(s => s.resultPublished).length,
+      pending: submissions.filter(s => !s.marks || Object.keys(s.marks).length === 0).length
+    };
   }
 };
