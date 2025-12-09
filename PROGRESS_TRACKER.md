@@ -86,12 +86,12 @@ Duration: ~45 minutes
 
 ### Phase 3: Exams View (Level 2)
 ```
-Status: PENDING ⏳
+Status: IN PROGRESS 🚧
 Progress: ░░░░░░░░░░░░░░░░░░░░ 0%
 Estimate: ~45 minutes
 ```
 
-**Depends On**: Phase 2 completion
+**Depends On**: Phase 2 completion ✅
 
 **Tasks Checklist**:
 ```
