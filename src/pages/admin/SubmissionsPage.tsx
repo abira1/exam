@@ -335,7 +335,7 @@ export function SubmissionsPage() {
                     data-testid="track-filter-select"
                   >
                     <option value="all">All Tracks</option>
-                    {allTracks.map((track) => (
+                    {displayTracks.map((track) => (
                       <option key={track.id} value={track.id}>
                         {track.name} ({trackStats[track.id]?.total || 0})
                       </option>
