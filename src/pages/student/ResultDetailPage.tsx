@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { storage, ExamSubmission } from '../../utils/storage';
-import { ArrowLeft, Download, Printer, CheckCircle, XCircle, Clock, Calendar, Award } from 'lucide-react';
+import { ArrowLeft, Printer, CheckCircle, XCircle, Clock, Calendar, Award } from 'lucide-react';
 import { format } from 'date-fns';
-import { RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, ResponsiveContainer, Cell } from 'recharts';
+import { RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, ResponsiveContainer } from 'recharts';
 
 export function ResultDetailPage() {
   const { submissionId } = useParams<{ submissionId: string }>();
