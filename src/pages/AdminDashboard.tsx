@@ -210,6 +210,14 @@ export function AdminDashboard() {
           {/* Tab Navigation */}
           <div className="flex gap-4 border-t border-gray-200 pt-4">
             <button
+              onClick={() => navigate('/admin/students')}
+              className="px-4 py-2 font-medium transition-colors flex items-center gap-2 text-gray-600 hover:text-gray-900"
+              data-testid="students-management-tab"
+            >
+              <Users className="w-4 h-4" />
+              Students
+            </button>
+            <button
               onClick={() => setActiveTab('submissions')}
               className={`px-4 py-2 font-medium transition-colors flex items-center gap-2 ${
                 activeTab === 'submissions'
