@@ -320,15 +320,16 @@ export function SubmissionsPage() {
     return { correct, incorrect, unmarked, total: 40 };
   };
 
-  const handleMarkQuestion = (submissionId: string, questionNumber: number, mark: 'correct' | 'incorrect' | null) => {
-    storage.updateMark(submissionId, questionNumber, mark);
-    loadSubmissions();
+  const handleMarkQuestion = async (submissionId: string, questionNumber: number, mark: 'correct' | 'incorrect' | null) => {
+    await storage.updateMark(submissionId, questionNumber, mark);
+    // Real-time listener will auto-update, but we can also manually refresh
+    await loadSubmissions();
   };
 
-  const handlePublishResult = (submissionId: string) => {
-    const success = storage.publishResult(submissionId);
+  const handlePublishResult = async (submissionId: string) => {
+    const success = await storage.publishResult(submissionId);
     if (success) {
-      loadSubmissions();
+      await loadSubmissions();
       alert('Result published successfully!');
     } else {
       alert('Please mark all 40 questions before publishing the result.');
