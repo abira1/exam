@@ -9,6 +9,7 @@ import { NewHomePage } from './pages/NewHomePage';
 import { StudentLogin } from './components/StudentLogin';
 import { StaffLogin } from './components/StaffLogin';
 import { StudentDashboard } from './pages/student/StudentDashboard';
+import { ResultDetailPage } from './pages/student/ResultDetailPage';
 import { TeacherDashboard } from './pages/teacher/TeacherDashboard';
 import { AdminDashboard } from './pages/AdminDashboard';
 import { ExamPage } from './pages/ExamPage';
