@@ -208,6 +208,15 @@ export const examSessionService = {
         status: 'completed',
         completedAt: new Date().toISOString()
       });
+
+      // Clear global exam status
+      await set(ref(db, 'exam/status'), {
+        isStarted: false,
+        activeTrackId: null,
+        trackName: null,
+        examCode: null
+      });
+
       return true;
     } catch (error) {
       console.error('Error stopping exam:', error);
