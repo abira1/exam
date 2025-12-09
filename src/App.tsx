@@ -110,6 +110,14 @@ export function App() {
               </ProtectedRoute>
             }
           />
+          <Route
+            path="/teacher/submissions"
+            element={
+              <ProtectedRoute role="teacher">
+                <SubmissionsPage />
+              </ProtectedRoute>
+            }
+          />
 
           {/* Legacy admin route redirect */}
           <Route path="/admin" element={<Navigate to="/staff/login" replace />} />
