@@ -259,7 +259,7 @@ export function AdminDashboard() {
         {activeTab === 'tracks' ? (
           <TrackManagement />
         ) : activeTab === 'exam-control' ? (
-          <ExamController />
+          <ExamControlPage />
         ) : (
           <>
         <div className="mb-6">
