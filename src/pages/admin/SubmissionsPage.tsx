@@ -269,17 +269,24 @@ export function SubmissionsPage() {
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-3">
               <button
-                onClick={() => navigate('/admin/dashboard')}
+                onClick={() => navigate(role === 'teacher' ? '/teacher/dashboard' : '/admin/dashboard')}
                 className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
                 data-testid="back-to-dashboard-button"
               >
                 <ArrowLeft className="w-5 h-5 text-gray-600" />
               </button>
               <div>
-                <h1 className="text-xl font-bold text-gray-900">Exam Submissions</h1>
+                <h1 className="text-xl font-bold text-gray-900">
+                  {role === 'teacher' ? 'My Submissions' : 'Exam Submissions'}
+                </h1>
                 {examCodeFilter && (
                   <p className="text-sm text-blue-600 font-medium">
                     Filtering by Exam Code: {examCodeFilter}
+                  </p>
+                )}
+                {role === 'teacher' && (
+                  <p className="text-sm text-gray-600">
+                    Showing submissions for your assigned tracks only
                   </p>
                 )}
               </div>
