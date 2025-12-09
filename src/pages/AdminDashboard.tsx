@@ -197,6 +197,13 @@ export function AdminDashboard() {
               </div>
             </div>
             <div className="flex items-center gap-4">
+              <button 
+                onClick={() => exportToExcel(submissions, { type: 'all' })} 
+                className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+              >
+                <Download className="w-4 h-4" />
+                <span className="text-sm font-medium">Export All</span>
+              </button>
               <button onClick={handleRefresh} className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
                 <RefreshCwIcon className={`w-4 h-4 ${isRefreshing ? 'animate-spin' : ''}`} />
                 <span className="text-sm font-medium">Refresh</span>
