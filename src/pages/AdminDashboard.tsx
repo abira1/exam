@@ -663,5 +663,8 @@ export function AdminDashboard() {
           </>
         )}
       </main>
+      
+      {/* Migration Utility - Fixed position button */}
+      <MigrationUtility />
     </div>;
 }
