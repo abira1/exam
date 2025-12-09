@@ -15,6 +15,7 @@ import { ExamPage } from './pages/ExamPage';
 import { StudentsPage } from './pages/admin/StudentsPage';
 import { StudentProfilePage } from './pages/admin/StudentProfilePage';
 import { BatchesPage } from './pages/admin/BatchesPage';
+import { SubmissionsPage } from './pages/admin/SubmissionsPage';
 
 export function App() {
   useEffect(() => {
