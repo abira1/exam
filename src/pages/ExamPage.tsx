@@ -218,7 +218,7 @@ export function ExamPage({
     };
     
     fetchExamData();
-  }, []);
+  }, [examCode, studentId, studentBatchId]);
 
   // Timer that calculates remaining time based on end time
   useEffect(() => {
