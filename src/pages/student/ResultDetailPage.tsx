@@ -19,10 +19,10 @@ export function ResultDetailPage() {
     loadSubmission();
   }, [submissionId]);
 
-  const loadSubmission = () => {
+  const loadSubmission = async () => {
     setIsLoading(true);
     try {
-      const allSubmissions = storage.getSubmissions();
+      const allSubmissions = await storage.getSubmissions();
       const found = allSubmissions.find(s => s.id === submissionId);
       
       // Verify this submission belongs to the logged-in student
