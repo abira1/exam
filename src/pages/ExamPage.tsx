@@ -38,6 +38,8 @@ export function ExamPage({
   const [examData, setExamData] = useState<Section[] | null>(null);
   const [isLoadingTrack, setIsLoadingTrack] = useState(true);
   const [trackError, setTrackError] = useState<string | null>(null);
+  const [currentExamCode, setCurrentExamCode] = useState<string | null>(null);
+  const [currentBatchId, setCurrentBatchId] = useState<string | null>(null);
   // Fetch exam track, times and audio from Firebase
   useEffect(() => {
     const fetchExamData = async () => {
