@@ -185,7 +185,7 @@ export function ExamPage({
     const seconds = Math.floor(elapsed % 60000 / 1000);
     return `${minutes}m ${seconds}s`;
   };
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!currentTrack) {
       alert('Error: No active exam track.');
       return;
@@ -207,11 +207,23 @@ export function ExamPage({
       score,
       resultPublished: false // Set as not published initially
     };
-    storage.addSubmission(submission);
     
-    // Show success message
-    alert('✅ Exam submitted successfully!\n\nThank you for completing the exam. Your submission has been recorded.\n\nResults will be published soon. You can check your dashboard for updates.');
-    onSubmit();
+    try {
+      const success = await storage.addSubmission(submission);
+      
+      if (success) {
+        // Show success message
+        alert('✅ Exam submitted successfully!\n\nThank you for completing the exam. Your submission has been recorded.\n\nResults will be published soon. You can check your dashboard for updates.');
+        onSubmit();
+      } else {
+        alert('⚠️ Submission saved locally but could not sync to server. Your submission is safe and will sync when online.');
+        onSubmit();
+      }
+    } catch (error) {
+      console.error('Error submitting exam:', error);
+      alert('⚠️ Submission saved locally. Your submission is safe and will sync when online.');
+      onSubmit();
+    }
   };
   // Loading state
   if (isLoadingTrack) {
