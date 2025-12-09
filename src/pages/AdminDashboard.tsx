@@ -69,9 +69,9 @@ export function AdminDashboard() {
       console.error('Error loading exam status:', error);
     }
   };
-  const handleRefresh = () => {
+  const handleRefresh = async () => {
     setIsRefreshing(true);
-    loadSubmissions();
+    await loadSubmissions();
     setTimeout(() => setIsRefreshing(false), 500);
   };
   const filterAndSortSubmissions = () => {
