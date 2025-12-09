@@ -199,9 +199,9 @@ export function ExamPage({
           }
         }
 
-        // Set exam end time
-        if (data.endTime) {
-          const endTime = new Date(data.endTime).getTime();
+        // Set exam end time from global status
+        if (globalStatus.endTime) {
+          const endTime = new Date(globalStatus.endTime).getTime();
           console.log('✓ Exam end time:', new Date(endTime).toLocaleString());
           setExamEndTime(endTime);
         } else {
