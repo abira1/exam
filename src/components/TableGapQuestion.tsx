@@ -107,11 +107,16 @@ export function TableGapQuestion({
         <table className="w-full">
           <tbody>
             {rows.map((row, idx) => <tr key={idx} className={idx % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
-                <td className="px-4 py-3 border-b border-gray-200 w-1/2">
-                  {renderCell(row.label, true, idx)}
-                </td>
-                <td className="px-4 py-3 border-b border-gray-200 w-1/2">
-                  {renderCell(row.value, false, idx)}
+                <td className="px-4 py-3 border-b border-gray-200 w-full">
+                  <div className="flex flex-col gap-1">
+                    <div>{renderCell(row.label, true, idx)}</div>
+                    {typeof row.value === 'string' && row.value && (
+                      <div className="text-gray-700">{renderCell(row.value, false, idx)}</div>
+                    )}
+                    {typeof row.value === 'object' && 'questionNumber' in row.value && typeof row.label === 'string' && !row.label.includes('_______') && (
+                      <div>{renderCell(row.value, false, idx)}</div>
+                    )}
+                  </div>
                 </td>
               </tr>)}
           </tbody>
