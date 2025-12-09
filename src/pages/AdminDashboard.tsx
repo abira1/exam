@@ -12,7 +12,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { MigrationUtility } from '../components/MigrationUtility';
 
 type AnswerFilter = 'all' | 'answered' | 'unanswered';
-type TabType = 'submissions' | 'tracks' | 'exam-control' | 'role-management';
+type TabType = 'tracks' | 'exam-control' | 'role-management';
 export function AdminDashboard() {
   const navigate = useNavigate();
   const [submissions, setSubmissions] = useState<ExamSubmission[]>([]);
@@ -23,7 +23,7 @@ export function AdminDashboard() {
   const [sortField, setSortField] = useState<'name' | 'id' | 'time' | 'score'>('time');
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
   const [isRefreshing, setIsRefreshing] = useState(false);
-  const [activeTab, setActiveTab] = useState<TabType>('submissions');
+  const [activeTab, setActiveTab] = useState<TabType>('tracks');
   const [currentExamName, setCurrentExamName] = useState<string>('No exam running');
   useEffect(() => {
     loadSubmissions();
