@@ -85,6 +85,40 @@ Overall Progress                   [████████████░░�
    - Group hover animations
    - Status: ✅ Production-ready styling
 
+### Phase 3: Exams View (100%)
+1. **Exam Folder Cards Grid**
+   - Responsive grid layout (1/2/3 columns)
+   - Folder icon for each exam session
+   - Exam code displayed prominently
+   - Status: ✅ Complete
+
+2. **Exam Session Metadata**
+   - First submission date as session date
+   - Formatted date and time display
+   - Total submission count
+   - Status: ✅ All metadata displayed
+
+3. **Statistics Badges**
+   - Graded count (green badge with ✓)
+   - Published count (purple badge with ⬆)
+   - Pending count (orange badge with ⏳)
+   - Conditional rendering (only show if > 0)
+   - Status: ✅ All badges implemented
+
+4. **Interactive Features**
+   - Click handlers wired to `handleNavigateToExamCode()`
+   - Hover effects (scale, shadow, border color)
+   - Empty state handling for tracks with no exams
+   - Data-testid attributes for testing
+   - Status: ✅ Fully functional
+
+5. **UI Polish**
+   - Card styling with proper spacing
+   - Color-coded statistics badges
+   - Group hover animations for icon
+   - Break-all for long exam codes
+   - Status: ✅ Production-ready
+
 ---
 
 ## 🚧 What's Currently Being Worked On
