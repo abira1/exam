@@ -454,6 +454,8 @@ export const storage = {
         const examData = snapshot.val();
         
         Object.keys(examData).forEach(submissionId => {
+          // Skip metadata entries
+          if (submissionId === '_metadata') return;
           submissions.push(examData[submissionId]);
         });
       }
