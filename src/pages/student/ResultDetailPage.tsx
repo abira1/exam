@@ -5,6 +5,7 @@ import { storage, ExamSubmission } from '../../utils/storage';
 import { ArrowLeft, Printer, CheckCircle, XCircle, Clock, Calendar, Award } from 'lucide-react';
 import { format } from 'date-fns';
 import { RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, ResponsiveContainer } from 'recharts';
+import { PrintableResult } from '../../components/PrintableResult';
 
 export function ResultDetailPage() {
   const { submissionId } = useParams<{ submissionId: string }>();
