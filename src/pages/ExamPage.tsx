@@ -230,6 +230,15 @@ export function ExamPage({
       return;
     }
 
+    console.log('=== SUBMITTING EXAM ===');
+    console.log('Student ID:', studentId);
+    console.log('Student Name:', studentName);
+    console.log('Track ID:', currentTrack.id);
+    console.log('Track Name:', currentTrack.name);
+    console.log('Exam Code:', currentExamCode);
+    console.log('Batch ID:', currentBatchId);
+    console.log('Answers count:', Object.keys(answers).length);
+
     const score = storage.calculateScore(answers);
     const submission: ExamSubmission = {
       id: `${studentId}-${Date.now()}`,
@@ -247,19 +256,25 @@ export function ExamPage({
       resultPublished: false // Set as not published initially
     };
     
+    console.log('Submission object:', JSON.stringify(submission, null, 2));
+    
     try {
+      console.log('Calling storage.addSubmission...');
       const success = await storage.addSubmission(submission);
+      console.log('Submission result:', success);
       
       if (success) {
+        console.log('✓ Exam submitted successfully');
         // Show success message
         alert('✅ Exam submitted successfully!\n\nThank you for completing the exam. Your submission has been recorded.\n\nResults will be published soon. You can check your dashboard for updates.');
         onSubmit();
       } else {
+        console.log('⚠ Submission saved locally only');
         alert('⚠️ Submission saved locally but could not sync to server. Your submission is safe and will sync when online.');
         onSubmit();
       }
     } catch (error) {
-      console.error('Error submitting exam:', error);
+      console.error('❌ Error submitting exam:', error);
       alert('⚠️ Submission saved locally. Your submission is safe and will sync when online.');
       onSubmit();
     }
