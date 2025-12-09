@@ -69,7 +69,7 @@ export function ExamPage({
             setCurrentExamCode(examCode);
             
             // Check if student has already submitted for this exam
-            const existingSubmissions = storage.getSubmissions();
+            const existingSubmissions = await storage.getSubmissions();
             const hasSubmitted = existingSubmissions.some(
               sub => sub.studentId === studentId && sub.examCode === examCode
             );
