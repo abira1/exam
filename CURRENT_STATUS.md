@@ -123,8 +123,8 @@ Overall Progress                   [████████░░░░░░�
 
 | File | Status | Changes |
 |------|--------|---------|
-| `/app/src/components/FolderIcon.tsx` | ✅ New | Created SVG folder icon component |
-| `/app/src/pages/admin/SubmissionsPage.tsx` | 🚧 In Progress | Added navigation logic, breadcrumbs |
+| `/app/src/components/FolderIcon.tsx` | ✅ Complete | Created SVG folder icon with size prop |
+| `/app/src/pages/admin/SubmissionsPage.tsx` | 🚧 In Progress | Added Level 1 & 2 placeholder, need Level 2 implementation |
 | `/app/src/pages/AdminDashboard.tsx` | ⏳ Not Started | Needs cleanup (Phase 5) |
 
 **Backup Created**: 
