@@ -14,7 +14,8 @@ import {
   Filter,
   X as CloseIcon,
   Download,
-  FileSpreadsheet
+  FileSpreadsheet,
+  Printer
 } from 'lucide-react';
 import { storage, ExamSubmission } from '../../utils/storage';
 import { allTracks } from '../../data/tracks';
