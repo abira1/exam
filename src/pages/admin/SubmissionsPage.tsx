@@ -1127,6 +1127,7 @@ export function SubmissionsPage() {
             </div>
           )}
         </div>
+        )}
       </main>
 
       {/* Printable Result Modal */}
