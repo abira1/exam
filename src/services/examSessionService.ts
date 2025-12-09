@@ -87,6 +87,8 @@ export const examSessionService = {
     createdBy: string;
   }): Promise<{ success: boolean; examCode?: string; error?: string }> {
     try {
+      console.log('Creating exam session:', data.examCode);
+      
       const session: ExamSession = {
         examCode: data.examCode,
         trackId: data.trackId,
@@ -107,26 +109,31 @@ export const examSessionService = {
       };
 
       // Create exam session
+      console.log('Saving exam session to Firebase...');
       await set(ref(db, `examSessions/${data.examCode}`), session);
+      console.log('✓ Exam session saved successfully');
 
       // Auto-create submission folder in hierarchical structure
-      // submissions/{trackId}/{examCode}/
+      // submissions/{trackId}/{examCode}/_metadata
       const submissionFolderPath = `submissions/${data.trackId}/${data.examCode}`;
-      await set(ref(db, `${submissionFolderPath}/_metadata`), {
+      console.log(`Creating submission folder at: ${submissionFolderPath}`);
+      
+      const metadata = {
         trackId: data.trackId,
         trackName: data.trackName,
         examCode: data.examCode,
         createdAt: new Date().toISOString(),
         createdBy: data.createdBy,
         totalSubmissions: 0
-      });
-
-      console.log(`Created submission folder at: ${submissionFolderPath}`);
+      };
+      
+      await set(ref(db, `${submissionFolderPath}/_metadata`), metadata);
+      console.log('✓ Submission folder created successfully with metadata:', metadata);
 
       return { success: true, examCode: data.examCode };
     } catch (error) {
-      console.error('Error creating exam session:', error);
-      return { success: false, error: 'Failed to create exam session' };
+      console.error('❌ Error creating exam session:', error);
+      return { success: false, error: `Failed to create exam session: ${error instanceof Error ? error.message : 'Unknown error'}` };
     }
   },
 
