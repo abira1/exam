@@ -80,15 +80,9 @@ export function ExamPage({
               return;
             }
             
-            // Fetch exam session to verify batch access
-            const sessionSnapshot = await get(ref(db, `examSessions/${examCode}`));
-            if (sessionSnapshot.exists()) {
-              const session = sessionSnapshot.val();
-              setExamSession(session);
-              
-              // Note: Batch verification would happen here if studentId had batchId
-              // For now, we'll allow all students
-            }
+            // Note: Batch verification can be added here if needed
+            // const sessionSnapshot = await get(ref(db, `examSessions/${examCode}`));
+            // This would check if student's batch is in session.allowedBatches
           }
           
           if (!activeTrackId) {
