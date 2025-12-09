@@ -397,13 +397,40 @@ export function SubmissionsPage() {
                 <h1 className="text-xl font-bold text-gray-900">
                   {role === 'teacher' ? 'My Submissions' : 'Exam Submissions'}
                 </h1>
-                {examCodeFilter && (
-                  <p className="text-sm text-blue-600 font-medium">
-                    Filtering by Exam Code: {examCodeFilter}
-                  </p>
-                )}
-                {role === 'teacher' && (
-                  <p className="text-sm text-gray-600">
+                
+                {/* Breadcrumb Navigation */}
+                <nav className="flex items-center gap-2 mt-1">
+                  {breadcrumbs.map((item, index) => (
+                    <div key={index} className="flex items-center gap-2">
+                      {index === 0 ? (
+                        <button
+                          onClick={() => handleBreadcrumbClick(item)}
+                          className="flex items-center gap-1 text-sm text-blue-600 hover:text-blue-800 font-medium transition-colors"
+                        >
+                          <Home className="w-3.5 h-3.5" />
+                          <span>{item.label}</span>
+                        </button>
+                      ) : (
+                        <>
+                          <ChevronRight className="w-4 h-4 text-gray-400" />
+                          <button
+                            onClick={() => handleBreadcrumbClick(item)}
+                            className={`text-sm font-medium transition-colors ${
+                              index === breadcrumbs.length - 1
+                                ? 'text-gray-900'
+                                : 'text-blue-600 hover:text-blue-800'
+                            }`}
+                          >
+                            {item.label}
+                          </button>
+                        </>
+                      )}
+                    </div>
+                  ))}
+                </nav>
+
+                {role === 'teacher' && navigationLevel === 'tracks' && (
+                  <p className="text-sm text-gray-600 mt-1">
                     Showing submissions for your assigned tracks only
                   </p>
                 )}
