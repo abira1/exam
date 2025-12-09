@@ -38,14 +38,11 @@ export function AdminDashboard() {
     };
   }, []);
   
-  useEffect(() => {
-    filterAndSortSubmissions();
-  }, [submissions, searchQuery, sortField, sortDirection]);
-  
   const loadSubmissions = async () => {
     const data = await storage.getSubmissions();
     setSubmissions(data);
   };
+  
   const loadExamStatus = async () => {
     try {
       const db = getDatabase(app);
@@ -62,132 +59,11 @@ export function AdminDashboard() {
       console.error('Error loading exam status:', error);
     }
   };
+  
   const handleRefresh = async () => {
     setIsRefreshing(true);
     await loadSubmissions();
     setTimeout(() => setIsRefreshing(false), 500);
-  };
-  const filterAndSortSubmissions = () => {
-    let filtered = [...submissions];
-    if (searchQuery.trim()) {
-      const query = searchQuery.toLowerCase();
-      filtered = filtered.filter(s => (s.studentName || 'Unknown Student').toLowerCase().includes(query) || s.studentId.toLowerCase().includes(query));
-    }
-    filtered.sort((a, b) => {
-      let comparison = 0;
-      switch (sortField) {
-        case 'name':
-          comparison = (a.studentName || 'Unknown Student').localeCompare(b.studentName || 'Unknown Student');
-          break;
-        case 'id':
-          comparison = a.studentId.localeCompare(b.studentId);
-          break;
-        case 'time':
-          comparison = new Date(a.submittedAt).getTime() - new Date(b.submittedAt).getTime();
-          break;
-        case 'score':
-          comparison = (a.score || 0) - (b.score || 0);
-          break;
-      }
-      return sortDirection === 'asc' ? comparison : -comparison;
-    });
-    setFilteredSubmissions(filtered);
-  };
-  const handleSort = (field: 'name' | 'id' | 'time' | 'score') => {
-    if (sortField === field) {
-      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
-    } else {
-      setSortField(field);
-      setSortDirection('desc');
-    }
-  };
-  const toggleExpand = (id: string) => {
-    setExpandedId(expandedId === id ? null : id);
-    setAnswerFilter('all'); // Reset filter when expanding
-  };
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleString();
-  };
-  const getAllQuestions = (submission: ExamSubmission) => {
-    const allQuestions: {
-      questionNumber: number;
-      answer: string | null;
-    }[] = [];
-    for (let i = 1; i <= 40; i++) {
-      allQuestions.push({
-        questionNumber: i,
-        answer: submission.answers[i] && submission.answers[i].trim() !== '' ? submission.answers[i] : null
-      });
-    }
-    return allQuestions;
-  };
-  const getFilteredQuestions = (submission: ExamSubmission) => {
-    const allQuestions = getAllQuestions(submission);
-    switch (answerFilter) {
-      case 'answered':
-        return allQuestions.filter(q => q.answer !== null);
-      case 'unanswered':
-        return allQuestions.filter(q => q.answer === null);
-      default:
-        return allQuestions;
-    }
-  };
-  const getAnswerStats = (submission: ExamSubmission) => {
-    const allQuestions = getAllQuestions(submission);
-    const answered = allQuestions.filter(q => q.answer !== null).length;
-    const unanswered = allQuestions.filter(q => q.answer === null).length;
-    return {
-      answered,
-      unanswered,
-      total: 40
-    };
-  };
-
-  const getMarkingStats = (submission: ExamSubmission) => {
-    if (!submission.marks) {
-      return { correct: 0, incorrect: 0, unmarked: 40, total: 40 };
-    }
-    let correct = 0;
-    let incorrect = 0;
-    let unmarked = 0;
-    
-    for (let i = 1; i <= 40; i++) {
-      const mark = submission.marks[i];
-      if (mark === 'correct') correct++;
-      else if (mark === 'incorrect') incorrect++;
-      else unmarked++;
-    }
-    
-    return { correct, incorrect, unmarked, total: 40 };
-  };
-
-  const handleMarkQuestion = async (submissionId: string, questionNumber: number, mark: 'correct' | 'incorrect' | null) => {
-    await storage.updateMark(submissionId, questionNumber, mark);
-    await loadSubmissions();
-  };
-
-  const handlePublishResult = async (submissionId: string) => {
-    const success = await storage.publishResult(submissionId);
-    if (success) {
-      await loadSubmissions();
-      alert('Result published successfully!');
-    } else {
-      alert('Please mark all 40 questions before publishing the result.');
-    }
-  };
-
-  const isAllMarked = (submission: ExamSubmission): boolean => {
-    if (!submission.marks) return false;
-    const stats = getMarkingStats(submission);
-    return stats.unmarked === 0;
-  };
-  const SortIcon = ({
-    field
-  }: {
-    field: 'name' | 'id' | 'time' | 'score';
-  }) => {
-    if (sortField !== field) return null;
-    return sortDirection === 'asc' ? <ChevronUpIcon className="w-4 h-4" /> : <ChevronDownIcon className="w-4 h-4" />;
   };
   return <div className="min-h-screen bg-gray-50">
       <header className="bg-white border-b border-gray-200 sticky top-0 z-10 shadow-sm">
