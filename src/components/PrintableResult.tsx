@@ -1,0 +1,312 @@
+import React from 'react';
+import { ExamSubmission } from '../utils/storage';
+import { allTracks } from '../data/tracks';
+
+interface PrintableResultProps {
+  submission: ExamSubmission;
+  onClose: () => void;
+}
+
+export const PrintableResult: React.FC<PrintableResultProps> = ({ submission, onClose }) => {
+  const track = allTracks.find(t => t.id === submission.trackId);
+  
+  // Calculate section-wise scores
+  const calculateSectionStats = () => {
+    let section1 = 0, section2 = 0, section3 = 0, section4 = 0;
+    let correct = 0;
+
+    if (submission.marks) {
+      for (let i = 1; i <= 40; i++) {
+        if (submission.marks[i] === 'correct') {
+          correct++;
+          if (i <= 10) section1++;
+          else if (i <= 20) section2++;
+          else if (i <= 30) section3++;
+          else section4++;
+        }
+      }
+    }
+
+    return { section1, section2, section3, section4, correct };
+  };
+
+  const stats = calculateSectionStats();
+  const percentage = submission.manualScore || Math.round((stats.correct / 40) * 100);
+
+  const handlePrint = () => {
+    window.print();
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-lg shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+        {/* Non-printable controls */}
+        <div className="print:hidden bg-gray-100 p-4 flex justify-between items-center border-b sticky top-0 z-10">
+          <h2 className="text-lg font-bold text-gray-800">Print Preview</h2>
+          <div className="flex gap-3">
+            <button
+              onClick={handlePrint}
+              className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-semibold"
+            >
+              🖨️ Print Result
+            </button>
+            <button
+              onClick={onClose}
+              className="px-6 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors font-semibold"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+
+        {/* Printable content */}
+        <div className="p-8 bg-white" id="printable-result">
+          {/* Header with Logo */}
+          <div className="flex items-start justify-between mb-6 pb-6 border-b-4 border-blue-600">
+            <div className="flex items-center gap-4">
+              <img 
+                src="/Shah-Sultan-Logo-2.png" 
+                alt="Shah Sultan" 
+                className="h-20 w-20 object-contain"
+              />
+              <div>
+                <h1 className="text-3xl font-bold text-gray-900">Shah Sultan</h1>
+                <p className="text-lg text-gray-600">IELTS Listening Exam</p>
+                <p className="text-sm text-gray-500 mt-1">Student Performance Report</p>
+              </div>
+            </div>
+            <div className="text-right">
+              <div className="bg-blue-50 px-4 py-2 rounded-lg border border-blue-200">
+                <p className="text-xs text-gray-600 mb-1">Report Date</p>
+                <p className="text-sm font-semibold text-gray-900">
+                  {new Date().toLocaleDateString('en-US', { 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric' 
+                  })}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Student Information */}
+          <div className="grid grid-cols-2 gap-6 mb-6">
+            <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+              <h3 className="text-sm font-semibold text-gray-600 mb-3">Student Information</h3>
+              <div className="space-y-2">
+                <div className="flex justify-between">
+                  <span className="text-sm text-gray-600">Student ID:</span>
+                  <span className="text-sm font-semibold text-gray-900">{submission.studentId}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-sm text-gray-600">Name:</span>
+                  <span className="text-sm font-semibold text-gray-900">{submission.studentName}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-sm text-gray-600">Batch:</span>
+                  <span className="text-sm font-semibold text-gray-900">{submission.batchId || 'N/A'}</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+              <h3 className="text-sm font-semibold text-gray-600 mb-3">Exam Information</h3>
+              <div className="space-y-2">
+                <div className="flex justify-between">
+                  <span className="text-sm text-gray-600">Exam Code:</span>
+                  <span className="text-sm font-semibold text-gray-900">{submission.examCode || 'N/A'}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-sm text-gray-600">Track:</span>
+                  <span className="text-sm font-semibold text-gray-900">{track?.name || submission.trackName}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-sm text-gray-600">Date:</span>
+                  <span className="text-sm font-semibold text-gray-900">
+                    {new Date(submission.submittedAt).toLocaleDateString()}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Overall Score - Prominent Display */}
+          <div className="bg-gradient-to-br from-blue-50 to-indigo-50 p-6 rounded-xl border-2 border-blue-300 mb-6">
+            <div className="text-center">
+              <h3 className="text-lg font-semibold text-gray-700 mb-4">Overall Score</h3>
+              <div className="flex items-center justify-center gap-8">
+                <div>
+                  <div className="text-6xl font-bold text-blue-600 mb-2">
+                    {stats.correct}<span className="text-3xl text-gray-500">/40</span>
+                  </div>
+                  <p className="text-sm text-gray-600">Questions Correct</p>
+                </div>
+                <div className="h-20 w-px bg-gray-300"></div>
+                <div>
+                  <div className="text-6xl font-bold text-green-600 mb-2">
+                    {percentage}<span className="text-3xl text-gray-500">%</span>
+                  </div>
+                  <p className="text-sm text-gray-600">Percentage</p>
+                </div>
+              </div>
+              
+              {/* Performance Band */}
+              <div className="mt-4">
+                <div className="bg-white rounded-full h-3 overflow-hidden border border-gray-200">
+                  <div 
+                    className={`h-full transition-all ${
+                      percentage >= 90 ? 'bg-green-500' :
+                      percentage >= 75 ? 'bg-blue-500' :
+                      percentage >= 60 ? 'bg-yellow-500' :
+                      'bg-red-500'
+                    }`}
+                    style={{ width: `${percentage}%` }}
+                  ></div>
+                </div>
+                <p className="text-xs text-gray-600 mt-2">
+                  Performance: {
+                    percentage >= 90 ? 'Excellent' :
+                    percentage >= 75 ? 'Very Good' :
+                    percentage >= 60 ? 'Good' :
+                    percentage >= 50 ? 'Satisfactory' :
+                    'Needs Improvement'
+                  }
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Section-wise Breakdown */}
+          <div className="mb-6">
+            <h3 className="text-lg font-semibold text-gray-800 mb-4 pb-2 border-b border-gray-200">
+              Section-wise Performance
+            </h3>
+            <div className="grid grid-cols-4 gap-4">
+              {[
+                { title: 'Section 1', range: 'Q1-10', score: stats.section1 },
+                { title: 'Section 2', range: 'Q11-20', score: stats.section2 },
+                { title: 'Section 3', range: 'Q21-30', score: stats.section3 },
+                { title: 'Section 4', range: 'Q31-40', score: stats.section4 }
+              ].map((section, idx) => (
+                <div key={idx} className="bg-white border-2 border-gray-200 rounded-lg p-4 text-center">
+                  <h4 className="text-sm font-semibold text-gray-700 mb-1">{section.title}</h4>
+                  <p className="text-xs text-gray-500 mb-3">{section.range}</p>
+                  <div className="text-3xl font-bold text-blue-600">
+                    {section.score}<span className="text-lg text-gray-500">/10</span>
+                  </div>
+                  <div className="mt-2 bg-gray-100 rounded-full h-2 overflow-hidden">
+                    <div 
+                      className="bg-blue-600 h-full transition-all"
+                      style={{ width: `${(section.score / 10) * 100}%` }}
+                    ></div>
+                  </div>
+                  <p className="text-xs text-gray-600 mt-2">{(section.score / 10 * 100).toFixed(0)}%</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Additional Information */}
+          <div className="grid grid-cols-2 gap-6 mb-6">
+            <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+              <h4 className="text-sm font-semibold text-gray-700 mb-2">Submission Details</h4>
+              <div className="space-y-1 text-sm">
+                <p className="text-gray-600">
+                  Time Spent: <span className="font-semibold text-gray-900">{submission.timeSpent || 'N/A'}</span>
+                </p>
+                <p className="text-gray-600">
+                  Status: <span className="font-semibold text-green-600">
+                    {submission.resultPublished ? 'Published' : 'Pending'}
+                  </span>
+                </p>
+                {submission.publishedAt && (
+                  <p className="text-gray-600">
+                    Published: <span className="font-semibold text-gray-900">
+                      {new Date(submission.publishedAt).toLocaleDateString()}
+                    </span>
+                  </p>
+                )}
+              </div>
+            </div>
+
+            <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+              <h4 className="text-sm font-semibold text-gray-700 mb-2">Grading Information</h4>
+              <div className="space-y-1 text-sm">
+                <p className="text-gray-600">
+                  Graded By: <span className="font-semibold text-gray-900">{submission.markedBy || 'N/A'}</span>
+                </p>
+                <p className="text-gray-600">
+                  Total Questions: <span className="font-semibold text-gray-900">40</span>
+                </p>
+                <p className="text-gray-600">
+                  Correct Answers: <span className="font-semibold text-green-600">{stats.correct}</span>
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Signature Section */}
+          <div className="mt-8 pt-6 border-t-2 border-gray-200">
+            <div className="grid grid-cols-3 gap-8 text-center">
+              <div>
+                <div className="border-t-2 border-gray-400 pt-2 mt-12">
+                  <p className="text-sm font-semibold text-gray-700">Teacher Signature</p>
+                  <p className="text-xs text-gray-500 mt-1">
+                    {submission.markedBy || 'Examiner'}
+                  </p>
+                </div>
+              </div>
+              <div>
+                <div className="border-t-2 border-gray-400 pt-2 mt-12">
+                  <p className="text-sm font-semibold text-gray-700">Date</p>
+                  <p className="text-xs text-gray-500 mt-1">
+                    {new Date().toLocaleDateString()}
+                  </p>
+                </div>
+              </div>
+              <div>
+                <div className="border-t-2 border-gray-400 pt-2 mt-12">
+                  <p className="text-sm font-semibold text-gray-700">Administrator</p>
+                  <p className="text-xs text-gray-500 mt-1">Shah Sultan</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Footer */}
+          <div className="mt-8 text-center text-xs text-gray-500 border-t pt-4">
+            <p className="mb-1">This is an official result document from Shah Sultan IELTS Listening Exam System</p>
+            <p>Generated on {new Date().toLocaleString()}</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Print-specific styles */}
+      <style>{`
+        @media print {
+          body * {
+            visibility: hidden;
+          }
+          #printable-result,
+          #printable-result * {
+            visibility: visible;
+          }
+          #printable-result {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            padding: 20px;
+          }
+          .print\\:hidden {
+            display: none !important;
+          }
+          @page {
+            size: A4;
+            margin: 15mm;
+          }
+        }
+      `}</style>
+    </div>
+  );
+};
