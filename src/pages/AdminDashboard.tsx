@@ -171,7 +171,7 @@ export function AdminDashboard() {
         ) : activeTab === 'exam-control' ? (
           <ExamControlPage />
         ) : activeTab === 'role-management' ? (
-          <RoleManagement currentUserEmail={useAuth().user?.email || ''} />
+          <RoleManagement currentUserEmail={user?.email || ''} />
         ) : null}
       </main>
       
