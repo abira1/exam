@@ -397,6 +397,9 @@ export function ExamPage({
             if (question.type === 'multiple-choice') {
               return <MultipleChoiceQuestion key={idx} questionNumber={question.questionNumber} question={question.question} options={question.options} selectedAnswer={answers[question.questionNumber] || ''} onAnswerChange={handleAnswerChange} />;
             }
+            if (question.type === 'multiple-choice-multi-select') {
+              return <MultipleChoiceMultiSelectQuestion key={idx} instruction={question.instruction} question={question.question} questionNumbers={question.questionNumbers} maxSelections={question.maxSelections} options={question.options} answers={answers} onAnswerChange={handleAnswerChange} />;
+            }
             if (question.type === 'sentence-completion') {
               return <SentenceCompletionQuestion key={idx} instruction={question.instruction} items={question.items} answers={answers} onAnswerChange={handleAnswerChange} />;
             }
