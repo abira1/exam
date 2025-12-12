@@ -6,6 +6,7 @@ interface MapTextInputQuestionProps {
   labels: Array<{
     questionNumber: number;
     position: { x: number; y: number }; // percentage positions
+    text?: string;
   }>;
   answers: Record<number, string>;
   onAnswerChange: (questionNumber: number, value: string) => void;
