@@ -123,7 +123,7 @@ export const track6: Track = {
         {
           type: 'multi-column-table',
           instruction: 'Write ONE WORD ONLY for each answer.',
-          title: 'Note-Taking Strategies by Subject',
+          title: '',
           headers: ['Subject', 'Recommended Page Design'],
           rows: [
             {
@@ -135,37 +135,31 @@ export const track6: Track = {
             {
               cells: [
                 { content: 'Studies' },
-                { content: { questionNumber: 26 } }
+                { content: 'and (26)..........' }
               ]
             },
             {
               cells: [
                 { content: 'Culture Studies' },
-                { content: { questionNumber: 27 } }
-              ]
-            },
-            {
-              cells: [
-                { content: '' },
-                { content: 'thoughts etc.' }
+                { content: 'table or spider graph, linking (27)......... thoughts etc.' }
               ]
             },
             {
               cells: [
                 { content: 'Management Theory' },
-                { content: { questionNumber: 28 } }
+                { content: 'network (like spider graph but has (28)..........)' }
               ]
             },
             {
               cells: [
                 { content: 'Political Science' },
-                { content: { questionNumber: 29 } }
+                { content: 'linear (29).........' }
               ]
             },
             {
               cells: [
                 { content: 'Mass Media' },
-                { content: { questionNumber: 30 } }
+                { content: 'just use (30).........' }
               ]
             }
           ]
