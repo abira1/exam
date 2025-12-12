@@ -79,7 +79,7 @@ export function DragDropTableQuestion({
         <p className="text-sm text-gray-700 italic">{instruction}</p>
       </div>
 
-      {/* Display the reference table */}
+      {/* Display the reference table with draggable letters */}
       <div className="bg-white border-2 border-gray-300 rounded-lg p-6">
         <h3 className="text-lg font-bold text-gray-900 text-center mb-4">{title}</h3>
         <div className="overflow-x-auto">
@@ -99,14 +99,36 @@ export function DragDropTableQuestion({
             <tbody>
               {tableData.rows.map((row, rowIdx) => (
                 <tr key={rowIdx}>
-                  {row.cells.map((cell, cellIdx) => (
-                    <td
-                      key={cellIdx}
-                      className="border border-gray-400 px-4 py-3 text-sm text-gray-900 text-center"
-                    >
-                      {typeof cell === 'string' ? cell : cell.value}
-                    </td>
-                  ))}
+                  {row.cells.map((cell, cellIdx) => {
+                    const cellValue = typeof cell === 'string' ? cell : cell.value;
+                    // Check if this cell contains a letter that could be dragged (A-J)
+                    const isDraggableLetter = /^[A-J]$/.test(cellValue);
+                    
+                    return (
+                      <td
+                        key={cellIdx}
+                        className="border border-gray-400 px-4 py-3 text-sm text-gray-900 text-center"
+                      >
+                        {isDraggableLetter ? (
+                          <span
+                            draggable={!isOptionUsed(cellValue)}
+                            onDragStart={(e) => handleDragStart(e, cellValue)}
+                            className={`inline-block px-3 py-1 rounded font-bold transition-all ${
+                              isOptionUsed(cellValue)
+                                ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                                : 'bg-blue-100 text-blue-800 cursor-move hover:bg-blue-200 hover:shadow-md'
+                            } ${
+                              draggedOption === cellValue ? 'opacity-50' : ''
+                            }`}
+                          >
+                            {cellValue}
+                          </span>
+                        ) : (
+                          cellValue
+                        )}
+                      </td>
+                    );
+                  })}
                 </tr>
               ))}
             </tbody>
