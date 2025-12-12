@@ -115,26 +115,10 @@ export const track6: Track = {
       title: 'Section 3',
       questions: [
         {
-          type: 'sentence-completion',
+          type: 'paragraph-gap',
           instruction: 'Write ONE WORD ONLY for each answer.',
-          items: [
-            {
-              questionNumber: 21,
-              text: 'One of the basic strategies when listening to lectures is to use (21).......... This saves time, but it is only effective if they can be (22).......... later. More generally, it is necessary to format the page in anticipation of the (23).......... of the lecture. As an example, one can draw (24).........., tables, and flowcharts, consistent with the way the subject matter is presented.'
-            },
-            {
-              questionNumber: 22,
-              text: ''
-            },
-            {
-              questionNumber: 23,
-              text: ''
-            },
-            {
-              questionNumber: 24,
-              text: ''
-            }
-          ]
+          paragraph: 'One of the basic strategies when listening to lectures is to use (21).......... This saves time, but it is only effective if they can be (22).......... later. More generally, it is necessary to format the page in anticipation of the (23).......... of the lecture. As an example, one can draw (24).........., tables, and flowcharts, consistent with the way the subject matter is presented.',
+          questionNumbers: [21, 22, 23, 24]
         },
         {
           type: 'multi-column-table',
