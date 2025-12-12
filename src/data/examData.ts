@@ -129,10 +129,16 @@ export interface MapTextInputQuestion {
     position: { x: number; y: number };
   }>;
 }
+export interface ParagraphGapQuestion {
+  type: 'paragraph-gap';
+  instruction: string;
+  paragraph: string;
+  questionNumbers: number[];
+}
 export interface Section {
   sectionNumber: number;
   title: string;
-  questions: Array<TableGapQuestion | MultipleChoiceQuestion | SentenceCompletionQuestion | DropdownQuestion | DragAndDropQuestion | FlowChartQuestion | MapLabelingQuestion | MultiColumnTableQuestion | MultipleChoiceMultiSelectQuestion | DragDropTableQuestion | MapTextInputQuestion>;
+  questions: Array<TableGapQuestion | MultipleChoiceQuestion | SentenceCompletionQuestion | DropdownQuestion | DragAndDropQuestion | FlowChartQuestion | MapLabelingQuestion | MultiColumnTableQuestion | MultipleChoiceMultiSelectQuestion | DragDropTableQuestion | MapTextInputQuestion | ParagraphGapQuestion>;
 }
 export const examData: Section[] = [{
   sectionNumber: 1,
