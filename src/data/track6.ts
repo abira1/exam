@@ -168,19 +168,32 @@ export const track6: Track = {
           type: 'multi-column-table',
           instruction: 'Write NO MORE THAN TWO WORDS for each answer.',
           title: 'Neutrinos',
-          headers: ['Properties', 'Challenges', 'Implications'],
+          headers: ['', '', ''],
           rows: [
             {
               cells: [
                 { content: 'are everywhere' },
-                { content: '100 to 200 (31).......... pass through our bodies every second.' },
-                { content: '' }
+                { content: '', colspan: 2 }
+              ]
+            },
+            {
+              cells: [
+                { content: '' },
+                { content: '→' },
+                { content: '100 to 200 (31).......... pass through our bodies every second.' }
               ]
             },
             {
               cells: [
                 { content: 'are difficult to detect because of' },
                 { content: '1. the presence of other particles' },
+                { content: '' }
+              ]
+            },
+            {
+              cells: [
+                { content: '' },
+                { content: '→' },
                 { content: 'usually need a (32)..........' }
               ]
             },
@@ -188,6 +201,13 @@ export const track6: Track = {
               cells: [
                 { content: '' },
                 { content: '2. the surrounding (33)..........' },
+                { content: '' }
+              ]
+            },
+            {
+              cells: [
+                { content: '' },
+                { content: '→' },
                 { content: 'detection location usually (34)..........' }
               ]
             },
@@ -195,6 +215,13 @@ export const track6: Track = {
               cells: [
                 { content: '' },
                 { content: '3. challenge of installing equipment' },
+                { content: '' }
+              ]
+            },
+            {
+              cells: [
+                { content: '' },
+                { content: '→' },
                 { content: 'engineering is very (35)..........' }
               ]
             }
