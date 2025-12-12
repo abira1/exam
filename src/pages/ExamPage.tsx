@@ -424,6 +424,9 @@ export function ExamPage({
             if (question.type === 'map-text-input') {
               return <MapTextInputQuestion key={idx} instruction={question.instruction} imageUrl={question.imageUrl} labels={question.labels} answers={answers} onAnswerChange={handleAnswerChange} />;
             }
+            if (question.type === 'paragraph-gap') {
+              return <ParagraphGapQuestion key={idx} instruction={question.instruction} paragraph={question.paragraph} questionNumbers={question.questionNumbers} answers={answers} onAnswerChange={handleAnswerChange} />;
+            }
             return null;
           })}
           </div>
