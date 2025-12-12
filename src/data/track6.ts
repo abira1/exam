@@ -52,30 +52,10 @@ export const track6: Track = {
           ]
         },
         {
-          type: 'sentence-completion',
+          type: 'paragraph-gap',
           instruction: 'Write ONE WORD ONLY for each answer.',
-          items: [
-            {
-              questionNumber: 6,
-              text: 'The subject undertakes exercise regularly (6).......... She does yoga in order to relax and (7).......... her muscles. When she was younger, she would (8).........., and in the future, she may go (9).......... although that will depend on whether she has enough (10)..........'
-            },
-            {
-              questionNumber: 7,
-              text: ''
-            },
-            {
-              questionNumber: 8,
-              text: ''
-            },
-            {
-              questionNumber: 9,
-              text: ''
-            },
-            {
-              questionNumber: 10,
-              text: ''
-            }
-          ]
+          paragraph: 'The subject undertakes exercise regularly (6).......... She does yoga in order to relax and (7).......... her muscles. When she was younger, she would (8).........., and in the future, she may go (9).......... although that will depend on whether she has enough (10)..........',
+          questionNumbers: [6, 7, 8, 9, 10]
         },
         {
           type: 'map-labeling',
