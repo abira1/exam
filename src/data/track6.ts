@@ -56,7 +56,13 @@ export const track6: Track = {
           instruction: 'Write ONE WORD ONLY for each answer.',
           paragraph: 'The subject undertakes exercise regularly (6).......... She does yoga in order to relax and (7).......... her muscles. When she was younger, she would (8).........., and in the future, she may go (9).......... although that will depend on whether she has enough (10)..........',
           questionNumbers: [6, 7, 8, 9, 10]
-        },
+        }
+      ]
+    },
+    {
+      sectionNumber: 2,
+      title: 'Section 2',
+      questions: [
         {
           type: 'map-labeling',
           instruction: 'Label the floor plan.',
