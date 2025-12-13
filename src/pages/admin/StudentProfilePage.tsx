@@ -29,6 +29,7 @@ export function StudentProfilePage() {
   const [showPassword, setShowPassword] = useState(false);
   const [newPassword, setNewPassword] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
+  const [copiedEmail, setCopiedEmail] = useState(false);
 
   useEffect(() => {
     if (studentId) {
