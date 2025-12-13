@@ -266,7 +266,30 @@ export function ExamPage({
         console.log('✓ Loaded', loadedTracks.length, 'track(s)');
 
         // Set exam end time
-        if (globalStatus.endTime) {
+        if (examTestType === 'mock' && examSession.trackDurations) {
+          // Mock test: Set individual track end times
+          const now = Date.now();
+          const endTimes: number[] = [];
+          let cumulativeTime = now;
+          
+          if (order[0] === 'listening' && examSession.trackDurations.listening) {
+            cumulativeTime += examSession.trackDurations.listening * 60000;
+            endTimes.push(cumulativeTime);
+          }
+          if (order[1] === 'reading' && examSession.trackDurations.reading) {
+            cumulativeTime += examSession.trackDurations.reading * 60000;
+            endTimes.push(cumulativeTime);
+          }
+          if (order[2] === 'writing' && examSession.trackDurations.writing) {
+            cumulativeTime += examSession.trackDurations.writing * 60000;
+            endTimes.push(cumulativeTime);
+          }
+          
+          setTrackEndTimes(endTimes);
+          setExamEndTime(endTimes[endTimes.length - 1]); // Total exam end time
+          console.log('✓ Track end times set for mock test:', endTimes.map(t => new Date(t).toLocaleString()));
+        } else if (globalStatus.endTime) {
+          // Partial test: Use global end time
           const endTime = new Date(globalStatus.endTime).getTime();
           console.log('✓ Exam end time:', new Date(endTime).toLocaleString());
           setExamEndTime(endTime);
