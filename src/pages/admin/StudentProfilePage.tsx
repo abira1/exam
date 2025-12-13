@@ -321,6 +321,17 @@ export function StudentProfilePage() {
                           <Copy className="w-4 h-4 text-gray-600" />
                         )}
                       </button>
+                      <button
+                        onClick={handleCopyHTMLEmail}
+                        className="p-1 hover:bg-gray-100 rounded transition-colors"
+                        title="Copy HTML Email"
+                      >
+                        {copiedEmail ? (
+                          <Check className="w-4 h-4 text-green-600" />
+                        ) : (
+                          <MailIcon className="w-4 h-4 text-blue-600" />
+                        )}
+                      </button>
                     </div>
                   )}
                 </div>
