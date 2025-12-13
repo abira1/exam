@@ -719,7 +719,12 @@ export function ExamControlPage() {
           <div className="flex gap-3 pt-4 border-t">
             <button
               onClick={() => handleCreateSession(false)}
-              disabled={isCreating || !selectedTrackId || selectedBatches.length === 0}
+              disabled={
+                isCreating || 
+                selectedBatches.length === 0 ||
+                (testType === 'partial' && !partialSelectedTrack) ||
+                (testType === 'mock' && (!mockTracks.listening || !mockTracks.reading || !mockTracks.writing))
+              }
               className="flex-1 px-6 py-3 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed text-white font-medium rounded-lg transition-colors flex items-center justify-center gap-2"
               data-testid="create-schedule-button"
             >
@@ -738,7 +743,13 @@ export function ExamControlPage() {
 
             <button
               onClick={() => handleCreateSession(true)}
-              disabled={isCreating || !selectedTrackId || selectedBatches.length === 0 || activeExams.length > 0}
+              disabled={
+                isCreating || 
+                selectedBatches.length === 0 ||
+                activeExams.length > 0 ||
+                (testType === 'partial' && !partialSelectedTrack) ||
+                (testType === 'mock' && (!mockTracks.listening || !mockTracks.reading || !mockTracks.writing))
+              }
               className="flex-1 px-6 py-3 bg-green-600 hover:bg-green-700 disabled:bg-gray-300 disabled:cursor-not-allowed text-white font-medium rounded-lg transition-colors flex items-center justify-center gap-2"
               data-testid="create-start-button"
             >
