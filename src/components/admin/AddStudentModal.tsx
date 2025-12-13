@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { studentService } from '../../services/studentService';
 import { Batch } from '../../services/batchService';
-import { X, Copy, Check, Printer } from 'lucide-react';
+import { X, Copy, Check, Printer, Mail } from 'lucide-react';
+import { generateStudentCredentialEmail } from '../../utils/emailTemplate';
 
 interface AddStudentModalProps {
   onClose: () => void;
