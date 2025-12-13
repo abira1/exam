@@ -612,7 +612,13 @@ export function ExamControlPage() {
                 </label>
                 <select
                   value={mockTracks.writing}
-                  onChange={(e) => setMockTracks(prev => ({ ...prev, writing: e.target.value }))}
+                  onChange={(e) => {
+                    setMockTracks(prev => ({ ...prev, writing: e.target.value }));
+                    const track = getTracksByType('writing').find(t => t.id === e.target.value);
+                    if (track) {
+                      setMockDurations(prev => ({ ...prev, writing: track.duration }));
+                    }
+                  }}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
                   data-testid="mock-writing-selector"
                 >
@@ -623,6 +629,19 @@ export function ExamControlPage() {
                     </option>
                   ))}
                 </select>
+                {mockTracks.writing && (
+                  <div className="mt-2">
+                    <label className="block text-xs font-medium text-gray-600 mb-1">Duration (minutes)</label>
+                    <input
+                      type="number"
+                      min={1}
+                      value={mockDurations.writing}
+                      onChange={(e) => setMockDurations(prev => ({ ...prev, writing: Number(e.target.value) }))}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                      data-testid="mock-writing-duration"
+                    />
+                  </div>
+                )}
               </div>
 
               {/* Duration Info for Mock Test */}
