@@ -244,6 +244,7 @@ export function ExamControlPage() {
         trackName: trackName,
         testType: testType,
         selectedTracks: selectedTracks,
+        trackDurations: testType === 'mock' ? mockDurations : undefined,
         date: examDate,
         startTime: startTime,
         endTime: format(endDate, 'HH:mm'),
