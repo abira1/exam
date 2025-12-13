@@ -14,6 +14,12 @@ export interface ExamSession {
     reading?: string;
     writing?: string;
   };
+  // Individual track durations for mock tests
+  trackDurations?: {
+    listening?: number;
+    reading?: number;
+    writing?: number;
+  };
   date: string;
   startTime: string;
   endTime: string;
