@@ -152,14 +152,8 @@ export function ExamControlPage() {
         );
         setGeneratedExamCode(code);
         
-        // Calculate total duration for mock test
-        const listeningTrack = allTracks.find(t => t.id === mockTracks.listening);
-        const readingTrack = allTracks.find(t => t.id === mockTracks.reading);
-        const writingTrack = allTracks.find(t => t.id === mockTracks.writing);
-        
-        const totalDuration = (listeningTrack?.duration || 0) + 
-                             (readingTrack?.duration || 0) + 
-                             (writingTrack?.duration || 0);
+        // Calculate total duration from individual mock durations
+        const totalDuration = mockDurations.listening + mockDurations.reading + mockDurations.writing;
         setDuration(totalDuration);
       }
     } catch (err) {
