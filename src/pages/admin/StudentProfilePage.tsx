@@ -136,6 +136,20 @@ export function StudentProfilePage() {
     }
   };
 
+  const handleCopyHTMLEmail = () => {
+    if (newPassword && student) {
+      const htmlEmail = generateStudentCredentialEmail({
+        name: student.name,
+        studentId: student.studentId,
+        batch: student.batch,
+        password: newPassword
+      });
+      navigator.clipboard.writeText(htmlEmail);
+      setCopiedEmail(true);
+      setTimeout(() => setCopiedEmail(false), 2000);
+    }
+  };
+
   const calculateAverageScore = (): number => {
     if (submissions.length === 0) return 0;
     const total = submissions.reduce((acc, s) => acc + (s.score || 0), 0);
