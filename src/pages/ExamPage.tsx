@@ -786,34 +786,59 @@ export function ExamPage({
 
         {/* Navigation Buttons */}
         <div className="flex justify-between items-center">
-          <button
-            onClick={() => setCurrentSection(prev => Math.max(0, prev - 1))}
-            disabled={currentSection === 0 && currentTrackIndex === 0}
-            className="px-6 py-3 border border-gray-300 rounded-lg font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-          >
-            Previous Section
-          </button>
+          {testType === 'mock' ? (
+            // Mock test: Only section navigation within current track
+            <>
+              <button
+                onClick={() => setCurrentSection(prev => Math.max(0, prev - 1))}
+                disabled={currentSection === 0}
+                className="px-6 py-3 border border-gray-300 rounded-lg font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              >
+                Previous Section
+              </button>
 
-          {currentSection === (examData?.length || 0) - 1 && currentTrackIndex === trackDataList.length - 1 ? (
-            <button
-              onClick={handleSubmit}
-              className="px-8 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors"
-            >
-              Submit Exam
-            </button>
+              {currentSection === (examData?.length || 0) - 1 ? (
+                <div className="text-center flex-1 mx-4">
+                  <p className="text-sm text-gray-600">
+                    ⏱️ Next track will start automatically when timer ends
+                  </p>
+                </div>
+              ) : (
+                <button
+                  onClick={() => setCurrentSection(prev => prev + 1)}
+                  className="px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors"
+                >
+                  Next Section
+                </button>
+              )}
+            </>
           ) : (
-            <button
-              onClick={() => {
-                if (examData && currentSection < examData.length - 1) {
-                  setCurrentSection(prev => prev + 1);
-                } else if (currentTrackIndex < trackDataList.length - 1) {
-                  goToNextTrack();
-                }
-              }}
-              className="px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors"
-            >
-              Next Section
-            </button>
+            // Partial test: Keep original navigation with manual submit
+            <>
+              <button
+                onClick={() => setCurrentSection(prev => Math.max(0, prev - 1))}
+                disabled={currentSection === 0}
+                className="px-6 py-3 border border-gray-300 rounded-lg font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              >
+                Previous Section
+              </button>
+
+              {currentSection === (examData?.length || 0) - 1 ? (
+                <button
+                  onClick={handleSubmit}
+                  className="px-8 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors"
+                >
+                  Submit Exam
+                </button>
+              ) : (
+                <button
+                  onClick={() => setCurrentSection(prev => prev + 1)}
+                  className="px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors"
+                >
+                  Next Section
+                </button>
+              )}
+            </>
           )}
         </div>
       </main>
