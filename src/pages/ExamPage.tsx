@@ -572,6 +572,7 @@ export function ExamPage({
         isTimeWarning={isTimeWarning}
         audioURL={currentAudioURL}
         autoPlayAudio={true}
+        trackType={currentTrack.trackType}
       />
 
       <main className="max-w-5xl mx-auto px-6 py-8">
