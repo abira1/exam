@@ -122,13 +122,15 @@ export function ExamHeader({
           {/* Timer */}
           <div 
             className={`flex items-center gap-2 flex-shrink-0 px-3 py-1.5 rounded-lg border ${
-              isTimeWarning 
-                ? 'bg-red-50 border-red-300 text-red-600 animate-pulse' 
+              isTimeCritical
+                ? 'bg-red-100 border-red-400 text-red-700 animate-pulse shadow-lg shadow-red-200' 
+                : isTimeWarning 
+                ? 'bg-red-50 border-red-300 text-red-600' 
                 : 'bg-gray-50 border-gray-200 text-gray-700'
             }`} 
             data-testid="exam-timer"
           >
-            <ClockIcon className="w-4 h-4 sm:w-5 sm:h-5" />
+            <ClockIcon className={`w-4 h-4 sm:w-5 sm:h-5 ${isTimeCritical ? 'animate-bounce' : ''}`} />
             <span className="font-mono text-base sm:text-lg font-bold">{timeRemaining}</span>
           </div>
 
