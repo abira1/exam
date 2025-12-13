@@ -17,6 +17,7 @@ export function TrackForm({ track, onSave, onCancel }: TrackFormProps) {
     description: track?.description || '',
     duration: track?.duration || 60,
     totalQuestions: track?.totalQuestions || 40,
+    trackType: track?.trackType || 'listening',
     audioURL: track?.audioURL || null,
     sections: track?.sections || []
   });
