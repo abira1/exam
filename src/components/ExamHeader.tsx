@@ -21,6 +21,7 @@ export function ExamHeader({
   studentName,
   studentId,
   isTimeWarning = false,
+  isTimeCritical = false,
   audioURL = null,
   autoPlayAudio = false,
   trackType
