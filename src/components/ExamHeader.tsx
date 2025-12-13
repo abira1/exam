@@ -130,8 +130,8 @@ export function ExamHeader({
             <span className="font-mono text-base sm:text-lg font-bold">{timeRemaining}</span>
           </div>
 
-          {/* Audio Player Controls */}
-          {audioURL && (
+          {/* Audio Player Controls - Only show for listening tracks */}
+          {audioURL && (!trackType || trackType === 'listening') && (
             <div className="flex items-center gap-2 sm:gap-3 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg px-3 py-2 flex-shrink-0 w-full lg:flex-1 lg:min-w-[400px] xl:min-w-[500px]" data-testid="audio-player-bar">
               <audio ref={setAudioRef} src={audioURL} preload="metadata" />
               
