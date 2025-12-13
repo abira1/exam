@@ -111,6 +111,11 @@ export const examSessionService = {
       reading?: string;
       writing?: string;
     };
+    trackDurations?: {
+      listening?: number;
+      reading?: number;
+      writing?: number;
+    };
     date: string;
     startTime: string;
     endTime: string;
