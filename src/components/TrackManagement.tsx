@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
-import { Music, FileText, Clock, List as ListIcon, Link, Save, CheckCircle, AlertCircle, Loader } from 'lucide-react';
+import { Music, FileText, Clock, List as ListIcon, Link, Save, CheckCircle, AlertCircle, Loader, Headphones, BookOpen, PenTool } from 'lucide-react';
 import { getDatabase, ref, get, set } from 'firebase/database';
 import { app } from '../firebase';
 import { Track } from '../data/track1';
-import { allTracks } from '../data/tracks';
+import { allTracks, getTracksByType } from '../data/tracks';
 
 interface TrackWithAudio extends Track {
   loadedAudioURL?: string | null;
