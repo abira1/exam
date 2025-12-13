@@ -111,6 +111,20 @@ export function AddStudentModal({ onClose, batches, createdBy }: AddStudentModal
     }
   };
 
+  const handleCopyHTMLEmail = () => {
+    if (success) {
+      const htmlEmail = generateStudentCredentialEmail({
+        name: success.name,
+        studentId: success.studentId,
+        batch: success.batch,
+        password: success.password
+      });
+      navigator.clipboard.writeText(htmlEmail);
+      setCopiedEmail(true);
+      setTimeout(() => setCopiedEmail(false), 2000);
+    }
+  };
+
   const handlePrint = () => {
     window.print();
   };
