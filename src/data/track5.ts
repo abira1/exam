@@ -8,6 +8,7 @@ export const track5: Track = {
   description: 'IELTS Listening Practice Test - Advanced listening comprehension',
   duration: 60,
   totalQuestions: 40,
+  trackType: 'listening',
   audioURL: null,
   sections: [
     {

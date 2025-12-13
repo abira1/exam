@@ -8,6 +8,7 @@ export const track6: Track = {
   description: 'IELTS Listening Practice Test - Advanced listening comprehension with multiple question types',
   duration: 60,
   totalQuestions: 40,
+  trackType: 'listening',
   audioURL: null,
   sections: [
     {
@@ -68,12 +69,12 @@ export const track6: Track = {
           instruction: 'Label the floor plan.',
           imageUrl: 'https://customer-assets.emergentagent.com/job_0893d324-92cc-4e72-93ec-cbdce390970a/artifacts/s46s9e84_image%201.jpg',
           labels: [
-            { questionNumber: 11, position: { x: 15, y: 25 } },  // A - top left circular area
-            { questionNumber: 12, position: { x: 45, y: 20 } },  // B - middle top area (shelves)
-            { questionNumber: 13, position: { x: 85, y: 15 } },  // C - top right area
-            { questionNumber: 14, position: { x: 15, y: 70 } },  // D - bottom left L-shaped area
-            { questionNumber: 15, position: { x: 45, y: 75 } },  // E - bottom middle seating area
-            { questionNumber: 16, position: { x: 90, y: 75 } }   // F - right side vertical area
+            { questionNumber: 11, position: { x: 15, y: 25 } },
+            { questionNumber: 12, position: { x: 45, y: 20 } },
+            { questionNumber: 13, position: { x: 85, y: 15 } },
+            { questionNumber: 14, position: { x: 15, y: 70 } },
+            { questionNumber: 15, position: { x: 45, y: 75 } },
+            { questionNumber: 16, position: { x: 90, y: 75 } }
           ],
           options: [
             { label: 'Quiet reading', value: 'Quiet reading' },
