@@ -9,7 +9,7 @@ export interface ExamSubmission {
   trackId: string;
   examCode?: string;
   batchId?: string;
-  answers: Record<number, string>;
+  answers: Record<number | string, string>;  // Updated to support both number and string keys for writing tasks
   submittedAt: string;
   timeSpent: string;
   status: 'completed';
@@ -19,6 +19,9 @@ export interface ExamSubmission {
   resultPublished?: boolean;
   publishedAt?: string;
   markedBy?: string;
+  // Multi-track support
+  testType?: 'partial' | 'mock';
+  trackIds?: string[];  // Array of track IDs for mock tests
 }
 
 const db = getDatabase(app);
