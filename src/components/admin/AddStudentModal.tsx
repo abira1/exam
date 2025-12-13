@@ -87,7 +87,9 @@ export function AddStudentModal({ onClose, batches, createdBy }: AddStudentModal
       if (result.success && result.studentId && result.password) {
         setSuccess({
           studentId: result.studentId,
-          password: result.password
+          password: result.password,
+          name: formData.name,
+          batch: selectedBatch?.batchName || ''
         });
       } else {
         alert(result.error || 'Failed to create student');
