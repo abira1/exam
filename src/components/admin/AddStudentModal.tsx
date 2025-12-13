@@ -31,8 +31,11 @@ export function AddStudentModal({ onClose, batches, createdBy }: AddStudentModal
   const [success, setSuccess] = useState<{
     studentId: string;
     password: string;
+    name: string;
+    batch: string;
   } | null>(null);
   const [copied, setCopied] = useState(false);
+  const [copiedEmail, setCopiedEmail] = useState(false);
 
   const validate = (): boolean => {
     const newErrors: Partial<FormData> = {};
