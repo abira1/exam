@@ -356,123 +356,165 @@ export function TrackManagement() {
 
       {/* Track List */}
       <div className="grid grid-cols-1 gap-6">
-        {tracks.map((track) => (
-          <div
-            key={track.id}
-            className={`bg-white rounded-lg border-2 p-6 transition-all ${
-              track.id === activeTrackId
-                ? 'border-green-500 bg-green-50'
-                : 'border-gray-200'
-            }`}
-            data-testid={`track-card-${track.id}`}
-          >
-            <div className="grid md:grid-cols-2 gap-6">
-              {/* Left: Track Info */}
-              <div>
-                <div className="flex items-start justify-between mb-4">
-                  <div className="flex-1">
-                    <h3 className="font-bold text-gray-900 text-lg mb-1">
-                      {track.name}
-                    </h3>
-                    {track.id === activeTrackId && (
-                      <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-green-600 text-white text-xs font-medium rounded-full">
-                        ● Active
-                      </span>
-                    )}
-                  </div>
-                </div>
-
-                <p className="text-sm text-gray-600 mb-4">
-                  {track.description}
-                </p>
-
-                <div className="space-y-2 mb-4">
-                  <div className="flex items-center gap-2 text-sm text-gray-700">
-                    <Clock className="w-4 h-4 text-gray-400" />
-                    <span>{track.duration} minutes</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-sm text-gray-700">
-                    <FileText className="w-4 h-4 text-gray-400" />
-                    <span>{track.totalQuestions} questions</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-sm text-gray-700">
-                    <Music className={`w-4 h-4 ${track.loadedAudioURL ? 'text-green-500' : 'text-gray-400'}`} />
-                    <span>{track.loadedAudioURL ? 'Has Audio' : 'No Audio'}</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Right: Audio Management */}
-              <div className="border-l border-gray-200 pl-6">
-                <h4 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
-                  <Link className="w-4 h-4 text-blue-600" />
-                  Audio Upload by URL
-                </h4>
-
-                {/* Current Audio Display */}
-                {track.loadedAudioURL ? (
-                  <div className="mb-4 bg-blue-50 border border-blue-200 rounded-lg p-4">
-                    <p className="text-xs text-gray-600 mb-2">Current Audio URL:</p>
-                    <p className="text-xs text-blue-700 break-all mb-3 font-mono">
-                      {track.loadedAudioURL}
-                    </p>
-                    <audio
-                      controls
-                      className="w-full mb-3"
-                      src={track.loadedAudioURL}
-                      style={{ height: '40px' }}
-                    >
-                      Your browser does not support the audio element.
-                    </audio>
-                    <button
-                      onClick={() => handleDeleteAudioURL(track.id)}
-                      disabled={savingTrackId === track.id}
-                      className="w-full px-3 py-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition-colors text-sm font-medium disabled:opacity-50"
-                    >
-                      {savingTrackId === track.id ? 'Removing...' : 'Remove Audio'}
-                    </button>
-                  </div>
-                ) : (
-                  <p className="text-sm text-gray-500 mb-3 italic">No audio uploaded yet</p>
-                )}
-
-                {/* Audio URL Input */}
-                <div className="space-y-3">
-                  <div>
-                    <label className="block text-xs font-medium text-gray-700 mb-2">
-                      {track.loadedAudioURL ? 'Update Audio URL' : 'Enter Audio URL'}
-                    </label>
-                    <input
-                      type="url"
-                      value={audioURLInputs[track.id] || ''}
-                      onChange={(e) => handleAudioURLChange(track.id, e.target.value)}
-                      placeholder="https://example.com/audio.mp3"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
-                      disabled={savingTrackId === track.id}
-                    />
-                  </div>
-                  <button
-                    onClick={() => handleSaveAudioURL(track.id)}
-                    disabled={savingTrackId === track.id || !audioURLInputs[track.id]?.trim()}
-                    className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    {savingTrackId === track.id ? (
-                      <>
-                        <Loader className="w-4 h-4 animate-spin" />
-                        Saving...
-                      </>
-                    ) : (
-                      <>
-                        <Save className="w-4 h-4" />
-                        {track.loadedAudioURL ? 'Update Audio URL' : 'Save Audio URL'}
-                      </>
-                    )}
-                  </button>
-                </div>
-              </div>
+        {filteredTracks.length === 0 ? (
+          <div className="bg-white rounded-lg border-2 border-dashed border-gray-300 p-12 text-center">
+            <div className={`w-16 h-16 mx-auto rounded-full flex items-center justify-center mb-4 ${
+              activeTab === 'listening' ? 'bg-blue-100' :
+              activeTab === 'reading' ? 'bg-green-100' :
+              'bg-orange-100'
+            }`}>
+              {activeTab === 'listening' && <Headphones className="w-8 h-8 text-blue-600" />}
+              {activeTab === 'reading' && <BookOpen className="w-8 h-8 text-green-600" />}
+              {activeTab === 'writing' && <PenTool className="w-8 h-8 text-orange-600" />}
             </div>
+            <p className="text-gray-600 text-lg font-medium mb-2">No {getTabInfo(activeTab).label} Tracks</p>
+            <p className="text-gray-500 text-sm">
+              {activeTab === 'listening' && 'No listening tracks are currently available.'}
+              {activeTab === 'reading' && 'No reading tracks are currently available.'}
+              {activeTab === 'writing' && 'No writing tracks are currently available.'}
+            </p>
           </div>
-        ))}
+        ) : (
+          filteredTracks.map((track) => {
+            const tabInfo = getTabInfo(track.trackType);
+            const Icon = tabInfo.icon;
+            
+            return (
+              <div
+                key={track.id}
+                className={`bg-white rounded-lg border-2 p-6 transition-all ${
+                  track.id === activeTrackId
+                    ? 'border-green-500 bg-green-50'
+                    : 'border-gray-200'
+                }`}
+                data-testid={`track-card-${track.id}`}
+              >
+                <div className={track.trackType === 'listening' ? 'grid md:grid-cols-2 gap-6' : ''}>
+                  {/* Left: Track Info */}
+                  <div className={track.trackType !== 'listening' ? 'w-full' : ''}>
+                    <div className="flex items-start justify-between mb-4">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-2">
+                          <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
+                            track.trackType === 'listening' ? 'bg-blue-100' :
+                            track.trackType === 'reading' ? 'bg-green-100' :
+                            'bg-orange-100'
+                          }`}>
+                            <Icon className={`w-4 h-4 ${
+                              track.trackType === 'listening' ? 'text-blue-600' :
+                              track.trackType === 'reading' ? 'text-green-600' :
+                              'text-orange-600'
+                            }`} />
+                          </div>
+                          <h3 className="font-bold text-gray-900 text-lg">
+                            {track.name}
+                          </h3>
+                        </div>
+                        {track.id === activeTrackId && (
+                          <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-green-600 text-white text-xs font-medium rounded-full">
+                            ● Active
+                          </span>
+                        )}
+                      </div>
+                    </div>
+
+                    <p className="text-sm text-gray-600 mb-4">
+                      {track.description}
+                    </p>
+
+                    <div className="space-y-2 mb-4">
+                      <div className="flex items-center gap-2 text-sm text-gray-700">
+                        <Clock className="w-4 h-4 text-gray-400" />
+                        <span>{track.duration} minutes</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-sm text-gray-700">
+                        <FileText className="w-4 h-4 text-gray-400" />
+                        <span>{track.totalQuestions} {track.trackType === 'writing' ? 'tasks' : 'questions'}</span>
+                      </div>
+                      {track.trackType === 'listening' && (
+                        <div className="flex items-center gap-2 text-sm text-gray-700">
+                          <Music className={`w-4 h-4 ${track.loadedAudioURL ? 'text-green-500' : 'text-gray-400'}`} />
+                          <span>{track.loadedAudioURL ? 'Has Audio' : 'No Audio'}</span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Right: Audio Management (Only for Listening tracks) */}
+                  {track.trackType === 'listening' && (
+                    <div className="border-l border-gray-200 pl-6">
+                      <h4 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                        <Link className="w-4 h-4 text-blue-600" />
+                        Audio Upload by URL
+                      </h4>
+
+                      {/* Current Audio Display */}
+                      {track.loadedAudioURL ? (
+                        <div className="mb-4 bg-blue-50 border border-blue-200 rounded-lg p-4">
+                          <p className="text-xs text-gray-600 mb-2">Current Audio URL:</p>
+                          <p className="text-xs text-blue-700 break-all mb-3 font-mono">
+                            {track.loadedAudioURL}
+                          </p>
+                          <audio
+                            controls
+                            className="w-full mb-3"
+                            src={track.loadedAudioURL}
+                            style={{ height: '40px' }}
+                          >
+                            Your browser does not support the audio element.
+                          </audio>
+                          <button
+                            onClick={() => handleDeleteAudioURL(track.id)}
+                            disabled={savingTrackId === track.id}
+                            className="w-full px-3 py-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition-colors text-sm font-medium disabled:opacity-50"
+                          >
+                            {savingTrackId === track.id ? 'Removing...' : 'Remove Audio'}
+                          </button>
+                        </div>
+                      ) : (
+                        <p className="text-sm text-gray-500 mb-3 italic">No audio uploaded yet</p>
+                      )}
+
+                      {/* Audio URL Input */}
+                      <div className="space-y-3">
+                        <div>
+                          <label className="block text-xs font-medium text-gray-700 mb-2">
+                            {track.loadedAudioURL ? 'Update Audio URL' : 'Enter Audio URL'}
+                          </label>
+                          <input
+                            type="url"
+                            value={audioURLInputs[track.id] || ''}
+                            onChange={(e) => handleAudioURLChange(track.id, e.target.value)}
+                            placeholder="https://example.com/audio.mp3"
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                            disabled={savingTrackId === track.id}
+                          />
+                        </div>
+                        <button
+                          onClick={() => handleSaveAudioURL(track.id)}
+                          disabled={savingTrackId === track.id || !audioURLInputs[track.id]?.trim()}
+                          className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                          {savingTrackId === track.id ? (
+                            <>
+                              <Loader className="w-4 h-4 animate-spin" />
+                              Saving...
+                            </>
+                          ) : (
+                            <>
+                              <Save className="w-4 h-4" />
+                              {track.loadedAudioURL ? 'Update Audio URL' : 'Save Audio URL'}
+                            </>
+                          )}
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            );
+          })
+        )}
       </div>
 
       {/* Info Box */}
