@@ -252,15 +252,26 @@ export function SubmissionsPage() {
   };
 
   const handleNavigateToExamCode = (examCode: string) => {
-    const track = allTracks.find(t => t.id === currentTrackId);
-    
     setCurrentExamCode(examCode);
     setNavigationLevel('submissions');
-    setBreadcrumbs([
-      { level: 'tracks', label: 'All Tracks' },
-      { level: 'exams', label: track?.name || 'Track', trackId: currentTrackId || undefined },
-      { level: 'submissions', label: `Exam: ${examCode}`, trackId: currentTrackId || undefined, examCode }
-    ]);
+    
+    if (currentTestType === 'mock') {
+      // Mock test - direct from mock sessions to submissions
+      setBreadcrumbs([
+        { level: 'categories', label: 'Exam Submissions' },
+        { level: 'exams', label: 'Mock Tests', testType: 'mock' },
+        { level: 'submissions', label: `Exam: ${examCode}`, examCode, testType: 'mock' }
+      ]);
+    } else {
+      // Partial test - through track hierarchy
+      const track = allTracks.find(t => t.id === currentTrackId);
+      setBreadcrumbs([
+        { level: 'categories', label: 'Exam Submissions' },
+        { level: 'tracks', label: 'Partial Tests', testType: 'partial' },
+        { level: 'exams', label: track?.name || 'Track', trackId: currentTrackId || undefined, testType: 'partial' },
+        { level: 'submissions', label: `Exam: ${examCode}`, trackId: currentTrackId || undefined, examCode, testType: 'partial' }
+      ]);
+    }
 
     // Set filters for existing detailed view
     setSelectedTrackId(currentTrackId || 'all');
