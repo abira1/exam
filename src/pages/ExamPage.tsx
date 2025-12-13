@@ -313,30 +313,88 @@ export function ExamPage({
 
     const timer = setInterval(() => {
       const now = Date.now();
-      const remainingMs = examEndTime - now;
       
-      if (remainingMs <= 0) {
-        clearInterval(timer);
-        setTimeRemaining('00:00');
-        handleSubmit();
-        return;
-      }
-
-      const totalSeconds = Math.floor(remainingMs / 1000);
-      const mins = Math.floor(totalSeconds / 60);
-      const secs = totalSeconds % 60;
-      
-      if (totalSeconds <= 300) {
-        setIsTimeWarning(true);
+      // For mock tests with individual track timers
+      if (testType === 'mock' && trackEndTimes.length > 0) {
+        const currentTrackEndTime = trackEndTimes[currentTrackIndex];
+        const trackRemainingMs = currentTrackEndTime - now;
+        
+        // Check if current track time expired
+        if (trackRemainingMs <= 0) {
+          // Auto-advance to next track
+          if (currentTrackIndex < trackDataList.length - 1) {
+            console.log('⏰ Track time expired, auto-advancing to next track');
+            setCurrentTrackIndex(prev => prev + 1);
+            setCurrentSection(0);
+            setIsTimeWarning(false);
+            setIsTimeCritical(false);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          } else {
+            // Last track completed, auto-submit
+            console.log('⏰ All tracks completed, auto-submitting');
+            clearInterval(timer);
+            handleSubmit();
+          }
+          return;
+        }
+        
+        // Update current track timer display
+        const trackTotalSeconds = Math.floor(trackRemainingMs / 1000);
+        const trackMins = Math.floor(trackTotalSeconds / 60);
+        const trackSecs = trackTotalSeconds % 60;
+        
+        // Warning states for current track
+        if (trackTotalSeconds <= 120) {
+          setIsTimeCritical(true);
+          setIsTimeWarning(true);
+        } else if (trackTotalSeconds <= 300) {
+          setIsTimeWarning(true);
+          setIsTimeCritical(false);
+        } else {
+          setIsTimeWarning(false);
+          setIsTimeCritical(false);
+        }
+        
+        setCurrentTrackTimeRemaining(`${String(trackMins).padStart(2, '0')}:${String(trackSecs).padStart(2, '0')}`);
+        
+        // Also update overall time remaining
+        const totalRemainingMs = examEndTime - now;
+        const totalSeconds = Math.floor(totalRemainingMs / 1000);
+        const totalMins = Math.floor(totalSeconds / 60);
+        const totalSecs = totalSeconds % 60;
+        setTimeRemaining(`${String(totalMins).padStart(2, '0')}:${String(totalSecs).padStart(2, '0')}`);
       } else {
-        setIsTimeWarning(false);
+        // Partial test: Original timer logic
+        const remainingMs = examEndTime - now;
+        
+        if (remainingMs <= 0) {
+          clearInterval(timer);
+          setTimeRemaining('00:00');
+          handleSubmit();
+          return;
+        }
+
+        const totalSeconds = Math.floor(remainingMs / 1000);
+        const mins = Math.floor(totalSeconds / 60);
+        const secs = totalSeconds % 60;
+        
+        if (totalSeconds <= 120) {
+          setIsTimeCritical(true);
+          setIsTimeWarning(true);
+        } else if (totalSeconds <= 300) {
+          setIsTimeWarning(true);
+          setIsTimeCritical(false);
+        } else {
+          setIsTimeWarning(false);
+          setIsTimeCritical(false);
+        }
+        
+        setTimeRemaining(`${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`);
       }
-      
-      setTimeRemaining(`${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`);
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [examEndTime]);
+  }, [examEndTime, testType, trackEndTimes, currentTrackIndex, trackDataList.length]);
 
   const handleAnswerChange = (questionNumber: number, value: string) => {
     setAnswers(prev => ({
