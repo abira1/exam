@@ -577,7 +577,7 @@ export function SubmissionsPage() {
                   ))}
                 </nav>
 
-                {role === 'teacher' && navigationLevel === 'tracks' && (
+                {role === 'teacher' && navigationLevel === 'tracks' && currentTestType === 'partial' && (
                   <p className="text-sm text-gray-600 mt-1">
                     Showing submissions for your assigned tracks only
                   </p>
