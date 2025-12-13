@@ -54,7 +54,7 @@ export function generateStudentCredentialEmail(data: {
             <tr>
                 <td class="content">
                     <!-- Logo placed here, before Student Details -->
-                    <img src="https://i.ibb.co.com/1tJx8Z7k/35365870266.png" alt="Shah Sultan's IELTS Academy Logo" class="logo-medium" />
+                    <img src="https://i.ibb.co/spVJmgvt/Main-Logo.png" alt="Shah Sultan's IELTS Academy Logo" class="logo" />
 
                     <h2 class="section-title">Student Details</h2>
                     <table class="details-table">
