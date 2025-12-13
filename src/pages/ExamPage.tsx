@@ -663,75 +663,66 @@ export function ExamPage({
       />
 
       <main className="max-w-5xl mx-auto px-6 py-8">
-        {/* Mock Test Track Navigation */}
+        {/* Mock Test Track Progress Indicator (No manual navigation) */}
         {testType === 'mock' && trackDataList.length > 1 && (
           <div className="mb-6 bg-white rounded-lg shadow-sm border border-gray-200 p-4">
-            <div className="flex items-center justify-between gap-4">
-              <button
-                onClick={goToPreviousTrack}
-                disabled={currentTrackIndex === 0}
-                className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
-              >
-                <ChevronLeft className="w-4 h-4" />
-                Previous Track
-              </button>
-
-              <div className="flex items-center gap-3">
-                {trackOrder.map((type, idx) => {
-                  const info = getTrackIcon(type);
-                  const Icon = info.Icon;
-                  const isActive = idx === currentTrackIndex;
-                  const isCompleted = idx < currentTrackIndex;
-                  
-                  return (
-                    <React.Fragment key={idx}>
-                      <div
-                        className={`flex items-center gap-2 px-4 py-2 rounded-lg border-2 transition-all ${
-                          isActive
-                            ? `border-${info.color}-500 bg-${info.color}-50`
-                            : isCompleted
-                            ? 'border-green-500 bg-green-50'
-                            : 'border-gray-300 bg-gray-50'
-                        }`}
-                      >
-                        <Icon className={`w-5 h-5 ${
-                          isActive ? `text-${info.color}-600` :
-                          isCompleted ? 'text-green-600' :
-                          'text-gray-400'
-                        }`} />
-                        <span className={`text-sm font-medium ${
-                          isActive ? `text-${info.color}-900` :
-                          isCompleted ? 'text-green-900' :
-                          'text-gray-500'
-                        }`}>
-                          {info.label}
+            <div className="flex items-center justify-center gap-3">
+              {trackOrder.map((type, idx) => {
+                const info = getTrackIcon(type);
+                const Icon = info.Icon;
+                const isActive = idx === currentTrackIndex;
+                const isCompleted = idx < currentTrackIndex;
+                const isUpcoming = idx > currentTrackIndex;
+                
+                return (
+                  <React.Fragment key={idx}>
+                    <div
+                      className={`flex items-center gap-2 px-4 py-2 rounded-lg border-2 transition-all ${
+                        isActive
+                          ? `border-${info.color}-500 bg-${info.color}-50 shadow-md`
+                          : isCompleted
+                          ? 'border-green-500 bg-green-50'
+                          : 'border-gray-300 bg-gray-50'
+                      }`}
+                    >
+                      <Icon className={`w-5 h-5 ${
+                        isActive ? `text-${info.color}-600` :
+                        isCompleted ? 'text-green-600' :
+                        'text-gray-400'
+                      }`} />
+                      <span className={`text-sm font-medium ${
+                        isActive ? `text-${info.color}-900` :
+                        isCompleted ? 'text-green-900' :
+                        'text-gray-500'
+                      }`}>
+                        {info.label}
+                      </span>
+                      {isActive && (
+                        <span className="ml-2 px-2 py-0.5 text-xs font-bold bg-white rounded-full animate-pulse">
+                          Active
                         </span>
-                        {isActive && (
-                          <span className="ml-2 px-2 py-0.5 text-xs font-bold bg-white rounded-full">
-                            Active
-                          </span>
-                        )}
-                        {isCompleted && (
-                          <span className="ml-2 text-green-600">✓</span>
-                        )}
-                      </div>
-                      {idx < trackOrder.length - 1 && (
-                        <ChevronRight className="w-4 h-4 text-gray-400" />
                       )}
-                    </React.Fragment>
-                  );
-                })}
-              </div>
-
-              <button
-                onClick={goToNextTrack}
-                disabled={currentTrackIndex === trackDataList.length - 1}
-                className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
-              >
-                Next Track
-                <ChevronRight className="w-4 h-4" />
-              </button>
+                      {isCompleted && (
+                        <span className="ml-2 text-green-600 text-lg">✓</span>
+                      )}
+                      {isUpcoming && (
+                        <span className="ml-2 text-gray-400 text-xs">Upcoming</span>
+                      )}
+                    </div>
+                    {idx < trackOrder.length - 1 && (
+                      <ChevronRight className={`w-5 h-5 ${isCompleted ? 'text-green-600' : 'text-gray-400'}`} />
+                    )}
+                  </React.Fragment>
+                );
+              })}
             </div>
+            {testType === 'mock' && (
+              <div className="mt-3 text-center">
+                <p className="text-xs text-gray-600">
+                  ⏱️ Section will automatically advance when timer ends
+                </p>
+              </div>
+            )}
           </div>
         )}
 
