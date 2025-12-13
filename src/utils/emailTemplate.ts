@@ -20,7 +20,7 @@ export function generateStudentCredentialEmail(data: {
         .header { background-color: #001f3f; padding: 40px 20px; text-align: center; }
         .header h1 { color: #ffffff; margin: 10px 0 0; font-size: 28px; font-weight: bold; }
         .header p { color: #ffd700; margin: 10px 0 0; font-size: 16px; }
-        .logo-medium { display: block; margin: 30px auto; max-width: 180px; height: auto; }
+        .logo { display: block; margin: 30px auto; max-width: 180px; height: auto; }
         .content { padding: 0 30px 40px; color: #333333; }
         .section-title { font-size: 20px; color: #001f3f; margin: 30px 0 15px; border-bottom: 3px solid #ffd700; padding-bottom: 8px; display: inline-block; }
         .details-table { width: 100%; margin: 20px 0; }
