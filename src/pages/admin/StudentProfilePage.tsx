@@ -15,8 +15,10 @@ import {
   Trash2,
   Copy,
   Check,
-  BarChart3
+  BarChart3,
+  Mail as MailIcon
 } from 'lucide-react';
+import { generateStudentCredentialEmail } from '../../utils/emailTemplate';
 
 export function StudentProfilePage() {
   const { studentId } = useParams<{ studentId: string }>();
