@@ -658,8 +658,8 @@ export function SubmissionsPage() {
             </div>
           </div>
 
-          {/* Filters Panel */}
-          {showFilters && (
+          {/* Filters Panel - Only show at submissions level */}
+          {showFilters && navigationLevel === 'submissions' && (
             <div className="bg-gray-50 rounded-lg p-4 mb-4 border border-gray-200">
               <div className="flex items-center justify-between mb-3">
                 <h3 className="font-semibold text-gray-900">Filters</h3>
