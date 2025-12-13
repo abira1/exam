@@ -518,10 +518,26 @@ export function TrackManagement() {
       </div>
 
       {/* Info Box */}
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-        <p className="text-sm text-blue-900">
-          <span className="font-semibold">💡 Info:</span> These tracks are hardcoded with predefined questions. 
-          You can only manage audio URLs for each track. Upload audio by providing a direct URL to the audio file.
+      <div className={`border rounded-lg p-4 ${
+        activeTab === 'listening' ? 'bg-blue-50 border-blue-200' :
+        activeTab === 'reading' ? 'bg-green-50 border-green-200' :
+        'bg-orange-50 border-orange-200'
+      }`}>
+        <p className={`text-sm ${
+          activeTab === 'listening' ? 'text-blue-900' :
+          activeTab === 'reading' ? 'text-green-900' :
+          'text-orange-900'
+        }`}>
+          <span className="font-semibold">💡 Info:</span>{' '}
+          {activeTab === 'listening' && (
+            'Listening tracks contain audio-based questions. Upload audio files by providing a direct URL to the audio file (MP3, WAV, etc.).'
+          )}
+          {activeTab === 'reading' && (
+            'Reading tracks contain passages with various question types including True/False/Not Given, Yes/No/Not Given, Matching Headings, and more. No audio required.'
+          )}
+          {activeTab === 'writing' && (
+            'Writing tracks contain Task 1 (report/description) and Task 2 (essay) with word count requirements. No audio required.'
+          )}
         </p>
       </div>
     </div>
