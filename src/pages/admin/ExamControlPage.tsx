@@ -647,12 +647,14 @@ export function ExamControlPage() {
               {/* Duration Info for Mock Test */}
               {mockTracks.listening && mockTracks.reading && mockTracks.writing && (
                 <div className="bg-blue-50 p-3 rounded-lg border border-blue-200">
-                  <p className="text-sm text-blue-800">
+                  <p className="text-sm text-blue-800 mb-2">
                     <strong>Total Duration:</strong> {duration} minutes
-                    <span className="text-xs text-blue-600 ml-2">
-                      (Listening + Reading + Writing combined)
-                    </span>
                   </p>
+                  <div className="text-xs text-blue-700 space-y-1">
+                    <div>• Listening: {mockDurations.listening} minutes</div>
+                    <div>• Reading: {mockDurations.reading} minutes</div>
+                    <div>• Writing: {mockDurations.writing} minutes</div>
+                  </div>
                 </div>
               )}
             </div>
