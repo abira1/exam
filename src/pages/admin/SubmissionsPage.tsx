@@ -281,7 +281,6 @@ export function SubmissionsPage() {
       setNavigationLevel('categories');
       setCurrentTestType(null);
       setCurrentTrackId(null);
-      setCurrentExamCode(null);
       setBreadcrumbs([{ level: 'categories', label: 'Exam Submissions' }]);
       setSelectedTrackId('all');
       setSelectedExamCode('all');
@@ -289,7 +288,6 @@ export function SubmissionsPage() {
       setNavigationLevel('tracks');
       setCurrentTestType(item.testType || null);
       setCurrentTrackId(null);
-      setCurrentExamCode(null);
       setBreadcrumbs([
         { level: 'categories', label: 'Exam Submissions' },
         { level: 'tracks', label: 'Partial Tests', testType: 'partial' }
