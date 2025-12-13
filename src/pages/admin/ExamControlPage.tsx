@@ -44,6 +44,17 @@ export function ExamControlPage() {
     writing: ''
   });
   
+  // Individual durations for mock test sections
+  const [mockDurations, setMockDurations] = useState<{
+    listening: number;
+    reading: number;
+    writing: number;
+  }>({
+    listening: 40,
+    reading: 60,
+    writing: 60
+  });
+  
   // Legacy state for backward compatibility
   const [selectedTrackId, setSelectedTrackId] = useState<string>('');
   const [examDate, setExamDate] = useState<string>(format(new Date(), 'yyyy-MM-dd'));
