@@ -161,9 +161,17 @@ export function ExamControlPage() {
 
   const handleCreateSession = async (startImmediately: boolean = false) => {
     // Validation
-    if (!selectedTrackId) {
-      setError('Please select a track');
-      return;
+    if (testType === 'partial') {
+      if (!partialSelectedTrack) {
+        setError('Please select a track');
+        return;
+      }
+    } else {
+      // Mock test validation
+      if (!mockTracks.listening || !mockTracks.reading || !mockTracks.writing) {
+        setError('Please select one track from each type (Listening, Reading, Writing)');
+        return;
+      }
     }
 
     if (selectedBatches.length === 0) {
@@ -186,23 +194,51 @@ export function ExamControlPage() {
     setError(null);
 
     try {
-      const track = allTracks.find(t => t.id === selectedTrackId);
-      if (!track) {
-        setError('Selected track not found');
-        return;
+      let trackId = '';
+      let trackName = '';
+      let audioURL: string | null = null;
+      let selectedTracks = {};
+
+      if (testType === 'partial') {
+        const track = allTracks.find(t => t.id === partialSelectedTrack);
+        if (!track) {
+          setError('Selected track not found');
+          return;
+        }
+        trackId = track.id;
+        trackName = track.name;
+        audioURL = track.audioURL || null;
+        
+        // Store in selectedTracks for consistency
+        selectedTracks = {
+          [partialTrackType]: partialSelectedTrack
+        };
+      } else {
+        // Mock test
+        trackId = 'mock'; // Use 'mock' as trackId for mock tests
+        trackName = 'Mock Test (Listening + Reading + Writing)';
+        
+        // Get audio URL from listening track
+        const listeningTrack = allTracks.find(t => t.id === mockTracks.listening);
+        audioURL = listeningTrack?.audioURL || null;
+        
+        selectedTracks = {
+          listening: mockTracks.listening,
+          reading: mockTracks.reading,
+          writing: mockTracks.writing
+        };
       }
 
       // Calculate start and end times
       const sessionDate = new Date(`${examDate}T${startTime}`);
       const endDate = new Date(sessionDate.getTime() + duration * 60000);
 
-      // Get track audio URL from Firebase if available
-      const audioURL = track.audioURL || null;
-
       const result = await examSessionService.createExamSession({
         examCode: generatedExamCode,
-        trackId: selectedTrackId,
-        trackName: track.name,
+        trackId: trackId,
+        trackName: trackName,
+        testType: testType,
+        selectedTracks: selectedTracks,
         date: examDate,
         startTime: startTime,
         endTime: format(endDate, 'HH:mm'),
@@ -223,9 +259,11 @@ export function ExamControlPage() {
           
           await set(ref(db, 'exam/status'), {
             isStarted: true,
-            activeTrackId: selectedTrackId,
-            trackName: track.name,
-            examCode: result.examCode, // NEW: Include exam code
+            activeTrackId: trackId,
+            trackName: trackName,
+            testType: testType,
+            selectedTracks: selectedTracks,
+            examCode: result.examCode,
             startTime: now.toISOString(),
             endTime: immediateEndDate.toISOString(),
             duration: duration,
@@ -240,7 +278,8 @@ export function ExamControlPage() {
         );
 
         // Reset form
-        setSelectedTrackId('');
+        setPartialSelectedTrack('');
+        setMockTracks({ listening: '', reading: '', writing: '' });
         setSelectedBatches([]);
         setGeneratedExamCode('');
 
