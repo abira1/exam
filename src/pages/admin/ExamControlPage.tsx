@@ -532,7 +532,13 @@ export function ExamControlPage() {
                 </label>
                 <select
                   value={mockTracks.listening}
-                  onChange={(e) => setMockTracks(prev => ({ ...prev, listening: e.target.value }))}
+                  onChange={(e) => {
+                    setMockTracks(prev => ({ ...prev, listening: e.target.value }));
+                    const track = getTracksByType('listening').find(t => t.id === e.target.value);
+                    if (track) {
+                      setMockDurations(prev => ({ ...prev, listening: track.duration }));
+                    }
+                  }}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   data-testid="mock-listening-selector"
                 >
@@ -543,6 +549,19 @@ export function ExamControlPage() {
                     </option>
                   ))}
                 </select>
+                {mockTracks.listening && (
+                  <div className="mt-2">
+                    <label className="block text-xs font-medium text-gray-600 mb-1">Duration (minutes)</label>
+                    <input
+                      type="number"
+                      min={1}
+                      value={mockDurations.listening}
+                      onChange={(e) => setMockDurations(prev => ({ ...prev, listening: Number(e.target.value) }))}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      data-testid="mock-listening-duration"
+                    />
+                  </div>
+                )}
               </div>
 
               {/* Reading Track */}
