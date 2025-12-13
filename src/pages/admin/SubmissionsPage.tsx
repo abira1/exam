@@ -29,11 +29,13 @@ import { FolderIcon } from '../../components/FolderIcon';
 
 type AnswerFilter = 'all' | 'answered' | 'unanswered';
 type SortField = 'name' | 'id' | 'time' | 'score';
-type NavigationLevel = 'tracks' | 'exams' | 'submissions';
+type NavigationLevel = 'categories' | 'tracks' | 'exams' | 'submissions';
+type TestType = 'partial' | 'mock';
 
 interface BreadcrumbItem {
   level: NavigationLevel;
   label: string;
+  testType?: TestType;
   trackId?: string;
   examCode?: string;
 }
