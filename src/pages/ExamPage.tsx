@@ -26,8 +26,8 @@ import { QuestionNavigator } from '../components/QuestionNavigator';
 import { audioService } from '../services/audioService';
 import { getTrackById, Track } from '../data/tracks';
 import { Section } from '../data/examData';
-import { storage, ExamSubmission } from '../utils/storage';
-import { Loader, Headphones, BookOpen, PenTool, ChevronRight, ChevronLeft } from 'lucide-react';
+import { storage, ExamSubmission, SectionSubmission } from '../utils/storage';
+import { Loader, Headphones, BookOpen, PenTool, ChevronRight, ChevronLeft, AlertCircle, CheckCircle } from 'lucide-react';
 
 interface ExamPageProps {
   studentId: string;
