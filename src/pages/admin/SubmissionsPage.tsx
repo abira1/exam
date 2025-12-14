@@ -140,7 +140,10 @@ export function SubmissionsPage() {
       // Filter by assigned tracks if user is a teacher
       let filteredSessions = sessions;
       if (role === 'teacher' && user?.assignedTracks && user.assignedTracks.length > 0) {
-        filteredSessions = sessions.filter(s => user.assignedTracks!.includes(s.trackId));
+        // Include mock test sessions (testType='mock') along with assigned track sessions
+        filteredSessions = sessions.filter(s => 
+          s.testType === 'mock' || user.assignedTracks!.includes(s.trackId)
+        );
       }
       
       setExamSessions(filteredSessions);
