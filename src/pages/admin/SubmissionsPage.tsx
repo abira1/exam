@@ -79,6 +79,9 @@ export function SubmissionsPage() {
   
   // Print preview
   const [printSubmission, setPrintSubmission] = useState<ExamSubmission | null>(null);
+  
+  // Phase 3: Section navigation for mock tests
+  const [currentSectionSlide, setCurrentSectionSlide] = useState<'listening' | 'reading' | 'writing'>('listening');
 
   useEffect(() => {
     loadSubmissions();
