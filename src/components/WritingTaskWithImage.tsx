@@ -45,23 +45,23 @@ export function WritingTaskWithImage({
   const status = getWordCountStatus();
 
   return (
-    <div className="space-y-6" data-testid={`writing-task-${taskNumber}`}>
+    <div className="space-y-4 max-w-[1600px] mx-auto" data-testid={`writing-task-${taskNumber}`}>
       {/* Task Header */}
-      <div className="bg-gradient-to-r from-orange-50 to-amber-50 border-l-4 border-orange-500 p-6 rounded-r-lg">
-        <div className="flex items-start gap-4">
-          <div className="w-12 h-12 bg-orange-500 rounded-lg flex items-center justify-center flex-shrink-0">
-            <PenTool className="w-6 h-6 text-white" />
+      <div className="bg-gradient-to-r from-orange-50 to-amber-50 border-l-4 border-orange-500 p-4 rounded-r-lg">
+        <div className="flex items-start gap-3">
+          <div className="w-10 h-10 bg-orange-500 rounded-lg flex items-center justify-center flex-shrink-0">
+            <PenTool className="w-5 h-5 text-white" />
           </div>
           <div className="flex-1">
-            <h3 className="text-xl font-bold text-gray-900 mb-2">{title}</h3>
-            <p className="text-sm text-gray-700 mb-1">{instruction}</p>
+            <h3 className="text-lg font-bold text-gray-900 mb-1">{title}</h3>
+            <p className="text-sm text-gray-700">{instruction}</p>
             <p className="text-xs text-gray-600">Recommended time: {timeRecommended} minutes</p>
           </div>
         </div>
       </div>
 
       {/* Two-column layout: Left side (Chart) + Right side (Writing area) */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-[45%_55%] gap-4">
         {/* LEFT SIDE: Chart Description and Image */}
         <div className="space-y-4">
           {/* Chart Description Box */}
