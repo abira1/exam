@@ -771,7 +771,7 @@ export function ExamPage({
 
         {/* Two-Column Layout for Reading Tracks */}
         {currentTrack.trackType === 'reading' && examData && examData[currentSection]?.passage ? (
-          <div className="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-4 mx-4 overflow-hidden">
+          <div className="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-4 mx-4 overflow-hidden mb-16">
             {/* Left Panel: Reading Passage with Text Highlighting */}
             <div 
               className="bg-white rounded-lg shadow-sm border border-gray-200 flex flex-col h-full overflow-hidden"
@@ -834,8 +834,8 @@ export function ExamPage({
                 </div>
               )}
 
-              <div className="flex-1 overflow-y-auto px-6 pb-6">
-                <div className="space-y-6 pt-4">
+              <div className="flex-1 overflow-y-auto px-6">
+                <div className="space-y-6 pt-4 pb-24">
                   {examData && examData[currentSection] && (
                     <>
                       <h2 className="text-lg font-bold text-gray-900 mb-4">
@@ -843,6 +843,62 @@ export function ExamPage({
                       </h2>
 
                       {examData[currentSection].questions.map((question, idx) => renderQuestion(question, idx))}
+                      
+                      {/* Navigation Buttons inside scrollable area */}
+                      <div className="flex justify-between items-center pt-6 pb-6 border-t border-gray-200 mt-8">
+                        {testType === 'mock' ? (
+                          <>
+                            <button
+                              onClick={() => setCurrentSection(prev => Math.max(0, prev - 1))}
+                              disabled={currentSection === 0}
+                              className="px-6 py-3 border border-gray-300 rounded-lg font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                            >
+                              Previous Section
+                            </button>
+
+                            {currentSection === (examData?.length || 0) - 1 ? (
+                              <div className="text-center flex-1 mx-4">
+                                <p className="text-sm text-gray-600">
+                                  ⏱️ Next track will start automatically when timer ends
+                                </p>
+                              </div>
+                            ) : (
+                              <button
+                                onClick={() => setCurrentSection(prev => prev + 1)}
+                                className="px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors"
+                              >
+                                Next Section
+                              </button>
+                            )}
+                          </>
+                        ) : (
+                          <>
+                            <button
+                              onClick={() => setCurrentSection(prev => Math.max(0, prev - 1))}
+                              disabled={currentSection === 0}
+                              className="px-6 py-3 border border-gray-300 rounded-lg font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                            >
+                              Previous Section
+                            </button>
+
+                            {currentSection === (examData?.length || 0) - 1 ? (
+                              <button
+                                onClick={handleSubmit}
+                                className="px-8 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors"
+                              >
+                                Submit Exam
+                              </button>
+                            ) : (
+                              <button
+                                onClick={() => setCurrentSection(prev => prev + 1)}
+                                className="px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors"
+                              >
+                                Next Section
+                              </button>
+                            )}
+                          </>
+                        )}
+                      </div>
                     </>
                   )}
                 </div>
