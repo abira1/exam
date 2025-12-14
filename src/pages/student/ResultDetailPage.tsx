@@ -208,17 +208,98 @@ export function ResultDetailPage() {
           </div>
         </div>
 
-        {/* Score Section */}
-        <div className="bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg shadow-lg p-8 mb-6 text-white">
-          <div className="text-center">
-            <Award className="w-16 h-16 mx-auto mb-4 opacity-90" />
-            <h2 className="text-2xl font-bold mb-2">🎯 Your Score</h2>
-            <div className="text-6xl font-bold mb-2">{submission.manualScore}%</div>
-            <p className="text-blue-100 text-lg">
-              {Object.values(submission.marks || {}).filter(m => m === 'correct').length} out of 40 correct
-            </p>
+        {/* Score Section - Mock Test */}
+        {submission.testType === 'mock' && submission.overallBand !== undefined ? (
+          <>
+            {/* Overall Band Score Card */}
+            <div className="bg-gradient-to-r from-blue-500 to-purple-500 rounded-xl shadow-2xl p-8 mb-6 text-white">
+              <div className="flex items-center justify-between">
+                <div>
+                  <div className="flex items-center gap-3 mb-2">
+                    <Award className="w-8 h-8" />
+                    <h1 className="text-3xl font-bold">IELTS Mock Test Result</h1>
+                  </div>
+                  <p className="text-blue-100">Exam Code: {submission.examCode}</p>
+                  <p className="text-blue-100">Submitted: {format(new Date(submission.submittedAt), 'MMMM dd, yyyy')}</p>
+                </div>
+                <div className="text-center">
+                  <div className="text-sm opacity-90 mb-2">Overall Band Score</div>
+                  <div className="text-8xl font-bold">{submission.overallBand.toFixed(1)}</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Section Scores Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+              <div className="bg-white rounded-lg shadow-md p-6 border-l-4 border-blue-500">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="text-2xl">🎧</span>
+                  <h3 className="font-semibold text-gray-900">Listening</h3>
+                </div>
+                <div className="text-4xl font-bold text-blue-600">
+                  {submission.sectionScores?.listening?.toFixed(1) || '--'}
+                </div>
+                <p className="text-xs text-gray-500 mt-2">Band Score</p>
+              </div>
+
+              <div className="bg-white rounded-lg shadow-md p-6 border-l-4 border-green-500">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="text-2xl">📖</span>
+                  <h3 className="font-semibold text-gray-900">Reading</h3>
+                </div>
+                <div className="text-4xl font-bold text-green-600">
+                  {submission.sectionScores?.reading?.toFixed(1) || '--'}
+                </div>
+                <p className="text-xs text-gray-500 mt-2">Band Score</p>
+              </div>
+
+              <div className="bg-white rounded-lg shadow-md p-6 border-l-4 border-orange-500">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="text-2xl">✍️</span>
+                  <h3 className="font-semibold text-gray-900">Writing</h3>
+                </div>
+                <div className="text-4xl font-bold text-orange-600">
+                  {submission.sectionScores?.writing?.toFixed(1) || '--'}
+                </div>
+                <p className="text-xs text-gray-500 mt-2">Band Score</p>
+              </div>
+
+              <div className="bg-white rounded-lg shadow-md p-6 border-l-4 border-purple-500">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="text-2xl">🎤</span>
+                  <h3 className="font-semibold text-gray-900">Speaking</h3>
+                </div>
+                <div className="text-4xl font-bold text-purple-600">
+                  {submission.sectionScores?.speaking?.toFixed(1) || '--'}
+                </div>
+                <p className="text-xs text-gray-500 mt-2">Band Score</p>
+              </div>
+            </div>
+
+            {/* Band Interpretation */}
+            <div className="bg-blue-50 rounded-lg p-6 border border-blue-200 mb-6">
+              <h3 className="text-lg font-bold text-gray-900 mb-3 flex items-center gap-2">
+                <Award className="w-5 h-5 text-blue-600" />
+                Band Score Interpretation
+              </h3>
+              <p className="text-gray-700">
+                {getBandInterpretation(submission.overallBand)}
+              </p>
+            </div>
+          </>
+        ) : (
+          /* Score Section - Partial Test */
+          <div className="bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg shadow-lg p-8 mb-6 text-white">
+            <div className="text-center">
+              <Award className="w-16 h-16 mx-auto mb-4 opacity-90" />
+              <h2 className="text-2xl font-bold mb-2">🎯 Your Score</h2>
+              <div className="text-6xl font-bold mb-2">{submission.manualScore}%</div>
+              <p className="text-blue-100 text-lg">
+                {Object.values(submission.marks || {}).filter(m => m === 'correct').length} out of {submission.totalQuestions || 40} correct
+              </p>
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Section-wise Performance */}
         <div className="bg-white rounded-lg shadow-md p-8 mb-6 border border-gray-200">
