@@ -682,7 +682,7 @@ export function ExamPage({
   const trackInfo = getTrackIcon(currentTrack.trackType);
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-16">
+    <div className={`bg-gray-50 ${currentTrack.trackType === 'reading' ? 'h-screen flex flex-col overflow-hidden' : 'min-h-screen pb-16'}`}>
       <ExamHeader 
         trackName={`${currentTrack.name} | ${studentName} (${studentId})`} 
         questionType={trackInfo.label} 
@@ -694,7 +694,7 @@ export function ExamPage({
         trackType={currentTrack.trackType}
       />
 
-      <main className="max-w-5xl mx-auto px-6 py-8">
+      <main className={`${currentTrack.trackType === 'reading' ? 'flex-1 flex flex-col overflow-hidden' : 'max-w-5xl mx-auto px-6 py-8'}`}>
         {/* Mock Test Track Progress Indicator (No manual navigation) */}
         {testType === 'mock' && trackDataList.length > 1 && (
           <div className="mb-6 bg-white rounded-lg shadow-sm border border-gray-200 p-4">
