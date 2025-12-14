@@ -339,21 +339,26 @@ export function ExamPage({
         
         // Check if current track time expired
         if (trackRemainingMs <= 0) {
-          // Auto-advance to next track
-          if (currentTrackIndex < trackDataList.length - 1) {
-            console.log('⏰ Track time expired, auto-advancing to next track');
-            setCurrentTrackIndex(prev => prev + 1);
-            setCurrentSection(0);
-            setIsTimeWarning(false);
-            setIsTimeCritical(false);
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-          } else {
-            // Last track completed, auto-submit
-            console.log('⏰ All tracks completed, auto-submitting');
-            clearInterval(timer);
-            handleSubmit();
+          // Show warning but DON'T auto-advance (Phase 2 change)
+          setCurrentTrackTimeRemaining('00:00');
+          setIsTimeCritical(true);
+          setIsTimeWarning(true);
+          
+          // Show time expired warning banner
+          if (!timeExpiredWarningShown[currentTrackIndex]) {
+            setTimeExpiredWarningShown(prev => ({
+              ...prev,
+              [currentTrackIndex]: true
+            }));
           }
-          return;
+          
+          // Update overall time remaining
+          const totalRemainingMs = examEndTime - now;
+          const totalSeconds = Math.floor(totalRemainingMs / 1000);
+          const totalMins = Math.floor(totalSeconds / 60);
+          const totalSecs = totalSeconds % 60;
+          setTimeRemaining(`${String(totalMins).padStart(2, '0')}:${String(totalSecs).padStart(2, '0')}`);
+          return; // Stop here, no auto-advance
         }
         
         // Update current track timer display
