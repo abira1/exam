@@ -25,8 +25,11 @@ export const exportToExcel = (submissions: ExamSubmission[], options: ExportOpti
   const excelData = submissions.map((submission) => {
     const track = allTracks.find(t => t.id === submission.trackId);
     const stats = calculateSectionStats(submission);
+    const totalQs = submission.totalQuestions || 40;
+    const isWriting = submission.trackType === 'writing' && totalQs === 2;
     
-    return {
+    // Build row data based on track type
+    const rowData: any = {
       'Student ID': submission.studentId || 'N/A',
       'Student Name': submission.studentName || 'N/A',
       'Email': '-', // Will be populated from student data if available
@@ -35,18 +38,30 @@ export const exportToExcel = (submissions: ExamSubmission[], options: ExportOpti
       'Track': track?.name || submission.trackName || 'N/A',
       'Date': new Date(submission.submittedAt).toLocaleDateString(),
       'Time': new Date(submission.submittedAt).toLocaleTimeString(),
-      'Total Score': `${stats.correct}/40`,
-      'Section 1 (Q1-10)': `${stats.section1}/10`,
-      'Section 2 (Q11-20)': `${stats.section2}/10`,
-      'Section 3 (Q21-30)': `${stats.section3}/10`,
-      'Section 4 (Q31-40)': `${stats.section4}/10`,
-      'Percentage': `${stats.percentage}%`,
-      'Status': submission.resultPublished ? 'Published' : (submission.marks ? 'Graded' : 'Pending'),
-      'Graded By': submission.markedBy || '-',
-      'Graded At': submission.marks ? new Date(submission.submittedAt).toLocaleDateString() : '-',
-      'Published At': submission.publishedAt ? new Date(submission.publishedAt).toLocaleDateString() : '-',
-      'Time Spent': submission.timeSpent || 'N/A'
+      'Total Score': `${stats.correct}/${totalQs}`,
     };
+    
+    // Add section-wise scores only for reading/listening tracks
+    if (!isWriting) {
+      rowData['Section 1 (Q1-10)'] = `${stats.section1}/10`;
+      rowData['Section 2 (Q11-20)'] = `${stats.section2}/10`;
+      rowData['Section 3 (Q21-30)'] = `${stats.section3}/10`;
+      rowData['Section 4 (Q31-40)'] = `${stats.section4}/10`;
+    } else {
+      // For writing tracks, show task scores
+      rowData['Task 1'] = submission.marks?.['task1'] || 'Not Marked';
+      rowData['Task 2'] = submission.marks?.['task2'] || 'Not Marked';
+    }
+    
+    // Add common fields
+    rowData['Percentage'] = `${stats.percentage}%`;
+    rowData['Status'] = submission.resultPublished ? 'Published' : (submission.marks ? 'Graded' : 'Pending');
+    rowData['Graded By'] = submission.markedBy || '-';
+    rowData['Graded At'] = submission.marks ? new Date(submission.submittedAt).toLocaleDateString() : '-';
+    rowData['Published At'] = submission.publishedAt ? new Date(submission.publishedAt).toLocaleDateString() : '-';
+    rowData['Time Spent'] = submission.timeSpent || 'N/A';
+    
+    return rowData;
   });
 
   // Create workbook and worksheet
