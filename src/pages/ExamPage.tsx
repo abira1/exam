@@ -714,7 +714,8 @@ export function ExamPage({
           minWords={question.minWords}
           timeRecommended={question.timeRecommended}
           value={writingAnswers[taskKey] || ''}
-          onChange={(value) => handleWritingAnswerChange(taskKey, value)}
+          onChange={(value) => !isLocked && handleWritingAnswerChange(taskKey, value)}
+          disabled={isLocked}
         />
       );
     }
@@ -733,7 +734,8 @@ export function ExamPage({
           maxWords={question.maxWords}
           timeRecommended={question.timeRecommended}
           value={writingAnswers[taskKey] || ''}
-          onChange={(value) => handleWritingAnswerChange(taskKey, value)}
+          onChange={(value) => !isLocked && handleWritingAnswerChange(taskKey, value)}
+          disabled={isLocked}
         />
       );
     }
