@@ -560,6 +560,7 @@ export function ExamPage({
           instruction={question.instruction}
           headers={question.headers}
           rows={question.rows}
+          optionsLegend={question.optionsLegend}
           answers={answers}
           onAnswerChange={handleAnswerChange}
         />
