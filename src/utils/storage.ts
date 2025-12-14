@@ -332,11 +332,11 @@ export const storage = {
   },
 
   // Calculate manual score
-  calculateManualScore(marks: Record<number, 'correct' | 'incorrect' | null>): number {
+  calculateManualScore(marks: Record<number | string, 'correct' | 'incorrect' | null>, totalQuestions: number = 40): number {
     const correctCount = Object.keys(marks).filter(
-      key => marks[Number(key)] === 'correct'
+      key => marks[key] === 'correct'
     ).length;
-    return Math.round((correctCount / 40) * 100);
+    return Math.round((correctCount / totalQuestions) * 100);
   },
 
   // Student session methods (still use localStorage for quick access)
