@@ -252,8 +252,8 @@ export const storage = {
     }
   },
 
-  // Update mark for a question
-  async updateMark(submissionId: string, questionNumber: number, mark: 'correct' | 'incorrect' | null): Promise<boolean> {
+  // Update mark for a question or writing task
+  async updateMark(submissionId: string, questionKey: number | string, mark: 'correct' | 'incorrect' | null): Promise<boolean> {
     try {
       // Update localStorage first
       const submissions = localStorageHelper.getAll();
@@ -262,7 +262,7 @@ export const storage = {
         if (!submission.marks) {
           submission.marks = {};
         }
-        submission.marks[questionNumber] = mark;
+        submission.marks[questionKey] = mark;
         localStorageHelper.saveAll(submissions);
       }
 
@@ -273,13 +273,13 @@ export const storage = {
 
       // Update in Firebase
       if (submission && submission.trackId && submission.examCode) {
-        const path = `${getSubmissionPath(submission.trackId, submission.examCode, submissionId)}/marks/${questionNumber}`;
+        const path = `${getSubmissionPath(submission.trackId, submission.examCode, submissionId)}/marks/${questionKey}`;
         if (mark === null) {
           await remove(ref(db, path));
         } else {
           await set(ref(db, path), mark);
         }
-        console.log('Mark updated in Firebase:', submissionId, questionNumber);
+        console.log('Mark updated in Firebase:', submissionId, questionKey);
       }
       
       return true;
