@@ -63,7 +63,7 @@ export function TrueFalseNotGivenCollapsible({
           return (
             <div
               key={item.questionNumber}
-              className="bg-white border border-gray-200 rounded-lg overflow-hidden"
+              className="bg-white border border-gray-200 rounded-lg overflow-hidden transition-all duration-200"
             >
               {/* Collapsed header - clickable to expand */}
               <button
