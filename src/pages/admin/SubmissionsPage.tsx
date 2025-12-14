@@ -448,10 +448,11 @@ export function SubmissionsPage() {
     const allQuestions = getAllQuestions(submission);
     const answered = allQuestions.filter((q) => q.answer !== null).length;
     const unanswered = allQuestions.filter((q) => q.answer === null).length;
+    const totalQs = submission.totalQuestions || 40;
     return {
       answered,
       unanswered,
-      total: 40
+      total: totalQs
     };
   };
 
