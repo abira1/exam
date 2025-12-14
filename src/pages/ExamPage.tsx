@@ -1000,7 +1000,10 @@ export function ExamPage({
             {testType === 'mock' && (
               <div className="mt-3 text-center">
                 <p className="text-xs text-gray-600">
-                  ⏱️ Section will automatically advance when timer ends
+                  ⏱️ Complete all sections in order: Listening → Reading → Writing
+                </p>
+                <p className="text-xs text-gray-500 mt-1">
+                  Click "Submit Section" button at the end of each section to proceed
                 </p>
               </div>
             )}
