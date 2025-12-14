@@ -79,6 +79,18 @@ export function TableSelectionQuestion({
           </tbody>
         </table>
       </div>
+
+      {optionsLegend && optionsLegend.length > 0 && (
+        <div className="bg-gray-50 border border-gray-300 rounded-lg p-4 mt-4">
+          <div className="grid grid-cols-1 gap-2">
+            {optionsLegend.map((option) => (
+              <div key={option.value} className="text-sm text-gray-800">
+                <span className="font-semibold">{option.value}.</span> {option.label}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
