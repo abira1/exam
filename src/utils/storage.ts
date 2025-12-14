@@ -299,22 +299,26 @@ export const storage = {
         return false;
       }
 
-      // Check if all 40 questions are marked
+      // Determine expected question count based on track type
+      const expectedCount = submission.totalQuestions || 40; // Default to 40 for backward compatibility
+      
+      // Check if all questions/tasks are marked
       const markedCount = Object.keys(submission.marks).filter(
-        key => submission.marks![Number(key)] !== null
+        key => submission.marks![key] !== null
       ).length;
       
-      if (markedCount !== 40) {
+      if (markedCount !== expectedCount) {
+        console.log(`Marking incomplete: ${markedCount}/${expectedCount} marked`);
         return false;
       }
 
       // Calculate manual score
       const correctCount = Object.keys(submission.marks).filter(
-        key => submission.marks![Number(key)] === 'correct'
+        key => submission.marks![key] === 'correct'
       ).length;
       
       const updates: Partial<ExamSubmission> = {
-        manualScore: Math.round((correctCount / 40) * 100),
+        manualScore: Math.round((correctCount / expectedCount) * 100),
         resultPublished: true,
         publishedAt: new Date().toISOString()
       };
