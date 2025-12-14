@@ -573,5 +573,268 @@ export const storage = {
       
       callback(submissions);
     });
+  },
+
+  // ============================================
+  // NEW: Mock Test IELTS Band Score Methods
+  // ============================================
+
+  /**
+   * Update section submission data for mock tests
+   * Used when student submits a section (Listening, Reading, or Writing)
+   */
+  async updateSectionSubmission(
+    submissionId: string,
+    section: 'listening' | 'reading' | 'writing',
+    sectionData: SectionSubmission
+  ): Promise<boolean> {
+    try {
+      const submissions = await this.getSubmissions();
+      const submission = submissions.find(s => s.id === submissionId);
+      
+      if (!submission) {
+        console.error('Submission not found:', submissionId);
+        return false;
+      }
+
+      const updates = {
+        [`sectionSubmissions/${section}`]: sectionData
+      };
+
+      if (isOnline() && submission.trackId && submission.examCode) {
+        const submissionPath = getSubmissionPath(submission.trackId, submission.examCode, submissionId);
+        await update(ref(db, submissionPath), updates);
+      }
+
+      // Update localStorage
+      const updatedSubmission = {
+        ...submission,
+        sectionSubmissions: {
+          ...submission.sectionSubmissions,
+          [section]: sectionData
+        }
+      };
+      
+      localStorageHelper.update(submissionId, updatedSubmission);
+      return true;
+    } catch (error) {
+      console.error('Error updating section submission:', error);
+      return false;
+    }
+  },
+
+  /**
+   * Save band score for a specific section
+   * Automatically triggers overall band calculation if all 4 sections have scores
+   */
+  async saveSectionBandScore(
+    submissionId: string,
+    section: 'listening' | 'reading' | 'writing' | 'speaking',
+    bandScore: number
+  ): Promise<boolean> {
+    try {
+      const submissions = await this.getSubmissions();
+      const submission = submissions.find(s => s.id === submissionId);
+      
+      if (!submission) {
+        console.error('Submission not found:', submissionId);
+        return false;
+      }
+
+      // Validate band score (0-9, in 0.5 increments)
+      if (bandScore < 0 || bandScore > 9 || !Number.isInteger(bandScore * 2)) {
+        console.error('Invalid band score:', bandScore);
+        return false;
+      }
+
+      const updates = {
+        [`sectionScores/${section}`]: bandScore
+      };
+
+      if (isOnline() && submission.trackId && submission.examCode) {
+        const submissionPath = getSubmissionPath(submission.trackId, submission.examCode, submissionId);
+        await update(ref(db, submissionPath), updates);
+      }
+
+      // Update localStorage
+      const updatedSubmission = {
+        ...submission,
+        sectionScores: {
+          ...submission.sectionScores,
+          [section]: bandScore
+        }
+      };
+      
+      localStorageHelper.update(submissionId, updatedSubmission);
+
+      // Auto-calculate overall band if all 4 sections have scores
+      await this.calculateAndSaveOverallBand(submissionId);
+      
+      return true;
+    } catch (error) {
+      console.error('Error saving section band score:', error);
+      return false;
+    }
+  },
+
+  /**
+   * Calculate and save overall IELTS band score
+   * Only calculates if all 4 sections (L, R, W, S) have band scores
+   * Returns the calculated overall band or null if not all sections are scored
+   */
+  async calculateAndSaveOverallBand(submissionId: string): Promise<number | null> {
+    try {
+      const submissions = await this.getSubmissions();
+      const submission = submissions.find(s => s.id === submissionId);
+      
+      if (!submission || !submission.sectionScores) {
+        return null;
+      }
+
+      const { listening, reading, writing, speaking } = submission.sectionScores;
+
+      // Check if all 4 sections have scores
+      if (
+        listening === undefined || 
+        reading === undefined || 
+        writing === undefined || 
+        speaking === undefined
+      ) {
+        console.log('Not all sections have band scores yet');
+        return null;
+      }
+
+      // Calculate overall band (average of 4, rounded to 0.5)
+      const overallBand = calculateOverallBand(listening, reading, writing, speaking);
+
+      const updates = {
+        overallBand
+      };
+
+      if (isOnline() && submission.trackId && submission.examCode) {
+        const submissionPath = getSubmissionPath(submission.trackId, submission.examCode, submissionId);
+        await update(ref(db, submissionPath), updates);
+      }
+
+      // Update localStorage
+      localStorageHelper.update(submissionId, { overallBand });
+
+      console.log(`Overall band calculated for ${submissionId}:`, overallBand);
+      return overallBand;
+    } catch (error) {
+      console.error('Error calculating overall band:', error);
+      return null;
+    }
+  },
+
+  /**
+   * Check if a mock test submission can be published
+   * Requirements:
+   * - All 4 sections must have band scores (L, R, W, S)
+   * - Speaking score is MANDATORY
+   */
+  async canPublishResult(submissionId: string): Promise<boolean> {
+    try {
+      const submissions = await this.getSubmissions();
+      const submission = submissions.find(s => s.id === submissionId);
+      
+      if (!submission) {
+        return false;
+      }
+
+      // For partial tests, use existing logic
+      if (submission.testType !== 'mock') {
+        return true; // Use existing publish validation
+      }
+
+      // For mock tests, check all 4 band scores
+      if (!submission.sectionScores) {
+        console.log('No section scores found');
+        return false;
+      }
+
+      const { listening, reading, writing, speaking } = submission.sectionScores;
+
+      // All 4 must be present
+      if (
+        listening === undefined || 
+        reading === undefined || 
+        writing === undefined || 
+        speaking === undefined
+      ) {
+        console.log('Missing section scores:', {
+          listening: listening !== undefined,
+          reading: reading !== undefined,
+          writing: writing !== undefined,
+          speaking: speaking !== undefined
+        });
+        return false;
+      }
+
+      // Speaking is mandatory
+      if (speaking === undefined || speaking === null) {
+        console.log('Speaking score is mandatory');
+        return false;
+      }
+
+      return true;
+    } catch (error) {
+      console.error('Error checking publish eligibility:', error);
+      return false;
+    }
+  },
+
+  /**
+   * Get section-wise statistics for a mock test submission
+   */
+  getSectionStats(submission: ExamSubmission): {
+    listening?: { correct: number; total: number; bandScore?: number };
+    reading?: { correct: number; total: number; bandScore?: number };
+    writing?: { bandScore?: number };
+    speaking?: { bandScore?: number };
+  } {
+    const stats: any = {};
+
+    if (!submission.sectionSubmissions) {
+      return stats;
+    }
+
+    // Listening stats
+    if (submission.sectionSubmissions.listening) {
+      const section = submission.sectionSubmissions.listening;
+      const correct = section.correctAnswers || 0;
+      stats.listening = {
+        correct,
+        total: 40,
+        bandScore: submission.sectionScores?.listening
+      };
+    }
+
+    // Reading stats
+    if (submission.sectionSubmissions.reading) {
+      const section = submission.sectionSubmissions.reading;
+      const correct = section.correctAnswers || 0;
+      stats.reading = {
+        correct,
+        total: 40,
+        bandScore: submission.sectionScores?.reading
+      };
+    }
+
+    // Writing stats
+    if (submission.sectionSubmissions.writing) {
+      stats.writing = {
+        bandScore: submission.sectionScores?.writing
+      };
+    }
+
+    // Speaking stats
+    if (submission.sectionScores?.speaking !== undefined) {
+      stats.speaking = {
+        bandScore: submission.sectionScores.speaking
+      };
+    }
+
+    return stats;
   }
 };
