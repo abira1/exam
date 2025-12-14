@@ -75,14 +75,14 @@ export const PrintableResult: React.FC<PrintableResultProps> = ({ submission, on
           <div className="flex items-start justify-between mb-6 pb-6 border-b-4 border-blue-600">
             <div className="flex items-center gap-4">
               <img 
-                src="/Shah-Sultan-Logo-2.png" 
-                alt="Shah Sultan" 
+                src="/shah-sultan-academy-logo.png" 
+                alt="Shah Sultan IELTS Academy" 
                 className="h-20 w-20 object-contain"
               />
               <div>
-                <h1 className="text-3xl font-bold text-gray-900">Shah Sultan</h1>
-                <p className="text-lg text-gray-600">IELTS Listening Exam</p>
-                <p className="text-sm text-gray-500 mt-1">Student Performance Report</p>
+                <h1 className="text-3xl font-bold text-gray-900">Shah Sultan IELTS Academy</h1>
+                <p className="text-lg text-gray-600">Student Performance Report</p>
+                <p className="text-sm text-gray-500 mt-1">Official Exam Results</p>
               </div>
             </div>
             <div className="text-right">
@@ -285,7 +285,7 @@ export const PrintableResult: React.FC<PrintableResultProps> = ({ submission, on
 
           {/* Footer */}
           <div className="mt-8 text-center text-xs text-gray-500 border-t pt-4">
-            <p className="mb-1">This is an official result document from Shah Sultan IELTS Listening Exam System</p>
+            <p className="mb-1">This is an official result document from Shah Sultan IELTS Academy</p>
             <p>Generated on {new Date().toLocaleString()}</p>
           </div>
         </div>

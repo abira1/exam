@@ -12,7 +12,7 @@ export function HomePage() {
   const [studentName, setStudentName] = useState('');
   const [isCheckingExamStatus, setIsCheckingExamStatus] = useState(false);
   const [hasLoggedIn, setHasLoggedIn] = useState(false);
-  const [currentExamName, setCurrentExamName] = useState('IELTS Listening Exam');
+  const [currentExamName, setCurrentExamName] = useState('Shah Sultan IELTS Academy');
 
   // Load current exam name from Firebase
   useEffect(() => {
@@ -114,7 +114,7 @@ export function HomePage() {
       <div className="max-w-md w-full">
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold text-gray-900 mb-2">
-            IELTS Listening Exam
+            Shah Sultan IELTS Academy
           </h1>
           <h2 className="text-lg font-semibold text-blue-600 mb-3">
             {currentExamName}

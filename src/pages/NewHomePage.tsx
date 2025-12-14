@@ -13,7 +13,7 @@ export function NewHomePage() {
             <BookOpen className="w-16 h-16 text-blue-600" />
           </div>
           <h1 className="text-5xl font-bold text-gray-900 mb-4">
-            IELTS Listening Exam
+            Shah Sultan IELTS Academy
           </h1>
           <h2 className="text-2xl font-semibold text-blue-600 mb-3">
             Examination System

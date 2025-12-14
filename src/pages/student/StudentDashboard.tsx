@@ -130,8 +130,8 @@ export function StudentDashboard() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <img 
-                src="/main-logo.png" 
-                alt="Logo" 
+                src="/shah-sultan-academy-logo.png" 
+                alt="Shah Sultan IELTS Academy" 
                 className="h-10 w-auto object-contain"
               />
               <div>

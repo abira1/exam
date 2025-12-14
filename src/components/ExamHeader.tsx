@@ -95,8 +95,8 @@ export function ExamHeader({
           {/* Logo */}
           <div className="flex-shrink-0">
             <img 
-              src="/Shah-Sultan-Logo-2.png" 
-              alt="Shah Sultan Logo" 
+              src="/shah-sultan-academy-logo.png" 
+              alt="Shah Sultan IELTS Academy" 
               className="h-10 w-auto sm:h-12 lg:h-14 object-contain"
             />
           </div>
