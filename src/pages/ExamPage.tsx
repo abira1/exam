@@ -697,7 +697,7 @@ export function ExamPage({
       <main className={`${currentTrack.trackType === 'reading' ? 'flex-1 flex flex-col overflow-hidden' : 'max-w-5xl mx-auto px-6 py-8'}`}>
         {/* Mock Test Track Progress Indicator (No manual navigation) */}
         {testType === 'mock' && trackDataList.length > 1 && (
-          <div className="mb-6 bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+          <div className={`bg-white rounded-lg shadow-sm border border-gray-200 p-4 ${currentTrack.trackType === 'reading' ? 'mx-4 my-2' : 'mb-6'}`}>
             <div className="flex items-center justify-center gap-3">
               {trackOrder.map((type, idx) => {
                 const info = getTrackIcon(type);
@@ -759,7 +759,7 @@ export function ExamPage({
         )}
 
         {/* Track Type Indicator */}
-        <div className={`mb-6 bg-gradient-to-r from-${trackInfo.color}-50 to-${trackInfo.color}-100 border-l-4 border-${trackInfo.color}-500 rounded-r-lg p-4`}>
+        <div className={`bg-gradient-to-r from-${trackInfo.color}-50 to-${trackInfo.color}-100 border-l-4 border-${trackInfo.color}-500 rounded-r-lg p-4 ${currentTrack.trackType === 'reading' ? 'mx-4 my-2' : 'mb-6'}`}>
           <div className="flex items-center gap-3">
             <trackInfo.Icon className={`w-6 h-6 text-${trackInfo.color}-600`} />
             <div>
