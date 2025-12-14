@@ -76,6 +76,17 @@ export function ExamPage({
   // Text highlighting for reading passages
   const [highlights, setHighlights] = useState<Record<string, string[]>>({});
   
+  // Phase 2: Section submission tracking for mock tests
+  const [sectionSubmissions, setSectionSubmissions] = useState<{
+    listening?: SectionSubmission;
+    reading?: SectionSubmission;
+    writing?: SectionSubmission;
+  }>({});
+  
+  const [timeExpiredWarningShown, setTimeExpiredWarningShown] = useState<{
+    [key: number]: boolean;
+  }>({});
+  
   // Get current track data
   const currentTrackData = trackDataList[currentTrackIndex];
   const currentTrack = currentTrackData?.track;
