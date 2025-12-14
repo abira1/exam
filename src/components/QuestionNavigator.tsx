@@ -1,30 +1,83 @@
-import React from 'react';
+import React, { useMemo } from 'react';
+import { Section } from '../data/examData';
+
 interface QuestionNavigatorProps {
   answers: Record<number, string>;
   onQuestionClick: (questionNumber: number, sectionIndex: number) => void;
   currentSection: number;
+  examData?: Section[];
 }
-const sectionQuestions = [{
-  section: 1,
-  questions: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-}, {
-  section: 2,
-  questions: [11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
-}, {
-  section: 3,
-  questions: [21, 22, 23, 24, 25, 26, 27, 28, 29, 30]
-}, {
-  section: 4,
-  questions: [31, 32, 33, 34, 35, 36, 37, 38, 39, 40]
-}];
+
 export function QuestionNavigator({
   answers,
   onQuestionClick,
-  currentSection
+  currentSection,
+  examData
 }: QuestionNavigatorProps) {
+  
+  // Dynamically build section questions from exam data
+  const sectionQuestions = useMemo(() => {
+    if (!examData || examData.length === 0) {
+      // Fallback to default 4 sections if no exam data
+      return [{
+        section: 1,
+        questions: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+      }, {
+        section: 2,
+        questions: [11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+      }, {
+        section: 3,
+        questions: [21, 22, 23, 24, 25, 26, 27, 28, 29, 30]
+      }, {
+        section: 4,
+        questions: [31, 32, 33, 34, 35, 36, 37, 38, 39, 40]
+      }];
+    }
+
+    // Extract all question numbers from each section
+    return examData.map((section) => {
+      const questions: number[] = [];
+      
+      section.questions.forEach((question: any) => {
+        if (question.questionNumber !== undefined) {
+          questions.push(question.questionNumber);
+        } else if (question.questionNumbers && Array.isArray(question.questionNumbers)) {
+          questions.push(...question.questionNumbers);
+        } else if (question.items && Array.isArray(question.items)) {
+          question.items.forEach((item: any) => {
+            if (item.questionNumber !== undefined) {
+              questions.push(item.questionNumber);
+            }
+          });
+        } else if (question.statements && Array.isArray(question.statements)) {
+          question.statements.forEach((statement: any) => {
+            if (statement.questionNumber !== undefined) {
+              questions.push(statement.questionNumber);
+            }
+          });
+        } else if (question.rows && Array.isArray(question.rows)) {
+          question.rows.forEach((row: any) => {
+            if (row.questionNumber !== undefined) {
+              questions.push(row.questionNumber);
+            }
+          });
+        }
+      });
+
+      // Sort and remove duplicates
+      const uniqueQuestions = [...new Set(questions)].sort((a, b) => a - b);
+      
+      return {
+        section: section.sectionNumber,
+        questions: uniqueQuestions
+      };
+    });
+  }, [examData]);
+  
   const isAnswered = (questionNumber: number) => {
     return answers[questionNumber] && answers[questionNumber].trim() !== '';
   };
+  
   return <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg z-20">
       <div className="w-full px-4 py-2">
         <div className="flex items-center justify-center gap-4 max-w-7xl mx-auto flex-wrap">
