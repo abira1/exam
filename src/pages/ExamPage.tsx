@@ -816,24 +816,6 @@ export function ExamPage({
             <div 
               className="bg-white rounded-lg shadow-sm border border-gray-200 flex flex-col h-full overflow-hidden"
             >
-              {examData && examData.length > 1 && (
-                <div className="flex gap-2 px-6 pt-6 pb-4 border-b border-gray-200 flex-shrink-0">
-                  {examData.map((section, idx) => (
-                    <button
-                      key={section.sectionNumber}
-                      onClick={() => setCurrentSection(idx)}
-                      className={`px-3 py-1.5 text-sm font-medium rounded transition-colors ${
-                        currentSection === idx
-                          ? 'bg-blue-600 text-white'
-                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                      }`}
-                    >
-                      Part {section.sectionNumber}
-                    </button>
-                  ))}
-                </div>
-              )}
-
               <div className="flex-1 overflow-y-auto px-6">
                 <div className="space-y-6 pt-4 pb-24">
                   {examData && examData[currentSection] && (
