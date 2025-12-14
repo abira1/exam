@@ -448,6 +448,7 @@ export function ExamPage({
     const trackNames = trackDataList.map(td => td.track.name).join(' + ');
     const trackIds = trackDataList.map(td => td.track.id);
 
+    // Base submission object
     const submission: ExamSubmission = {
       id: `${studentId}-${Date.now()}`,
       studentId,
@@ -467,10 +468,13 @@ export function ExamPage({
       status: 'completed',
       score,
       resultPublished: false,
-      // Additional metadata for mock tests
-      testType,
-      trackIds: testType === 'mock' ? trackIds : undefined
+      testType
     };
+
+    // Add trackIds only for mock tests (avoid undefined in Firebase)
+    if (testType === 'mock') {
+      submission.trackIds = trackIds;
+    }
     
     console.log('Submission object:', JSON.stringify(submission, null, 2));
     
