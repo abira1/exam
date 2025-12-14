@@ -475,6 +475,13 @@ export function SubmissionsPage() {
         else if (mark === 'incorrect') incorrect++;
         else unmarked++;
       });
+      console.log('Writing track marking stats:', { 
+        submissionId: submission.id, 
+        marks: submission.marks, 
+        correct, 
+        incorrect, 
+        unmarked 
+      });
     } else {
       // For reading/listening tracks with numbered questions
       for (let i = 1; i <= totalQs; i++) {
