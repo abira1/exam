@@ -885,7 +885,7 @@ export function ExamPage({
         ) : null}
 
         {/* Navigation Buttons */}
-        <div className="flex justify-between items-center">
+        <div className={`flex justify-between items-center ${currentTrack.trackType === 'reading' ? 'px-4 py-3 bg-white border-t border-gray-200' : ''}`}>
           {testType === 'mock' ? (
             // Mock test: Only section navigation within current track
             <>
