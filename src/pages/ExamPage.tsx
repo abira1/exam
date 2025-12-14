@@ -736,7 +736,7 @@ export function ExamPage({
         trackType={currentTrack.trackType}
       />
 
-      <main className={`${currentTrack.trackType === 'reading' ? 'flex-1 flex flex-col overflow-hidden min-h-0' : 'max-w-5xl mx-auto px-6 py-8'}`}>
+      <main className={`${currentTrack.trackType === 'reading' ? 'flex-1 flex flex-col overflow-hidden min-h-0' : currentTrack.trackType === 'writing' ? 'w-full px-4 py-4' : 'max-w-5xl mx-auto px-6 py-8'}`}>
         {/* Mock Test Track Progress Indicator (No manual navigation) */}
         {testType === 'mock' && trackDataList.length > 1 && (
           <div className={`bg-white rounded-lg shadow-sm border border-gray-200 p-4 ${currentTrack.trackType === 'reading' ? 'mx-4 my-2' : 'mb-6'}`}>
