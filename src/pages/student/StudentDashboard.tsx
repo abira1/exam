@@ -56,8 +56,17 @@ export function StudentDashboard() {
 
       // Calculate stats
       const publishedSubmissions = studentSubmissions.filter(sub => sub.resultPublished);
+      
+      // For mock tests, use overall band (converted to percentage for consistency)
+      // For partial tests, use manualScore
       const scores = publishedSubmissions
-        .map(sub => sub.manualScore || 0)
+        .map(sub => {
+          if (sub.testType === 'mock' && sub.overallBand !== undefined) {
+            // Convert band score (0-9) to percentage (0-100) for display consistency
+            return Math.round((sub.overallBand / 9) * 100);
+          }
+          return sub.manualScore || 0;
+        })
         .filter(score => score > 0);
       
       const avgScore = scores.length > 0 
