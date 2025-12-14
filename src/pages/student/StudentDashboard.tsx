@@ -317,12 +317,28 @@ export function StudentDashboard() {
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        {submission.resultPublished && submission.manualScore ? (
-                          <div className="text-sm font-semibold text-gray-900">
-                            {submission.manualScore}%
-                          </div>
+                        {submission.resultPublished ? (
+                          submission.testType === 'mock' && submission.overallBand !== undefined ? (
+                            <div className="text-left">
+                              <div className="text-2xl font-bold text-blue-600 mb-1">
+                                {submission.overallBand.toFixed(1)}
+                              </div>
+                              <div className="text-xs text-gray-600 space-y-0.5">
+                                <div>L: {submission.sectionScores?.listening?.toFixed(1) || '--'}</div>
+                                <div>R: {submission.sectionScores?.reading?.toFixed(1) || '--'}</div>
+                                <div>W: {submission.sectionScores?.writing?.toFixed(1) || '--'}</div>
+                                <div>S: {submission.sectionScores?.speaking?.toFixed(1) || '--'}</div>
+                              </div>
+                            </div>
+                          ) : submission.manualScore ? (
+                            <div className="text-lg font-bold text-green-600">
+                              {submission.manualScore}%
+                            </div>
+                          ) : (
+                            <span className="text-gray-400">--</span>
+                          )
                         ) : (
-                          <span className="text-sm text-gray-400">--</span>
+                          <span className="text-gray-400">--</span>
                         )}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
