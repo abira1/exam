@@ -301,21 +301,41 @@ export const storage = {
 
       // Determine expected question count based on track type
       const expectedCount = submission.totalQuestions || 40; // Default to 40 for backward compatibility
+      const isWriting = submission.trackType === 'writing' && expectedCount === 2;
       
       // Check if all questions/tasks are marked
-      const markedCount = Object.keys(submission.marks).filter(
-        key => submission.marks![key] !== null
-      ).length;
+      let markedCount = 0;
+      let correctCount = 0;
+      
+      if (isWriting) {
+        // For writing tracks, specifically check task1 and task2
+        const taskKeys = ['task1', 'task2'];
+        taskKeys.forEach(taskKey => {
+          const mark = submission.marks![taskKey];
+          if (mark !== null && mark !== undefined) {
+            markedCount++;
+            if (mark === 'correct') {
+              correctCount++;
+            }
+          }
+        });
+      } else {
+        // For reading/listening tracks, check numbered questions
+        for (let i = 1; i <= expectedCount; i++) {
+          const mark = submission.marks![i];
+          if (mark !== null && mark !== undefined) {
+            markedCount++;
+            if (mark === 'correct') {
+              correctCount++;
+            }
+          }
+        }
+      }
       
       if (markedCount !== expectedCount) {
         console.log(`Marking incomplete: ${markedCount}/${expectedCount} marked`);
         return false;
       }
-
-      // Calculate manual score
-      const correctCount = Object.keys(submission.marks).filter(
-        key => submission.marks![key] === 'correct'
-      ).length;
       
       const updates: Partial<ExamSubmission> = {
         manualScore: Math.round((correctCount / expectedCount) * 100),
