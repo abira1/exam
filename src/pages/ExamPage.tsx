@@ -49,10 +49,15 @@ export function ExamPage({
   examCode,
   onSubmit
 }: ExamPageProps) {
-  const [answers, setAnswers] = useState<Record<number, string>>({});
-  const [writingAnswers, setWritingAnswers] = useState<Record<string, string>>({});
+  // Track-specific answer states for proper isolation in mock tests
+  const [trackAnswers, setTrackAnswers] = useState<Record<number, Record<number, string>>>({});
+  const [trackWritingAnswers, setTrackWritingAnswers] = useState<Record<number, Record<string, string>>>({});
   const [currentSection, setCurrentSection] = useState(0);
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
+  
+  // Current track's answers (derived from track-specific states)
+  const answers = trackAnswers[currentTrackIndex] || {};
+  const writingAnswers = trackWritingAnswers[currentTrackIndex] || {};
   const [timeRemaining, setTimeRemaining] = useState('--:--');
   const [startTime] = useState(Date.now());
   const [examEndTime, setExamEndTime] = useState<number | null>(null);
