@@ -943,12 +943,22 @@ export function ExamPage({
         </div>
       </main>
 
-      {currentTrack.trackType !== 'writing' && (
+      {currentTrack.trackType !== 'writing' && currentTrack.trackType !== 'reading' && (
         <QuestionNavigator
           answers={answers}
           onQuestionClick={handleQuestionClick}
           currentSection={currentSection}
         />
+      )}
+      
+      {currentTrack.trackType === 'reading' && (
+        <div className="flex-shrink-0">
+          <QuestionNavigator
+            answers={answers}
+            onQuestionClick={handleQuestionClick}
+            currentSection={currentSection}
+          />
+        </div>
       )}
     </div>
   );
