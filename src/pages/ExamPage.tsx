@@ -15,6 +15,8 @@ import { DragDropTableQuestion } from '../components/DragDropTableQuestion';
 import { MapTextInputQuestion } from '../components/MapTextInputQuestion';
 import { ParagraphGapQuestion } from '../components/ParagraphGapQuestion';
 import { WritingTaskInput } from '../components/WritingTaskInput';
+import { WritingTaskWithImage } from '../components/WritingTaskWithImage';
+import { WritingTaskTwoColumn } from '../components/WritingTaskTwoColumn';
 import { TrueFalseNotGiven } from '../components/questions/TrueFalseNotGiven';
 import { TrueFalseNotGivenCollapsible } from '../components/questions/TrueFalseNotGivenCollapsible';
 import { TableSelectionQuestion } from '../components/questions/TableSelectionQuestion';
