@@ -524,6 +524,17 @@ export function SubmissionsPage() {
 
   const handlePublishResult = async (submissionId: string) => {
     const submission = submissions.find(s => s.id === submissionId);
+    
+    // Phase 3: Check if this is a mock test
+    if (submission?.testType === 'mock') {
+      // Check if all band scores are present
+      const canPublish = await storage.canPublishResult(submissionId);
+      if (!canPublish) {
+        alert('Cannot publish result. Please ensure all section band scores (Listening, Reading, Writing, and Speaking) are entered.');
+        return;
+      }
+    }
+    
     const totalQs = submission?.totalQuestions || 40;
     const success = await storage.publishResult(submissionId);
     if (success) {
@@ -532,6 +543,65 @@ export function SubmissionsPage() {
     } else {
       const questionType = submission?.trackType === 'writing' && totalQs === 2 ? 'tasks' : 'questions';
       alert(`Please mark all ${totalQs} ${questionType} before publishing the result.`);
+    }
+  };
+  
+  // Phase 3: Handler for marking questions in mock test sections
+  const handleMarkSectionQuestion = async (
+    submissionId: string,
+    section: 'listening' | 'reading' | 'writing',
+    questionNumber: number | string,
+    mark: 'correct' | 'incorrect' | null
+  ) => {
+    try {
+      const submission = submissions.find(s => s.id === submissionId);
+      if (!submission || !submission.sectionSubmissions || !submission.sectionSubmissions[section]) {
+        console.error('Section submission not found');
+        return;
+      }
+      
+      // Update marks for the section
+      const sectionData = submission.sectionSubmissions[section];
+      const updatedMarks = {
+        ...sectionData.marks,
+        [questionNumber]: mark
+      };
+      
+      // Calculate correct answers count
+      const correctCount = Object.values(updatedMarks).filter(m => m === 'correct').length;
+      
+      // Update section submission with new marks and correct count
+      const updatedSectionData = {
+        ...sectionData,
+        marks: updatedMarks,
+        correctAnswers: correctCount
+      };
+      
+      await storage.updateSectionSubmission(submissionId, section, updatedSectionData);
+      await loadSubmissions();
+    } catch (error) {
+      console.error('Error marking section question:', error);
+    }
+  };
+  
+  // Phase 3: Handler for saving section band scores
+  const handleSaveSectionBandScore = async (
+    submissionId: string,
+    section: 'listening' | 'reading' | 'writing' | 'speaking',
+    bandScore: number
+  ) => {
+    try {
+      const success = await storage.saveSectionBandScore(submissionId, section, bandScore);
+      
+      if (success) {
+        await loadSubmissions();
+        alert(`${section.charAt(0).toUpperCase() + section.slice(1)} band score saved successfully!`);
+      } else {
+        alert('Failed to save band score. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error saving band score:', error);
+      alert('An error occurred while saving the band score.');
     }
   };
 
