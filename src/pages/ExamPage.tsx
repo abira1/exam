@@ -540,6 +540,32 @@ export function ExamPage({
       );
     }
 
+    if (question.type === 'true-false-not-given-collapsible') {
+      return (
+        <TrueFalseNotGivenCollapsible
+          key={idx}
+          instruction={question.instruction}
+          boxInstruction={question.boxInstruction}
+          statements={question.statements}
+          answers={answers}
+          onAnswerChange={handleAnswerChange}
+        />
+      );
+    }
+
+    if (question.type === 'table-selection') {
+      return (
+        <TableSelectionQuestion
+          key={idx}
+          instruction={question.instruction}
+          headers={question.headers}
+          rows={question.rows}
+          answers={answers}
+          onAnswerChange={handleAnswerChange}
+        />
+      );
+    }
+
     if (question.type === 'yes-no-not-given') {
       return (
         <YesNoNotGiven
