@@ -510,7 +510,47 @@ export function ExamPage({
   };
 
   const renderQuestion = (question: any, idx: number) => {
-    // Writing Task
+    // Writing Task with Image (for Task 1 with chart)
+    if (question.type === 'writing-task-with-image') {
+      const taskKey = `${currentTrack.id}-task${question.taskNumber}`;
+      return (
+        <WritingTaskWithImage
+          key={idx}
+          taskNumber={question.taskNumber}
+          title={question.title}
+          instruction={question.instruction}
+          chartDescription={question.chartDescription}
+          chartImageURL={question.chartImageURL}
+          prompt={question.prompt}
+          minWords={question.minWords}
+          timeRecommended={question.timeRecommended}
+          value={writingAnswers[taskKey] || ''}
+          onChange={(value) => handleWritingAnswerChange(taskKey, value)}
+        />
+      );
+    }
+
+    // Writing Task with Two-Column Layout (for Task 2 with boxed prompt)
+    if (question.type === 'writing-task' && question.topicIntro) {
+      const taskKey = `${currentTrack.id}-task${question.taskNumber}`;
+      return (
+        <WritingTaskTwoColumn
+          key={idx}
+          taskNumber={question.taskNumber}
+          title={question.title}
+          instruction={question.instruction}
+          topicIntro={question.topicIntro}
+          prompt={question.prompt}
+          closingInstruction={question.closingInstruction}
+          minWords={question.minWords}
+          timeRecommended={question.timeRecommended}
+          value={writingAnswers[taskKey] || ''}
+          onChange={(value) => handleWritingAnswerChange(taskKey, value)}
+        />
+      );
+    }
+
+    // Standard Writing Task (fallback)
     if (question.type === 'writing-task') {
       const taskKey = `${currentTrack.id}-task${question.taskNumber}`;
       return (
