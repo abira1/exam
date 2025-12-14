@@ -263,6 +263,7 @@ export const storage = {
           submission.marks = {};
         }
         submission.marks[questionKey] = mark;
+        console.log('Mark updated in localStorage:', { submissionId, questionKey, mark, allMarks: submission.marks });
         localStorageHelper.saveAll(submissions);
       }
 
@@ -279,7 +280,7 @@ export const storage = {
         } else {
           await set(ref(db, path), mark);
         }
-        console.log('Mark updated in Firebase:', submissionId, questionKey);
+        console.log('Mark updated in Firebase:', { submissionId, questionKey, mark });
       }
       
       return true;
