@@ -248,6 +248,7 @@ export interface Section {
     | YesNoNotGivenQuestion
     | MatchingHeadingsQuestion
     | WritingTaskQuestion
+    | WritingTaskWithImageQuestion
   >;
 }
 export const examData: Section[] = [{
