@@ -225,6 +225,8 @@ export interface Section {
     | MapTextInputQuestion
     | ParagraphGapQuestion
     | TrueFalseNotGivenQuestion
+    | TrueFalseNotGivenCollapsibleQuestion
+    | TableSelectionQuestion
     | YesNoNotGivenQuestion
     | MatchingHeadingsQuestion
     | WritingTaskQuestion
