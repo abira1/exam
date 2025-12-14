@@ -147,6 +147,26 @@ export interface TrueFalseNotGivenQuestion {
   }>;
 }
 
+export interface TrueFalseNotGivenCollapsibleQuestion {
+  type: 'true-false-not-given-collapsible';
+  instruction: string;
+  boxInstruction?: string;
+  statements: Array<{
+    questionNumber: number;
+    statement: string;
+  }>;
+}
+
+export interface TableSelectionQuestion {
+  type: 'table-selection';
+  instruction: string;
+  headers: string[];
+  rows: Array<{
+    questionNumber: number;
+    label: string;
+  }>;
+}
+
 export interface YesNoNotGivenQuestion {
   type: 'yes-no-not-given';
   instruction: string;
