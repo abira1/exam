@@ -7,6 +7,10 @@ interface TableSelectionQuestionProps {
     questionNumber: number;
     label: string;
   }>;
+  optionsLegend?: Array<{
+    value: string;
+    label: string;
+  }>;
   answers: Record<number, string>;
   onAnswerChange: (questionNumber: number, value: string) => void;
 }
@@ -15,6 +19,7 @@ export function TableSelectionQuestion({
   instruction,
   headers,
   rows,
+  optionsLegend,
   answers,
   onAnswerChange
 }: TableSelectionQuestionProps) {
