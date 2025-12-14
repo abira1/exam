@@ -71,6 +71,9 @@ export function ExamPage({
   const [currentExamCode, setCurrentExamCode] = useState<string | null>(examCode);
   const [currentBatchId] = useState<string | null>(studentBatchId || null);
   
+  // Text highlighting for reading passages
+  const [highlights, setHighlights] = useState<Record<string, string[]>>({});
+  
   // Get current track data
   const currentTrackData = trackDataList[currentTrackIndex];
   const currentTrack = currentTrackData?.track;
