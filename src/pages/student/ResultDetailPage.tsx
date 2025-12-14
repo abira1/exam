@@ -301,78 +301,82 @@ export function ResultDetailPage() {
           </div>
         )}
 
-        {/* Section-wise Performance */}
-        <div className="bg-white rounded-lg shadow-md p-8 mb-6 border border-gray-200">
-          <h3 className="text-xl font-bold text-gray-900 mb-6">📊 Section-wise Performance</h3>
-          <div className="space-y-6">
-            {sectionStats.map((section, idx) => (
-              <div key={idx}>
-                <div className="flex items-center justify-between mb-2">
-                  <div className="flex items-center gap-3">
-                    <span className="font-semibold text-gray-900">{section.section}</span>
-                    <span className="text-sm text-gray-600">
-                      Questions {idx * 10 + 1}-{idx * 10 + 10}
-                    </span>
+        {/* Section-wise Performance - Only for Partial Tests */}
+        {submission.testType !== 'mock' && (
+          <>
+            <div className="bg-white rounded-lg shadow-md p-8 mb-6 border border-gray-200">
+              <h3 className="text-xl font-bold text-gray-900 mb-6">📊 Section-wise Performance</h3>
+              <div className="space-y-6">
+                {sectionStats.map((section, idx) => (
+                  <div key={idx}>
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center gap-3">
+                        <span className="font-semibold text-gray-900">{section.section}</span>
+                        <span className="text-sm text-gray-600">
+                          Questions {idx * 10 + 1}-{idx * 10 + 10}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-4">
+                        <span className="text-sm font-medium text-gray-900">
+                          {section.correct}/{section.total}
+                        </span>
+                        <span className="text-sm font-semibold text-blue-600">
+                          {section.percentage}%
+                        </span>
+                      </div>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+                      <div
+                        className="bg-gradient-to-r from-blue-500 to-indigo-600 h-3 rounded-full transition-all"
+                        style={{ width: `${section.percentage}%` }}
+                      ></div>
+                    </div>
+                    <div className="flex items-center gap-4 mt-2 text-xs text-gray-600">
+                      <span className="flex items-center gap-1">
+                        <CheckCircle className="w-3 h-3 text-green-600" />
+                        {section.correct} Correct
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <XCircle className="w-3 h-3 text-red-600" />
+                        {section.incorrect} Incorrect
+                      </span>
+                      {section.unanswered > 0 && (
+                        <span className="flex items-center gap-1">
+                          <Clock className="w-3 h-3 text-gray-400" />
+                          {section.unanswered} Unanswered
+                        </span>
+                      )}
+                    </div>
                   </div>
-                  <div className="flex items-center gap-4">
-                    <span className="text-sm font-medium text-gray-900">
-                      {section.correct}/{section.total}
-                    </span>
-                    <span className="text-sm font-semibold text-blue-600">
-                      {section.percentage}%
-                    </span>
-                  </div>
-                </div>
-                <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
-                  <div
-                    className="bg-gradient-to-r from-blue-500 to-indigo-600 h-3 rounded-full transition-all"
-                    style={{ width: `${section.percentage}%` }}
-                  ></div>
-                </div>
-                <div className="flex items-center gap-4 mt-2 text-xs text-gray-600">
-                  <span className="flex items-center gap-1">
-                    <CheckCircle className="w-3 h-3 text-green-600" />
-                    {section.correct} Correct
-                  </span>
-                  <span className="flex items-center gap-1">
-                    <XCircle className="w-3 h-3 text-red-600" />
-                    {section.incorrect} Incorrect
-                  </span>
-                  {section.unanswered > 0 && (
-                    <span className="flex items-center gap-1">
-                      <Clock className="w-3 h-3 text-gray-400" />
-                      {section.unanswered} Unanswered
-                    </span>
-                  )}
-                </div>
+                ))}
               </div>
-            ))}
-          </div>
-        </div>
+            </div>
 
-        {/* Performance Radar Chart */}
-        <div className="bg-white rounded-lg shadow-md p-8 mb-6 border border-gray-200">
-          <h3 className="text-xl font-bold text-gray-900 mb-6">📈 Performance Overview</h3>
-          <div className="h-80">
-            <ResponsiveContainer width="100%" height="100%">
-              <RadarChart data={radarData}>
-                <PolarGrid />
-                <PolarAngleAxis dataKey="subject" />
-                <PolarRadiusAxis angle={90} domain={[0, 100]} />
-                <Radar
-                  name="Score"
-                  dataKey="score"
-                  stroke="#3b82f6"
-                  fill="#3b82f6"
-                  fillOpacity={0.6}
-                />
-              </RadarChart>
-            </ResponsiveContainer>
-          </div>
-          <p className="text-sm text-gray-500 mt-4 text-center">
-            Radar chart showing your performance across all four sections
-          </p>
-        </div>
+            {/* Performance Radar Chart */}
+            <div className="bg-white rounded-lg shadow-md p-8 mb-6 border border-gray-200">
+              <h3 className="text-xl font-bold text-gray-900 mb-6">📈 Performance Overview</h3>
+              <div className="h-80">
+                <ResponsiveContainer width="100%" height="100%">
+                  <RadarChart data={radarData}>
+                    <PolarGrid />
+                    <PolarAngleAxis dataKey="subject" />
+                    <PolarRadiusAxis angle={90} domain={[0, 100]} />
+                    <Radar
+                      name="Score"
+                      dataKey="score"
+                      stroke="#3b82f6"
+                      fill="#3b82f6"
+                      fillOpacity={0.6}
+                    />
+                  </RadarChart>
+                </ResponsiveContainer>
+              </div>
+              <p className="text-sm text-gray-500 mt-4 text-center">
+                Radar chart showing your performance across all four sections
+              </p>
+            </div>
+          </>
+        )}
 
         {/* Print Footer */}
         <div className="hidden print:block mt-12 pt-6 border-t border-gray-300 text-center text-sm text-gray-600">
