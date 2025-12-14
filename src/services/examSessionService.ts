@@ -285,19 +285,23 @@ export const examSessionService = {
       console.log('✓ Exam session updated to active');
 
       // Update global exam status to include examCode
-      const examStatus = {
+      const examStatus: any = {
         isStarted: true,
         activeTrackId: session.trackId,
         trackName: session.trackName,
         testType: session.testType || 'partial',
         selectedTracks: session.selectedTracks,
-        trackDurations: session.trackDurations,
         examCode: examCode,
         startTime: new Date().toISOString(),
         endTime: new Date(Date.now() + session.duration * 60000).toISOString(),
         duration: session.duration,
         startedBy: session.createdBy
       };
+
+      // Only include trackDurations if it exists (for mock tests)
+      if (session.trackDurations) {
+        examStatus.trackDurations = session.trackDurations;
+      }
       
       await set(ref(db, 'exam/status'), examStatus);
       console.log('✓ Global exam status updated:', examStatus);
