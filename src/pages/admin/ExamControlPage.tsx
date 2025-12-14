@@ -238,13 +238,12 @@ export function ExamControlPage() {
       const sessionDate = new Date(`${examDate}T${startTime}`);
       const endDate = new Date(sessionDate.getTime() + duration * 60000);
 
-      const result = await examSessionService.createExamSession({
+      const sessionData: any = {
         examCode: generatedExamCode,
         trackId: trackId,
         trackName: trackName,
         testType: testType,
         selectedTracks: selectedTracks,
-        trackDurations: testType === 'mock' ? mockDurations : undefined,
         date: examDate,
         startTime: startTime,
         endTime: format(endDate, 'HH:mm'),
@@ -253,7 +252,14 @@ export function ExamControlPage() {
         allowedBatches: selectedBatches,
         audioURL: audioURL,
         createdBy: 'admin' // TODO: Get from auth context
-      });
+      };
+
+      // Only include trackDurations for mock tests
+      if (testType === 'mock') {
+        sessionData.trackDurations = mockDurations;
+      }
+
+      const result = await examSessionService.createExamSession(sessionData);
 
       if (result.success) {
         // If starting immediately, update global exam status
