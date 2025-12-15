@@ -1658,6 +1658,23 @@ export function SubmissionsPage() {
                                     )}
                                   </div>
                                 </div>
+                              ) : submission.testType === 'mock' && (!submission.sectionSubmissions || Object.keys(submission.sectionSubmissions).length === 0) ? (
+                                /* Mock Test with No Section Data */
+                                <div className="bg-red-50 border-2 border-red-200 rounded-lg p-8 text-center">
+                                  <AlertCircleIcon className="w-16 h-16 text-red-600 mx-auto mb-4" />
+                                  <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                                    Mock Test Submission Data Not Available
+                                  </h3>
+                                  <p className="text-gray-600 mb-4">
+                                    This mock test submission does not contain section-wise data (Listening, Reading, Writing).
+                                    The submission may be incomplete or was created before the mock test feature was implemented.
+                                  </p>
+                                  <div className="text-sm text-gray-500">
+                                    <p><strong>Submission ID:</strong> {submission.id}</p>
+                                    <p><strong>Student:</strong> {submission.studentName} ({submission.studentId})</p>
+                                    <p><strong>Submitted:</strong> {new Date(submission.submittedAt).toLocaleString()}</p>
+                                  </div>
+                                </div>
                               ) : (
                                 /* Partial Test Marking Interface (existing code) */
                                 <div className="space-y-4">
