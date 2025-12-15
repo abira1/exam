@@ -362,7 +362,7 @@ export const storage = {
         const updates: Partial<ExamSubmission> = {
           resultPublished: true,
           publishedAt: new Date().toISOString(),
-          overallBandScore: overallBandScore || undefined
+          overallBand: overallBandScore || undefined
         };
 
         await this.updateSubmission(submissionId, updates);
