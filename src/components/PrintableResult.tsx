@@ -360,37 +360,37 @@ export const PrintableResult: React.FC<PrintableResultProps> = ({ submission, on
           </div>
 
           {/* Signature Section */}
-          <div className="mt-8 pt-6 border-t-2 border-gray-200">
+          <div className="mt-8 pt-6 border-t-4 border-gray-900">
             <div className="grid grid-cols-3 gap-8 text-center">
               <div>
-                <div className="border-t-2 border-gray-400 pt-2 mt-12">
-                  <p className="text-sm font-semibold text-gray-700">Teacher Signature</p>
-                  <p className="text-xs text-gray-500 mt-1">
+                <div className="border-t-2 border-gray-900 pt-2 mt-12">
+                  <p className="text-sm font-bold text-gray-900 uppercase tracking-wider">Teacher Signature</p>
+                  <p className="text-xs text-gray-700 mt-1 font-semibold">
                     {submission.markedBy || 'Examiner'}
                   </p>
                 </div>
               </div>
               <div>
-                <div className="border-t-2 border-gray-400 pt-2 mt-12">
-                  <p className="text-sm font-semibold text-gray-700">Date</p>
-                  <p className="text-xs text-gray-500 mt-1">
+                <div className="border-t-2 border-gray-900 pt-2 mt-12">
+                  <p className="text-sm font-bold text-gray-900 uppercase tracking-wider">Date</p>
+                  <p className="text-xs text-gray-700 mt-1 font-semibold">
                     {new Date().toLocaleDateString()}
                   </p>
                 </div>
               </div>
               <div>
-                <div className="border-t-2 border-gray-400 pt-2 mt-12">
-                  <p className="text-sm font-semibold text-gray-700">Administrator</p>
-                  <p className="text-xs text-gray-500 mt-1">Shah Sultan</p>
+                <div className="border-t-2 border-gray-900 pt-2 mt-12">
+                  <p className="text-sm font-bold text-gray-900 uppercase tracking-wider">Administrator</p>
+                  <p className="text-xs text-gray-700 mt-1 font-semibold">Shah Sultan</p>
                 </div>
               </div>
             </div>
           </div>
 
           {/* Footer */}
-          <div className="mt-8 text-center text-xs text-gray-500 border-t pt-4">
-            <p className="mb-1">This is an official result document from Shah Sultan IELTS Academy</p>
-            <p>Generated on {new Date().toLocaleString()}</p>
+          <div className="mt-8 text-center text-xs text-gray-700 border-t-2 border-gray-900 pt-4">
+            <p className="mb-1 font-semibold uppercase tracking-wider">This is an official result document from Shah Sultan IELTS Academy</p>
+            <p className="text-gray-600">Generated on {new Date().toLocaleString()}</p>
           </div>
         </div>
       </div>
