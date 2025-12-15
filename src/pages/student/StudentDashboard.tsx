@@ -410,35 +410,106 @@ export function StudentDashboard() {
           )}
         </div>
 
-        {/* Performance Graph */}
+        {/* Performance Trend - Bar Chart */}
         {chartData.length > 0 && (
           <div className="bg-white rounded-lg shadow-md p-6 border border-gray-200 mb-8">
             <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
               <TrendingUp className="w-5 h-5 text-purple-600" />
               My Performance Trend
             </h3>
-            <div className="h-80">
+            
+            {/* Legend */}
+            <div className="flex items-center justify-center gap-6 mb-6">
+              <div className="flex items-center gap-2">
+                <div className="w-4 h-4 bg-blue-500 rounded"></div>
+                <span className="text-sm font-medium text-gray-700">Mock Tests</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-4 h-4 bg-green-500 rounded"></div>
+                <span className="text-sm font-medium text-gray-700">Partial Tests</span>
+              </div>
+            </div>
+
+            <div className="h-96">
               <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={chartData}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="date" />
-                  <YAxis domain={[0, 100]} />
-                  <Tooltip />
-                  <Legend />
-                  <Line 
-                    type="monotone" 
-                    dataKey="score" 
-                    stroke="#3b82f6" 
-                    strokeWidth={2}
-                    name="Score (%)"
-                    dot={{ fill: '#3b82f6', r: 4 }}
+                <BarChart 
+                  data={chartData}
+                  margin={{ top: 20, right: 30, left: 20, bottom: 60 }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                  <XAxis 
+                    dataKey="name" 
+                    angle={-45}
+                    textAnchor="end"
+                    height={100}
+                    interval={0}
+                    tick={{ fontSize: 12, fill: '#374151' }}
                   />
-                </LineChart>
+                  <YAxis 
+                    domain={[0, 100]} 
+                    label={{ value: 'Score (%)', angle: -90, position: 'insideLeft', style: { fontSize: 14, fill: '#374151' } }}
+                    tick={{ fontSize: 12, fill: '#374151' }}
+                  />
+                  <Tooltip 
+                    contentStyle={{ 
+                      backgroundColor: '#ffffff', 
+                      border: '1px solid #e5e7eb', 
+                      borderRadius: '8px',
+                      boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+                    }}
+                    formatter={(value: any, name: string, props: any) => {
+                      const data = props.payload;
+                      return [
+                        <div key="tooltip" className="p-2">
+                          <div className="font-semibold text-gray-900 mb-2">{data.name}</div>
+                          <div className="text-sm text-gray-700 space-y-1">
+                            <div className="flex justify-between gap-4">
+                              <span>Score:</span>
+                              <span className="font-bold text-blue-600">{value}%</span>
+                            </div>
+                            <div className="flex justify-between gap-4">
+                              <span>Track:</span>
+                              <span className="font-medium">{data.trackName}</span>
+                            </div>
+                            <div className="flex justify-between gap-4">
+                              <span>Date:</span>
+                              <span>{data.date}</span>
+                            </div>
+                            <div className="flex justify-between gap-4">
+                              <span>Exam Code:</span>
+                              <span className="font-mono text-xs">{data.examCode}</span>
+                            </div>
+                          </div>
+                        </div>,
+                        ''
+                      ];
+                    }}
+                    labelFormatter={() => ''}
+                  />
+                  <Bar 
+                    dataKey="score" 
+                    radius={[8, 8, 0, 0]}
+                    maxBarSize={60}
+                  >
+                    {chartData.map((entry, index) => (
+                      <Cell 
+                        key={`cell-${index}`} 
+                        fill={entry.testType === 'mock' ? '#3b82f6' : '#10b981'}
+                      />
+                    ))}
+                  </Bar>
+                </BarChart>
               </ResponsiveContainer>
             </div>
-            <p className="text-sm text-gray-500 mt-4 text-center">
-              Showing performance across {chartData.length} published exam{chartData.length !== 1 ? 's' : ''}
-            </p>
+            
+            <div className="mt-6 text-center space-y-2">
+              <p className="text-sm text-gray-600">
+                Showing performance across {chartData.length} published exam{chartData.length !== 1 ? 's' : ''}
+              </p>
+              <p className="text-xs text-gray-500">
+                Hover over bars to view detailed information
+              </p>
+            </div>
           </div>
         )}
 
