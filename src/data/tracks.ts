@@ -3,6 +3,7 @@ import { track1, Track } from './track1';
 import { track4 } from './track4';
 import { track5 } from './track5';
 import { track6 } from './track6';
+import { track3MListening } from './track-3m-listening';
 import { track1MReading } from './track-1m-reading';
 import { track1MWriting } from './track-1m-writing';
 import { track2MWriting } from './track-2m-writing';
@@ -17,6 +18,7 @@ export const allTracks: Track[] = [
   track4, 
   track5, 
   track6,
+  track3MListening,
   // Reading Tracks
   track1MReading,
   // Writing Tracks
