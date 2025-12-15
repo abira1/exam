@@ -291,35 +291,37 @@ export const PrintableResult: React.FC<PrintableResultProps> = ({ submission, on
             </>
           )}
 
-          {/* Section-wise Breakdown */}
-          <div className="mb-6">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4 pb-2 border-b border-gray-200">
-              Section-wise Performance
-            </h3>
-            <div className="grid grid-cols-4 gap-4">
-              {[
-                { title: 'Section 1', range: 'Q1-10', score: stats.section1 },
-                { title: 'Section 2', range: 'Q11-20', score: stats.section2 },
-                { title: 'Section 3', range: 'Q21-30', score: stats.section3 },
-                { title: 'Section 4', range: 'Q31-40', score: stats.section4 }
-              ].map((section, idx) => (
-                <div key={idx} className="bg-white border-2 border-gray-200 rounded-lg p-4 text-center">
-                  <h4 className="text-sm font-semibold text-gray-700 mb-1">{section.title}</h4>
-                  <p className="text-xs text-gray-500 mb-3">{section.range}</p>
-                  <div className="text-3xl font-bold text-blue-600">
-                    {section.score}<span className="text-lg text-gray-500">/10</span>
+          {/* Section-wise Breakdown - Only for Partial Tests */}
+          {!isMockTest && (
+            <div className="mb-6">
+              <h3 className="text-lg font-semibold text-gray-800 mb-4 pb-2 border-b border-gray-200">
+                Section-wise Performance
+              </h3>
+              <div className="grid grid-cols-4 gap-4">
+                {[
+                  { title: 'Section 1', range: 'Q1-10', score: stats.section1 },
+                  { title: 'Section 2', range: 'Q11-20', score: stats.section2 },
+                  { title: 'Section 3', range: 'Q21-30', score: stats.section3 },
+                  { title: 'Section 4', range: 'Q31-40', score: stats.section4 }
+                ].map((section, idx) => (
+                  <div key={idx} className="bg-white border-2 border-gray-200 rounded-lg p-4 text-center">
+                    <h4 className="text-sm font-semibold text-gray-700 mb-1">{section.title}</h4>
+                    <p className="text-xs text-gray-500 mb-3">{section.range}</p>
+                    <div className="text-3xl font-bold text-blue-600">
+                      {section.score}<span className="text-lg text-gray-500">/10</span>
+                    </div>
+                    <div className="mt-2 bg-gray-100 rounded-full h-2 overflow-hidden">
+                      <div 
+                        className="bg-blue-600 h-full transition-all"
+                        style={{ width: `${(section.score / 10) * 100}%` }}
+                      ></div>
+                    </div>
+                    <p className="text-xs text-gray-600 mt-2">{(section.score / 10 * 100).toFixed(0)}%</p>
                   </div>
-                  <div className="mt-2 bg-gray-100 rounded-full h-2 overflow-hidden">
-                    <div 
-                      className="bg-blue-600 h-full transition-all"
-                      style={{ width: `${(section.score / 10) * 100}%` }}
-                    ></div>
-                  </div>
-                  <p className="text-xs text-gray-600 mt-2">{(section.score / 10 * 100).toFixed(0)}%</p>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Additional Information */}
           <div className="grid grid-cols-2 gap-6 mb-6">
