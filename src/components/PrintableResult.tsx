@@ -151,51 +151,145 @@ export const PrintableResult: React.FC<PrintableResultProps> = ({ submission, on
             </div>
           </div>
 
-          {/* Overall Score - Prominent Display */}
-          <div className="bg-gradient-to-br from-blue-50 to-indigo-50 p-6 rounded-xl border-2 border-blue-300 mb-6">
-            <div className="text-center">
-              <h3 className="text-lg font-semibold text-gray-700 mb-4">Overall Score</h3>
-              <div className="flex items-center justify-center gap-8">
-                <div>
-                  <div className="text-6xl font-bold text-blue-600 mb-2">
-                    {stats.correct}<span className="text-3xl text-gray-500">/{totalQs}</span>
+          {/* Overall Score - Mock Test vs Partial Test */}
+          {isMockTest ? (
+            <>
+              {/* Mock Test Band Score Display */}
+              <div className="bg-gradient-to-br from-blue-500 to-purple-600 p-8 rounded-xl border-2 border-blue-400 mb-6 text-white">
+                <div className="text-center">
+                  <h3 className="text-xl font-bold mb-4 opacity-90">IELTS Mock Test Result</h3>
+                  <div className="mb-2">
+                    <p className="text-sm opacity-80 mb-2">Overall Band Score</p>
+                    <div className="text-8xl font-bold mb-2">
+                      {submission.overallBand!.toFixed(1)}
+                    </div>
                   </div>
-                  <p className="text-sm text-gray-600">{submission.trackType === 'writing' && totalQs === 2 ? 'Tasks Correct' : 'Questions Correct'}</p>
-                </div>
-                <div className="h-20 w-px bg-gray-300"></div>
-                <div>
-                  <div className="text-6xl font-bold text-green-600 mb-2">
-                    {percentage}<span className="text-3xl text-gray-500">%</span>
+                  <div className="mt-4 pt-4 border-t border-white/30">
+                    <p className="text-sm opacity-90">
+                      {getBandInterpretation(submission.overallBand!)}
+                    </p>
                   </div>
-                  <p className="text-sm text-gray-600">Percentage</p>
                 </div>
               </div>
-              
-              {/* Performance Band */}
-              <div className="mt-4">
-                <div className="bg-white rounded-full h-3 overflow-hidden border border-gray-200">
+
+              {/* Section Band Scores */}
+              <div className="mb-6">
+                <h3 className="text-lg font-semibold text-gray-800 mb-4 pb-2 border-b border-gray-200">
+                  Section Band Scores
+                </h3>
+                <div className="grid grid-cols-4 gap-4">
+                  <div className="bg-gradient-to-br from-blue-50 to-blue-100 border-2 border-blue-300 rounded-lg p-5 text-center">
+                    <div className="text-2xl mb-2">🎧</div>
+                    <h4 className="text-sm font-semibold text-gray-700 mb-2">Listening</h4>
+                    <div className="text-4xl font-bold text-blue-600">
+                      {submission.sectionScores?.listening?.toFixed(1) || '--'}
+                    </div>
+                    <p className="text-xs text-gray-600 mt-2">Band Score</p>
+                  </div>
+                  
+                  <div className="bg-gradient-to-br from-green-50 to-green-100 border-2 border-green-300 rounded-lg p-5 text-center">
+                    <div className="text-2xl mb-2">📖</div>
+                    <h4 className="text-sm font-semibold text-gray-700 mb-2">Reading</h4>
+                    <div className="text-4xl font-bold text-green-600">
+                      {submission.sectionScores?.reading?.toFixed(1) || '--'}
+                    </div>
+                    <p className="text-xs text-gray-600 mt-2">Band Score</p>
+                  </div>
+                  
+                  <div className="bg-gradient-to-br from-orange-50 to-orange-100 border-2 border-orange-300 rounded-lg p-5 text-center">
+                    <div className="text-2xl mb-2">✍️</div>
+                    <h4 className="text-sm font-semibold text-gray-700 mb-2">Writing</h4>
+                    <div className="text-4xl font-bold text-orange-600">
+                      {submission.sectionScores?.writing?.toFixed(1) || '--'}
+                    </div>
+                    <p className="text-xs text-gray-600 mt-2">Band Score</p>
+                  </div>
+                  
+                  <div className="bg-gradient-to-br from-purple-50 to-purple-100 border-2 border-purple-300 rounded-lg p-5 text-center">
+                    <div className="text-2xl mb-2">🎤</div>
+                    <h4 className="text-sm font-semibold text-gray-700 mb-2">Speaking</h4>
+                    <div className="text-4xl font-bold text-purple-600">
+                      {submission.sectionScores?.speaking?.toFixed(1) || '--'}
+                    </div>
+                    <p className="text-xs text-gray-600 mt-2">Band Score</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Performance Indicator */}
+              <div className="bg-blue-50 p-5 rounded-lg border-2 border-blue-200 mb-6">
+                <h4 className="text-sm font-semibold text-gray-700 mb-3 flex items-center gap-2">
+                  <span className="text-lg">🎯</span>
+                  Performance Indicator
+                </h4>
+                <div className="bg-white rounded-full h-4 overflow-hidden border border-gray-300">
                   <div 
                     className={`h-full transition-all ${
-                      percentage >= 90 ? 'bg-green-500' :
-                      percentage >= 75 ? 'bg-blue-500' :
-                      percentage >= 60 ? 'bg-yellow-500' :
+                      submission.overallBand! >= 8.5 ? 'bg-green-500' :
+                      submission.overallBand! >= 7.5 ? 'bg-blue-500' :
+                      submission.overallBand! >= 6.5 ? 'bg-yellow-500' :
+                      submission.overallBand! >= 5.5 ? 'bg-orange-500' :
                       'bg-red-500'
                     }`}
-                    style={{ width: `${percentage}%` }}
+                    style={{ width: `${(submission.overallBand! / 9) * 100}%` }}
                   ></div>
                 </div>
-                <p className="text-xs text-gray-600 mt-2">
-                  Performance: {
-                    percentage >= 90 ? 'Excellent' :
-                    percentage >= 75 ? 'Very Good' :
-                    percentage >= 60 ? 'Good' :
-                    percentage >= 50 ? 'Satisfactory' :
-                    'Needs Improvement'
-                  }
-                </p>
+                <div className="flex justify-between text-xs text-gray-600 mt-2">
+                  <span>0.0</span>
+                  <span className="font-bold text-gray-800">Band {submission.overallBand!.toFixed(1)}</span>
+                  <span>9.0</span>
+                </div>
               </div>
-            </div>
-          </div>
+            </>
+          ) : (
+            <>
+              {/* Partial Test Score Display */}
+              <div className="bg-gradient-to-br from-blue-50 to-indigo-50 p-6 rounded-xl border-2 border-blue-300 mb-6">
+                <div className="text-center">
+                  <h3 className="text-lg font-semibold text-gray-700 mb-4">Overall Score</h3>
+                  <div className="flex items-center justify-center gap-8">
+                    <div>
+                      <div className="text-6xl font-bold text-blue-600 mb-2">
+                        {stats.correct}<span className="text-3xl text-gray-500">/{totalQs}</span>
+                      </div>
+                      <p className="text-sm text-gray-600">{submission.trackType === 'writing' && totalQs === 2 ? 'Tasks Correct' : 'Questions Correct'}</p>
+                    </div>
+                    <div className="h-20 w-px bg-gray-300"></div>
+                    <div>
+                      <div className="text-6xl font-bold text-green-600 mb-2">
+                        {percentage}<span className="text-3xl text-gray-500">%</span>
+                      </div>
+                      <p className="text-sm text-gray-600">Percentage</p>
+                    </div>
+                  </div>
+                  
+                  {/* Performance Band */}
+                  <div className="mt-4">
+                    <div className="bg-white rounded-full h-3 overflow-hidden border border-gray-200">
+                      <div 
+                        className={`h-full transition-all ${
+                          percentage >= 90 ? 'bg-green-500' :
+                          percentage >= 75 ? 'bg-blue-500' :
+                          percentage >= 60 ? 'bg-yellow-500' :
+                          'bg-red-500'
+                        }`}
+                        style={{ width: `${percentage}%` }}
+                      ></div>
+                    </div>
+                    <p className="text-xs text-gray-600 mt-2">
+                      Performance: {
+                        percentage >= 90 ? 'Excellent' :
+                        percentage >= 75 ? 'Very Good' :
+                        percentage >= 60 ? 'Good' :
+                        percentage >= 50 ? 'Satisfactory' :
+                        'Needs Improvement'
+                      }
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
 
           {/* Section-wise Breakdown */}
           <div className="mb-6">
