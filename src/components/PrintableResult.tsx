@@ -233,39 +233,34 @@ export const PrintableResult: React.FC<PrintableResultProps> = ({ submission, on
           ) : (
             <>
               {/* Partial Test Score Display */}
-              <div className="bg-gradient-to-br from-blue-50 to-indigo-50 p-6 rounded-xl border-2 border-blue-300 mb-6">
+              <div className="bg-white p-6 rounded-lg border-4 border-gray-900 mb-6">
                 <div className="text-center">
-                  <h3 className="text-lg font-semibold text-gray-700 mb-4">Overall Score</h3>
+                  <h3 className="text-lg font-bold text-gray-900 mb-6 uppercase tracking-wide">Overall Score</h3>
                   <div className="flex items-center justify-center gap-8">
                     <div>
-                      <div className="text-6xl font-bold text-blue-600 mb-2">
-                        {stats.correct}<span className="text-3xl text-gray-500">/{totalQs}</span>
+                      <div className="text-6xl font-bold text-gray-900 mb-2">
+                        {stats.correct}<span className="text-3xl text-gray-600">/{totalQs}</span>
                       </div>
-                      <p className="text-sm text-gray-600">{submission.trackType === 'writing' && totalQs === 2 ? 'Tasks Correct' : 'Questions Correct'}</p>
+                      <p className="text-sm text-gray-700 uppercase tracking-wider">{submission.trackType === 'writing' && totalQs === 2 ? 'Tasks Correct' : 'Questions Correct'}</p>
                     </div>
-                    <div className="h-20 w-px bg-gray-300"></div>
+                    <div className="h-20 w-px bg-gray-400"></div>
                     <div>
-                      <div className="text-6xl font-bold text-green-600 mb-2">
-                        {percentage}<span className="text-3xl text-gray-500">%</span>
+                      <div className="text-6xl font-bold text-gray-900 mb-2">
+                        {percentage}<span className="text-3xl text-gray-600">%</span>
                       </div>
-                      <p className="text-sm text-gray-600">Percentage</p>
+                      <p className="text-sm text-gray-700 uppercase tracking-wider">Percentage</p>
                     </div>
                   </div>
                   
                   {/* Performance Band */}
-                  <div className="mt-4">
-                    <div className="bg-white rounded-full h-3 overflow-hidden border border-gray-200">
+                  <div className="mt-6">
+                    <div className="bg-white rounded-full h-4 overflow-hidden border-2 border-gray-900">
                       <div 
-                        className={`h-full transition-all ${
-                          percentage >= 90 ? 'bg-green-500' :
-                          percentage >= 75 ? 'bg-blue-500' :
-                          percentage >= 60 ? 'bg-yellow-500' :
-                          'bg-red-500'
-                        }`}
+                        className="h-full bg-gray-900"
                         style={{ width: `${percentage}%` }}
                       ></div>
                     </div>
-                    <p className="text-xs text-gray-600 mt-2">
+                    <p className="text-sm text-gray-800 mt-3 font-semibold">
                       Performance: {
                         percentage >= 90 ? 'Excellent' :
                         percentage >= 75 ? 'Very Good' :
