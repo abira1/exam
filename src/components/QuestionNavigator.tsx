@@ -82,6 +82,29 @@ export function QuestionNavigator({
             if (row.label && typeof row.label === 'object' && row.label.questionNumber !== undefined) {
               questions.push(row.label.questionNumber);
             }
+            // Check row.cells array (for multi-column-table questions)
+            if (row.cells && Array.isArray(row.cells)) {
+              row.cells.forEach((cell: any) => {
+                // Check cell.questionNumber (direct property)
+                if (cell.questionNumber !== undefined) {
+                  questions.push(cell.questionNumber);
+                }
+                // Check cell.content.questionNumber (nested in content object)
+                if (cell.content && typeof cell.content === 'object' && cell.content.questionNumber !== undefined) {
+                  questions.push(cell.content.questionNumber);
+                }
+                // Extract question numbers from text content like "(31)............"
+                if (cell.content && typeof cell.content === 'string') {
+                  const matches = cell.content.matchAll(/\((\d+)\)/g);
+                  for (const match of matches) {
+                    const qNum = parseInt(match[1], 10);
+                    if (!isNaN(qNum)) {
+                      questions.push(qNum);
+                    }
+                  }
+                }
+              });
+            }
           });
         }
         
