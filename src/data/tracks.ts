@@ -8,6 +8,7 @@ import { trackWriting1 } from './track-writing-1';
 import { track1MWriting } from './track-1m-writing';
 import { track2MWriting } from './track-2m-writing';
 import { track3MWriting } from './track-3m-writing';
+import { track4MWriting } from './track-4m-writing';
 
 // Export all tracks as an array
 export const allTracks: Track[] = [
@@ -22,7 +23,8 @@ export const allTracks: Track[] = [
   trackWriting1,
   track1MWriting,
   track2MWriting,
-  track3MWriting
+  track3MWriting,
+  track4MWriting
 ];
 
 // Helper function to get track by ID
