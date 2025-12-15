@@ -1521,7 +1521,7 @@ export function SubmissionsPage() {
                           <tr>
                             <td colSpan={7} className="px-6 py-4 bg-gray-50">
                               {/* Phase 3: Mock Test Marking Interface */}
-                              {submission.testType === 'mock' && submission.sectionSubmissions ? (
+                              {submission.testType === 'mock' && submission.sectionSubmissions && Object.keys(submission.sectionSubmissions).length > 0 ? (
                                 <div className="space-y-6">
                                   {/* Section Navigation Tabs */}
                                   <div className="flex items-center gap-4 border-b border-gray-300 pb-2">
