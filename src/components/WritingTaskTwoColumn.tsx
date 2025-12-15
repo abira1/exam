@@ -12,6 +12,7 @@ interface WritingTaskTwoColumnProps {
   timeRecommended: number;
   value: string;
   onChange: (value: string) => void;
+  disabled?: boolean;
 }
 
 export function WritingTaskTwoColumn({
@@ -24,7 +25,8 @@ export function WritingTaskTwoColumn({
   minWords,
   timeRecommended,
   value,
-  onChange
+  onChange,
+  disabled = false
 }: WritingTaskTwoColumnProps) {
   const [wordCount, setWordCount] = useState(0);
   const [charCount, setCharCount] = useState(0);
@@ -134,7 +136,12 @@ export function WritingTaskTwoColumn({
             <textarea
               value={value}
               onChange={(e) => onChange(e.target.value)}
-              className="w-full h-[calc(100vh-320px)] min-h-[500px] p-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 resize-none font-mono text-sm leading-relaxed"
+              disabled={disabled}
+              className={`w-full h-[calc(100vh-320px)] min-h-[500px] p-3 border-2 rounded-lg resize-none font-mono text-sm leading-relaxed ${
+                disabled 
+                  ? 'bg-gray-100 border-gray-300 cursor-not-allowed' 
+                  : 'border-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-orange-500'
+              }`}
               placeholder="Type your answer here..."
               data-testid={`writing-textarea-task-${taskNumber}`}
             />
