@@ -77,6 +77,24 @@ export function DragAndDropQuestion({
         <p className="text-sm text-gray-700 italic">{instruction}</p>
       </div>
 
+      {/* Optional Image Display */}
+      {imageUrl && (
+        <div className="border border-gray-300 rounded-lg p-4 bg-white">
+          {imageTitle && (
+            <h3 className="text-lg font-semibold text-gray-900 mb-3 text-center">
+              {imageTitle}
+            </h3>
+          )}
+          <div className="flex justify-center">
+            <img 
+              src={imageUrl} 
+              alt={imageTitle || "Question reference image"} 
+              className="max-w-full h-auto rounded border border-gray-200"
+            />
+          </div>
+        </div>
+      )}
+
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Left side - Items to match */}
         <div className="space-y-3">
