@@ -101,7 +101,7 @@ export function StudentDashboard() {
     navigate(`/student/results/${submissionId}`);
   };
 
-  // Prepare chart data
+  // Prepare chart data for bar chart
   const chartData = mySubmissions
     .filter(sub => {
       if (!sub.resultPublished) return false;
@@ -109,16 +109,26 @@ export function StudentDashboard() {
       return sub.manualScore || (sub.testType === 'mock' && sub.overallBand !== undefined);
     })
     .sort((a, b) => new Date(a.submittedAt).getTime() - new Date(b.submittedAt).getTime())
-    .map(sub => {
+    .map((sub, index) => {
       let score = sub.manualScore || 0;
+      let displayLabel = '';
+      let testType = sub.testType || 'partial';
+      
       // For mock tests, convert band score to percentage for chart display
       if (sub.testType === 'mock' && sub.overallBand !== undefined) {
         score = Math.round((sub.overallBand / 9) * 100);
+        displayLabel = `Mock Test ${index + 1}`;
+      } else {
+        displayLabel = `Partial Test ${index + 1}`;
       }
+      
       return {
-        date: format(new Date(sub.submittedAt), 'MMM dd'),
+        name: displayLabel,
         score,
-        track: sub.trackName
+        testType,
+        trackName: sub.trackName,
+        date: format(new Date(sub.submittedAt), 'MMM dd, yyyy'),
+        examCode: sub.examCode || 'N/A'
       };
     });
 
