@@ -39,23 +39,36 @@ export function QuestionNavigator({
       const questions: number[] = [];
       
       section.questions.forEach((question: any) => {
+        // Check direct questionNumber property
         if (question.questionNumber !== undefined) {
           questions.push(question.questionNumber);
-        } else if (question.questionNumbers && Array.isArray(question.questionNumbers)) {
+        }
+        
+        // Check questionNumbers array
+        if (question.questionNumbers && Array.isArray(question.questionNumbers)) {
           questions.push(...question.questionNumbers);
-        } else if (question.items && Array.isArray(question.items)) {
+        }
+        
+        // Check items array
+        if (question.items && Array.isArray(question.items)) {
           question.items.forEach((item: any) => {
             if (item.questionNumber !== undefined) {
               questions.push(item.questionNumber);
             }
           });
-        } else if (question.statements && Array.isArray(question.statements)) {
+        }
+        
+        // Check statements array
+        if (question.statements && Array.isArray(question.statements)) {
           question.statements.forEach((statement: any) => {
             if (statement.questionNumber !== undefined) {
               questions.push(statement.questionNumber);
             }
           });
-        } else if (question.rows && Array.isArray(question.rows)) {
+        }
+        
+        // Check rows array
+        if (question.rows && Array.isArray(question.rows)) {
           question.rows.forEach((row: any) => {
             // Check row.questionNumber (direct property)
             if (row.questionNumber !== undefined) {
@@ -70,29 +83,37 @@ export function QuestionNavigator({
               questions.push(row.label.questionNumber);
             }
           });
-        } else if (question.paragraphs && Array.isArray(question.paragraphs)) {
-          // For matching-headings questions
+        }
+        
+        // Check paragraphs array (for matching-headings questions)
+        if (question.paragraphs && Array.isArray(question.paragraphs)) {
           question.paragraphs.forEach((para: any) => {
             if (para.questionNumber !== undefined) {
               questions.push(para.questionNumber);
             }
           });
-        } else if (question.labels && Array.isArray(question.labels)) {
-          // For map-labeling questions
+        }
+        
+        // Check labels array (for map-labeling questions)
+        if (question.labels && Array.isArray(question.labels)) {
           question.labels.forEach((label: any) => {
             if (label.questionNumber !== undefined) {
               questions.push(label.questionNumber);
             }
           });
-        } else if (question.steps && Array.isArray(question.steps)) {
-          // For flowchart questions
+        }
+        
+        // Check steps array (for flowchart questions)
+        if (question.steps && Array.isArray(question.steps)) {
           question.steps.forEach((step: any) => {
             if (step.questionNumber !== undefined) {
               questions.push(step.questionNumber);
             }
           });
-        } else if (question.tableData && Array.isArray(question.tableData)) {
-          // For drag-drop-table questions
+        }
+        
+        // Check tableData array (for drag-drop-table questions)
+        if (question.tableData && Array.isArray(question.tableData)) {
           question.tableData.forEach((row: any) => {
             if (row.cells && Array.isArray(row.cells)) {
               row.cells.forEach((cell: any) => {
@@ -102,8 +123,10 @@ export function QuestionNavigator({
               });
             }
           });
-        } else if (question.headers && Array.isArray(question.headers)) {
-          // For table-selection questions
+        }
+        
+        // Check headers array (for table-selection questions)
+        if (question.headers && Array.isArray(question.headers)) {
           if (question.rows && Array.isArray(question.rows)) {
             question.rows.forEach((row: any) => {
               if (row.questionNumber !== undefined) {
