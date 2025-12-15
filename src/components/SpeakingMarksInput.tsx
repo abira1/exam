@@ -59,11 +59,13 @@ export function SpeakingMarksInput({
       {/* Assessment Criteria */}
       <div className="bg-purple-50 rounded-lg p-4 mb-4">
         <h4 className="text-sm font-semibold text-gray-900 mb-2">Assessment Criteria:</h4>
-        <ul className="text-sm text-gray-700 space-y-1">
+        <ul className="text-sm text-gray-700 space-y-2">
           {SPEAKING_CRITERIA.map((criterion, index) => (
-            <li key={index} className="flex items-center gap-2">
-              <span className="w-1.5 h-1.5 bg-purple-500 rounded-full"></span>
-              {criterion}
+            <li key={index} className="flex items-start gap-2">
+              <span className="w-1.5 h-1.5 bg-purple-500 rounded-full mt-1.5"></span>
+              <div>
+                <span className="font-medium">{criterion.name}:</span> {criterion.description}
+              </div>
             </li>
           ))}
         </ul>
