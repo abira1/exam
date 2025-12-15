@@ -339,8 +339,40 @@ export const storage = {
       const submissions = await this.getSubmissions();
       const submission = submissions.find(s => s.id === submissionId);
       
-      if (!submission || !submission.marks) {
-        console.log('Cannot publish: submission or marks not found', { submissionId, hasSubmission: !!submission, hasMarks: !!submission?.marks });
+      if (!submission) {
+        console.log('Cannot publish: submission not found', { submissionId });
+        return false;
+      }
+
+      // For mock tests, use different validation - only check section band scores
+      if (submission.testType === 'mock') {
+        // Mock tests don't need individual question marking validation
+        // They are validated by section band scores (checked in canPublishResult)
+        console.log('Publishing mock test result:', { submissionId });
+        
+        // Calculate overall band score from section scores
+        let overallBandScore = 0;
+        if (submission.sectionScores) {
+          const { listening, reading, writing, speaking } = submission.sectionScores;
+          if (listening !== undefined && reading !== undefined && writing !== undefined && speaking !== undefined) {
+            overallBandScore = parseFloat(((listening + reading + writing + speaking) / 4).toFixed(1));
+          }
+        }
+        
+        const updates: Partial<ExamSubmission> = {
+          resultPublished: true,
+          publishedAt: new Date().toISOString(),
+          overallBandScore: overallBandScore || undefined
+        };
+
+        await this.updateSubmission(submissionId, updates);
+        console.log('Mock test result published successfully:', { submissionId, overallBandScore });
+        return true;
+      }
+
+      // For partial tests (non-mock), validate individual question marking
+      if (!submission.marks) {
+        console.log('Cannot publish: marks not found', { submissionId, hasMarks: !!submission?.marks });
         return false;
       }
 
