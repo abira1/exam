@@ -102,35 +102,42 @@ export function StudentDashboard() {
   };
 
   // Prepare chart data for bar chart
-  const chartData = mySubmissions
+  const filteredSubmissions = mySubmissions
     .filter(sub => {
       if (!sub.resultPublished) return false;
       // Include if it has manualScore OR if it's a mock test with overallBand
       return sub.manualScore || (sub.testType === 'mock' && sub.overallBand !== undefined);
     })
-    .sort((a, b) => new Date(a.submittedAt).getTime() - new Date(b.submittedAt).getTime())
-    .map((sub, index) => {
-      let score = sub.manualScore || 0;
-      let displayLabel = '';
-      let testType = sub.testType || 'partial';
-      
-      // For mock tests, convert band score to percentage for chart display
-      if (sub.testType === 'mock' && sub.overallBand !== undefined) {
-        score = Math.round((sub.overallBand / 9) * 100);
-        displayLabel = `Mock Test ${index + 1}`;
-      } else {
-        displayLabel = `Partial Test ${index + 1}`;
-      }
-      
-      return {
-        name: displayLabel,
-        score,
-        testType,
-        trackName: sub.trackName,
-        date: format(new Date(sub.submittedAt), 'MMM dd, yyyy'),
-        examCode: sub.examCode || 'N/A'
-      };
-    });
+    .sort((a, b) => new Date(a.submittedAt).getTime() - new Date(b.submittedAt).getTime());
+
+  // Separate counters for mock and partial tests
+  let mockTestCounter = 0;
+  let partialTestCounter = 0;
+
+  const chartData = filteredSubmissions.map((sub) => {
+    let score = sub.manualScore || 0;
+    let displayLabel = '';
+    let testType = sub.testType || 'partial';
+    
+    // For mock tests, convert band score to percentage for chart display
+    if (sub.testType === 'mock' && sub.overallBand !== undefined) {
+      score = Math.round((sub.overallBand / 9) * 100);
+      mockTestCounter++;
+      displayLabel = `Mock Test ${mockTestCounter}`;
+    } else {
+      partialTestCounter++;
+      displayLabel = `Partial Test ${partialTestCounter}`;
+    }
+    
+    return {
+      name: displayLabel,
+      score,
+      testType,
+      trackName: sub.trackName,
+      date: format(new Date(sub.submittedAt), 'MMM dd, yyyy'),
+      examCode: sub.examCode || 'N/A'
+    };
+  });
 
   return (
     <div className="min-h-screen bg-gray-50">
