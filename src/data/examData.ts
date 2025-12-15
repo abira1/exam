@@ -43,6 +43,8 @@ export interface DropdownQuestion {
 export interface DragAndDropQuestion {
   type: 'drag-and-drop';
   instruction: string;
+  imageUrl?: string; // Optional image displayed above the drag-and-drop area
+  imageTitle?: string; // Optional title for the image
   items: Array<{
     questionNumber: number;
     label: string;
