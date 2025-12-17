@@ -215,7 +215,7 @@ From Harvard Business Review 2007`
           instruction: 'Complete the following summary of the paragraphs of Reading Passage using NO MORE THAN TWO WORDS from the Reading Passage for each answer.',
           paragraph: `The implement of CSR, HOW?
 
-Promotion of CSR requires the understanding of the interdependence between business and society. Corporations workers' productivity generally needs health care, education, and given 21……………………… Restrictions imposed by government and companies both protect consumers from being treated unfairly. Improvement of the safety standard can reduce the 22……………………… of accidents in the workplace. Similarly, society becomes a pool of more human needs and aspirations.`,
+Promotion of CSR requires the understanding of the interdependence between business and society. Corporations workers' productivity generally needs health care, education, and given (21)……………………… Restrictions imposed by government and companies both protect consumers from being treated unfairly. Improvement of the safety standard can reduce the (22)……………………… of accidents in the workplace. Similarly, society becomes a pool of more human needs and aspirations.`,
           questionNumbers: [21, 22]
         },
         {
