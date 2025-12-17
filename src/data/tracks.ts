@@ -5,6 +5,7 @@ import { track5 } from './track5';
 import { track6 } from './track6';
 import { track3MListening } from './track-3m-listening';
 import { track1MReading } from './track-1m-reading';
+import { track3MReading } from './track-3m-reading';
 import { track1MWriting } from './track-1m-writing';
 import { track2MWriting } from './track-2m-writing';
 import { track3MWriting } from './track-3m-writing';
