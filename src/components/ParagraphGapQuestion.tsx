@@ -6,6 +6,7 @@ interface ParagraphGapQuestionProps {
   questionNumbers: number[];
   answers: Record<number, string>;
   onAnswerChange: (questionNumber: number, value: string) => void;
+  disabled?: boolean;
 }
 
 export function ParagraphGapQuestion({
