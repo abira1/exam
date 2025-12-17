@@ -114,7 +114,7 @@ Historically the bristlecone's remote location and gnarled wood have deterred co
         {
           type: 'paragraph-gap',
           instruction: 'Complete the following summary of the paragraphs of Reading Passage using NO MORE THAN THREE WORDS from the Reading Passage for each answer.',
-          paragraph: `The bristlecone's special adaptation is a benefit for photosynthesizing, and reserving the 8……………………… of leaf replacement and providing sufficient chlorophyll. Probably because seeds do not rely on primary 9…………………………, germination rate is high. Because of cambium dieback, only narrow 10………………………….. remain complete. Due to multiple factors such as windy, cold climate and 11…………………………., bristlecones' rings have a tight and solid structure full of resin. Moreover, bristlecone stands are safe from fire because of little 12…………………………. plants spread in this place. The summits of Owens Valley are higher than they appear if you observe from a 13……………………………..`,
+          paragraph: `The bristlecone's special adaptation is a benefit for photosynthesizing, and reserving the (8)……………………… of leaf replacement and providing sufficient chlorophyll. Probably because seeds do not rely on primary (9)…………………………, germination rate is high. Because of cambium dieback, only narrow (10)………………………….. remain complete. Due to multiple factors such as windy, cold climate and (11)…………………………., bristlecones' rings have a tight and solid structure full of resin. Moreover, bristlecone stands are safe from fire because of little (12)…………………………. plants spread in this place. The summits of Owens Valley are higher than they appear if you observe from a (13)……………………………..`,
           questionNumbers: [8, 9, 10, 11, 12, 13]
         }
       ]
