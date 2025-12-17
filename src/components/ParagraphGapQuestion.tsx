@@ -15,13 +15,13 @@ export function ParagraphGapQuestion({
   answers,
   onAnswerChange
 }: ParagraphGapQuestionProps) {
-  // Split paragraph by question number patterns like (6)..........
+  // Split paragraph by question number patterns like (6).......... or (6)……………………
   const renderParagraphWithGaps = () => {
-    const parts = paragraph.split(/(\(\d+\)\.+)/);
+    const parts = paragraph.split(/(\(\d+\)[.…]+)/);
     
     return parts.map((part, idx) => {
-      // Check if this part matches the pattern (number)....
-      const match = part.match(/\((\d+)\)(\.+)/);
+      // Check if this part matches the pattern (number).... or (number)……………………
+      const match = part.match(/\((\d+)\)([.…]+)/);
       
       if (match) {
         const questionNumber = parseInt(match[1]);
