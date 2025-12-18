@@ -25,6 +25,7 @@ export const allTracks: Track[] = [
   track3MListening,
   // Reading Tracks
   track1MReading,
+  track2MReading,
   track3MReading,
   track4MReading,
   track5MReading,
