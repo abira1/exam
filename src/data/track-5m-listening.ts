@@ -25,21 +25,21 @@ export const track5MListening: Track = {
               cells: [
                 { content: { questionNumber: 1 } },
                 { content: 'Parkview Hotel' },
-                { content: '- Speak foreign languages\n- Have a valid ' + { questionNumber: 2 } + '\n- Include ' + { questionNumber: 3 } }
+                { content: '- Speak foreign languages\n- Have a valid (2)..............\n- Include (3)..............' }
               ]
             },
             {
               cells: [
                 { content: 'General Assistant' },
                 { content: 'Lakeside Hotel' },
-                { content: '- Pay is low\n- Free ' + { questionNumber: 4 } + '\n- Issue a ' + { questionNumber: 5 } }
+                { content: '- Pay is low\n- Free (4)..............\n- Issue a (5)..............' }
               ]
             },
             {
               cells: [
                 { content: 'Catering Assistant' },
                 { content: 'Hotel 98' },
-                { content: '- Wear ' + { questionNumber: 6 } + '\n- Night shift work\n- Travel outside the city' }
+                { content: '- Wear (6)..............\n- Night shift work\n- Travel outside the city' }
               ]
             }
           ]
@@ -51,19 +51,19 @@ export const track5MListening: Track = {
           steps: [
             {
               questionNumber: 7,
-              text: 'STEP ONE: Complete a'
+              text: 'STEP ONE: Complete a (7)..............'
             },
             {
               questionNumber: 8,
-              text: 'STEP TWO: Do a ______________ about personal skills'
+              text: 'STEP TWO: Do a (8).............. about personal skills'
             },
             {
               questionNumber: 9,
-              text: 'STEP THREE: Participate a training course involving'
+              text: 'STEP THREE: Participate a training course involving (9)..............'
             },
             {
               questionNumber: 10,
-              text: 'STEP FOUR: Get a ______________ about the work'
+              text: 'STEP FOUR: Get a (10).............. about the work'
             }
           ],
           options: []
@@ -77,7 +77,7 @@ export const track5MListening: Track = {
         {
           type: 'paragraph-gap',
           instruction: 'Write NO MORE THAN THREE WORDS AND/OR A NUMBER for each answer.',
-          paragraph: 'REGISTRATION OF FOREIGN NATIONALS AT THE HEALTH CENTER STANDARD PROCEDURES\n\nRegister as a (11)__________\n\nFill in a medical history form with details of previous illness, (12)__________ surgeries and (13)__________\n\nComplete a (14)__________ with personal information such as name, address and telephone number.',
+          paragraph: 'REGISTRATION OF FOREIGN NATIONALS AT THE HEALTH CENTER STANDARD PROCEDURES\n\nRegister as a (11)..............\n\nFill in a medical history form with details of previous illness, (12).............. surgeries and (13)..............\n\nComplete a (14).............. with personal information such as name, address and telephone number.',
           questionNumbers: [11, 12, 13, 14]
         },
         {
@@ -152,15 +152,15 @@ export const track5MListening: Track = {
           items: [
             {
               questionNumber: 21,
-              text: 'People domesticate bees for honey and'
+              text: 'People domesticate bees for honey and (21)..............'
             },
             {
               questionNumber: 22,
-              text: 'Commercial crops such as almond, cherry, __________, water melon, cucumber, depend on pollination.'
+              text: 'Commercial crops such as almond, cherry, (22).............., water melon, cucumber, depend on pollination.'
             },
             {
               questionNumber: 23,
-              text: 'Animal pollination contributes __________ dollars a year to world agriculture.'
+              text: 'Animal pollination contributes (23).............. dollars a year to world agriculture.'
             }
           ]
         },
@@ -214,7 +214,7 @@ export const track5MListening: Track = {
         {
           type: 'paragraph-gap',
           instruction: 'Write NO MORE THAN TWO WORDS AND/OR A NUMBER for each answer.',
-          paragraph: 'THE LONDON EYE\n\nThe London Eye, or (31)__________ Wheel is an extremely large passenger-carrying Ferris wheel situated on the banks of the (32)__________ in Central London in the United Kingdom. It attracts (33)__________ people annually. Back in 2000, (34)__________ was the main sponsor. Today, the London Eye is operated by the London Eye Company Limited, a Merlin Entertainments Group Company. Standing at a height of (35)__________ is the largest Ferris wheel in Europe, and has become the most popular paid tourist attraction in the United Kingdom, visited by over three million people in one year.',
+          paragraph: 'THE LONDON EYE\n\nThe London Eye, or (31).............. Wheel is an extremely large passenger-carrying Ferris wheel situated on the banks of the (32).............. in Central London in the United Kingdom. It attracts (33).............. people annually. Back in 2000, (34).............. was the main sponsor. Today, the London Eye is operated by the London Eye Company Limited, a Merlin Entertainments Group Company. Standing at a height of (35).............. is the largest Ferris wheel in Europe, and has become the most popular paid tourist attraction in the United Kingdom, visited by over three million people in one year.',
           questionNumbers: [31, 32, 33, 34, 35]
         },
         {
