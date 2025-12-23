@@ -1,0 +1,169 @@
+import React, { useState, useEffect } from 'react';
+import { PenTool, FileText, AlertCircle } from 'lucide-react';
+
+interface WritingTaskTwoColumnProps {
+  taskNumber: 1 | 2;
+  title: string;
+  instruction: string;
+  topicIntro?: string;
+  prompt: string;
+  closingInstruction?: string;
+  minWords: number;
+  timeRecommended: number;
+  value: string;
+  onChange: (value: string) => void;
+  disabled?: boolean;
+}
+
+export function WritingTaskTwoColumn({
+  taskNumber,
+  title,
+  instruction,
+  topicIntro,
+  prompt,
+  closingInstruction,
+  minWords,
+  timeRecommended,
+  value,
+  onChange,
+  disabled = false
+}: WritingTaskTwoColumnProps) {
+  const [wordCount, setWordCount] = useState(0);
+  const [charCount, setCharCount] = useState(0);
+
+  useEffect(() => {
+    // Count words (split by whitespace and filter empty strings)
+    const words = value.trim().split(/\s+/).filter(word => word.length > 0);
+    setWordCount(words.length);
+    setCharCount(value.length);
+  }, [value]);
+
+  const getWordCountStatus = () => {
+    if (wordCount === 0) return 'neutral';
+    if (wordCount < minWords) return 'warning';
+    return 'success';
+  };
+
+  const status = getWordCountStatus();
+
+  return (
+    <div className="space-y-4 max-w-[1600px] mx-auto" data-testid={`writing-task-${taskNumber}`}>
+      {/* Task Header */}
+      <div className="bg-gradient-to-r from-orange-50 to-amber-50 border-l-4 border-orange-500 p-4 rounded-r-lg">
+        <div className="flex items-start gap-3">
+          <div className="w-10 h-10 bg-orange-500 rounded-lg flex items-center justify-center flex-shrink-0">
+            <PenTool className="w-5 h-5 text-white" />
+          </div>
+          <div className="flex-1">
+            <h3 className="text-lg font-bold text-gray-900 mb-1">{title}</h3>
+            <p className="text-sm text-gray-700">{instruction}</p>
+            <p className="text-xs text-gray-600">Recommended time: {timeRecommended} minutes</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Two-column layout: Left side (Task) + Right side (Writing area) */}
+      <div className="grid grid-cols-1 lg:grid-cols-[40%_60%] gap-4">
+        {/* LEFT SIDE: Task Prompt */}
+        <div className="space-y-3">
+          {/* Topic Introduction */}
+          {topicIntro && (
+            <div className="bg-white rounded-lg p-3">
+              <p className="text-gray-800 font-medium text-sm">{topicIntro}</p>
+            </div>
+          )}
+
+          {/* Main Prompt (Boxed) */}
+          <div className="bg-white border-2 border-gray-300 rounded-lg p-4">
+            <div className="flex items-center gap-2 mb-3">
+              <FileText className="w-4 h-4 text-blue-600" />
+              <h4 className="font-semibold text-gray-900 text-sm">Question</h4>
+            </div>
+            <div className="prose prose-sm max-w-none">
+              <p className="text-gray-800 whitespace-pre-wrap leading-relaxed text-sm">{prompt}</p>
+            </div>
+          </div>
+
+          {/* Closing Instructions */}
+          {closingInstruction && (
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+              <div className="prose prose-sm max-w-none">
+                <p className="text-gray-800 whitespace-pre-wrap leading-relaxed text-sm">{closingInstruction}</p>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* RIGHT SIDE: Writing Area */}
+        <div className="space-y-3">
+          {/* Word Count Requirements */}
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+            <div className="flex items-start gap-2">
+              <AlertCircle className="w-4 h-4 text-blue-600 flex-shrink-0 mt-0.5" />
+              <div className="text-xs text-blue-900">
+                <p className="font-medium">Word Count: Write <span className="font-bold">at least {minWords} words</span></p>
+              </div>
+            </div>
+          </div>
+
+          {/* Text Editor */}
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <label className="block text-sm font-medium text-gray-700">
+                Your Answer:
+              </label>
+              
+              {/* Real-time Word Counter */}
+              <div className={`flex items-center gap-3 px-3 py-1.5 rounded-lg text-xs font-medium ${
+                status === 'success' ? 'bg-green-100 text-green-800' :
+                status === 'warning' ? 'bg-amber-100 text-amber-800' :
+                'bg-gray-100 text-gray-600'
+              }`}>
+                <div className="flex items-center gap-1">
+                  <span className="text-xs uppercase tracking-wide">WORDS:</span>
+                  <span className="text-base font-bold" data-testid={`word-count-task-${taskNumber}`}>
+                    {wordCount}
+                  </span>
+                  <span className="text-xs">/ {minWords}</span>
+                </div>
+                <div className="h-3 w-px bg-current opacity-30"></div>
+                <div className="text-xs">
+                  {charCount} chars
+                </div>
+              </div>
+            </div>
+
+            <textarea
+              value={value}
+              onChange={(e) => onChange(e.target.value)}
+              disabled={disabled}
+              className={`w-full h-[calc(100vh-320px)] min-h-[500px] p-3 border-2 rounded-lg resize-none font-mono text-sm leading-relaxed ${
+                disabled 
+                  ? 'bg-gray-100 border-gray-300 cursor-not-allowed' 
+                  : 'border-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-orange-500'
+              }`}
+              placeholder="Type your answer here..."
+              data-testid={`writing-textarea-task-${taskNumber}`}
+            />
+
+            {/* Status Message */}
+            {wordCount > 0 && (
+              <div className="text-xs">
+                {wordCount < minWords && (
+                  <p className="text-amber-600">
+                    ⚠️ You need {minWords - wordCount} more word{minWords - wordCount !== 1 ? 's' : ''} to meet the minimum requirement.
+                  </p>
+                )}
+                {wordCount >= minWords && (
+                  <p className="text-green-600">
+                    ✓ Word count requirement met!
+                  </p>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
