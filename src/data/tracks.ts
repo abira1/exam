@@ -7,6 +7,7 @@ import { track4 } from './track4'; // 4-M Listening
 import { track5MListening } from './track-5m-listening';
 import { track6MListening } from './track-6m-listening';
 import { track7MListening } from './track-7m-listening';
+import { track8MListening } from './track-8m-listening';
 import { track9MListening } from './track-9m-listening';
 import { track10MListening } from './track-10m-listening';
 import { track1MReading } from './track-1m-reading';
