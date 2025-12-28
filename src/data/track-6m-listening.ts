@@ -31,7 +31,7 @@ export const track6MListening: Track = {
               cells: [
                 { content: 'For non-\nmembers' },
                 { content: 'Guided tour available' },
-                { content: '(6) ........ for free' }
+                { content: '(7) ........ for free' }
               ]
             },
             {
