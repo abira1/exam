@@ -2,6 +2,8 @@ import React from 'react';
 
 interface TableSelectionQuestionProps {
   instruction: string;
+  imageUrl?: string; // Optional image displayed above the table
+  imageTitle?: string; // Optional title for the image
   headers: string[];
   rows: Array<{
     questionNumber: number;
@@ -17,6 +19,8 @@ interface TableSelectionQuestionProps {
 
 export function TableSelectionQuestion({
   instruction,
+  imageUrl,
+  imageTitle,
   headers,
   rows,
   optionsLegend,
@@ -28,6 +32,22 @@ export function TableSelectionQuestion({
       <div className="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r">
         <p className="text-sm text-gray-700 font-medium">{instruction}</p>
       </div>
+
+      {/* Display image if provided */}
+      {imageUrl && (
+        <div className="my-6">
+          {imageTitle && (
+            <h3 className="text-lg font-semibold text-gray-800 mb-3">{imageTitle}</h3>
+          )}
+          <div className="border-2 border-gray-300 rounded-lg p-4 bg-white">
+            <img 
+              src={imageUrl} 
+              alt={imageTitle || "Question diagram"} 
+              className="w-full max-w-3xl mx-auto"
+            />
+          </div>
+        </div>
+      )}
 
       <div className="overflow-x-auto">
         <table className="min-w-full border-collapse border border-gray-300">
