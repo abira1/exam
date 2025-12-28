@@ -792,6 +792,8 @@ export function ExamPage({
         <TableSelectionQuestion
           key={idx}
           instruction={question.instruction}
+          imageUrl={question.imageUrl}
+          imageTitle={question.imageTitle}
           headers={question.headers}
           rows={question.rows}
           optionsLegend={question.optionsLegend}
