@@ -27,13 +27,13 @@ export const track8MListening: Track = {
                   content: 'Example\nPOWER\n(manufacturing company)' 
                 },
                 { 
-                  content: '• work in\n  a 1................\n  section' 
+                  content: '• work in a (1)............... section' 
                 },
                 { 
                   content: 'SW35FT' 
                 },
                 { 
-                  content: 'Jane 2..............' 
+                  content: 'Jane (2)...............' 
                 }
               ]
             },
@@ -43,10 +43,10 @@ export const track8MListening: Track = {
                   content: 'COTTON\n(grocery company)' 
                 },
                 { 
-                  content: '• good pay\n• work\n  – in 3.............\n    office\n  – in\n    a 4................\n• chance of\n  promotion' 
+                  content: '• good pay\n• work\n  – in (3)............ office\n  – in a (4)................\n• chance of promotion' 
                 },
                 { 
-                  content: '5..............' 
+                  content: '(5)..............' 
                 },
                 { 
                   content: 'go to office' 
