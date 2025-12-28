@@ -80,9 +80,15 @@ export const track9MListening: Track = {
         {
           type: 'multi-column-table',
           instruction: '',
-          title: 'Membership fee (including (6)………..)',
+          title: 'Membership fee',
           headers: ['', ''],
           rows: [
+            {
+              cells: [
+                { content: 'including' },
+                { content: { questionNumber: 6 } }
+              ]
+            },
             {
               cells: [
                 { content: '– £40 for employed members' },
