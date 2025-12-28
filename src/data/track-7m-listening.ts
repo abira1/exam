@@ -186,8 +186,7 @@ export const track7MListening: Track = {
         },
         {
           type: 'drag-and-drop',
-          instruction: 'Choose your answer below and write the letters, A-F, next to Questions 25-28.',
-          question: 'What recommendations does the tutor make about the reference books?',
+          instruction: 'Choose your answer below and write the letters, A-F, next to Questions 25-28. What recommendations does the tutor make about the reference books?',
           items: [
             { questionNumber: 25, label: 'Bayer' },
             { questionNumber: 26, label: 'Oliver' },
