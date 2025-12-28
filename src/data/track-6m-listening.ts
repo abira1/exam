@@ -18,8 +18,8 @@ export const track6MListening: Track = {
         {
           type: 'paragraph-gap',
           instruction: 'Complete the notes below. Write NO MORE THAN TWO WORDS AND/OR A NUMBER for each answer.',
-          paragraph: 'Living in Easthill\n\n-Cheapest accommodation is in (1)......................... flat.\n-Look on (2)............................ for studio flats.\n-New requirement from landlords – show documents about your (3)..........\n-Check if (4)............. and (5)........... are included in rent.\n-Best to buy (6).......................bus pass.',
-          questionNumbers: [1, 2, 3, 4, 5, 6]
+          paragraph: 'Living in Easthill\n\n-Cheapest accommodation is in (1)......................... flat.\n-Look on (2)............................ for studio flats.\n-New requirement from landlords – show documents about your (3)..........\n-Check if (4)............. and (5)........... are included in rent.\n-Best to buy (5).......................bus pass.',
+          questionNumbers: [1, 2, 3, 4, 5]
         },
         {
           type: 'multi-column-table',
