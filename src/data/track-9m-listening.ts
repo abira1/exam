@@ -80,7 +80,7 @@ export const track9MListening: Track = {
         {
           type: 'multi-column-table',
           instruction: '',
-          title: 'Membership fee (including ' + String.fromCharCode(8230) + ')',
+          title: 'Membership fee (including (6)………..)',
           headers: ['', ''],
           rows: [
             {
