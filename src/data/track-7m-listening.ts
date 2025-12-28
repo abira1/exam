@@ -225,11 +225,10 @@ export const track7MListening: Track = {
         {
           type: 'sentence-completion',
           instruction: 'Write NO MORE THAN TWO WORDS AND/OR A NUMBER for each answer.',
-          title: 'Magic Meteor Astronomy',
           items: [
             {
               questionNumber: 31,
-              text: 'Meteors are usually named (31)........................'
+              text: 'Magic Meteor Astronomy\n\nMeteors are usually named (31)........................'
             },
             {
               questionNumber: 32,
