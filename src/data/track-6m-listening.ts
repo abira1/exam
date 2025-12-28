@@ -51,7 +51,7 @@ export const track6MListening: Track = {
             {
               cells: [
                 { content: 'Facilities' },
-                { content: 'Full-size swimming pool is\nnow (9) ........' },
+                { content: 'Full-size swimming pool is\nnow (10) ........' },
                 { content: 'All-weather tennis courts;\nsmall pool' }
               ]
             },
