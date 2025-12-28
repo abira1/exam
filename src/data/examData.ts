@@ -162,6 +162,8 @@ export interface TrueFalseNotGivenCollapsibleQuestion {
 export interface TableSelectionQuestion {
   type: 'table-selection';
   instruction: string;
+  imageUrl?: string; // Optional image displayed above the table
+  imageTitle?: string; // Optional title for the image
   headers: string[];
   rows: Array<{
     questionNumber: number;
