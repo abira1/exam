@@ -116,19 +116,18 @@ Kefir's rise in popularity has encouraged producers to take short cuts or alter 
           ]
         },
         {
-          type: 'multiple-choice-multiple',
-          questionNumber: 12,
+          type: 'multiple-choice-multi-select',
           instruction: 'Choose TWO letters, A–E. Write the correct letters in boxes 12 and 13 on your answer sheet.',
           question: 'Which TWO products are NOT mentioned as things which kefir can replace?',
+          questionNumbers: [12, 13],
+          maxSelections: 2,
           options: [
             { label: 'A. Ordinary cow\'s milk', value: 'A' },
             { label: 'B. Buttermilk', value: 'B' },
             { label: 'C. Sour cream', value: 'C' },
             { label: 'D. Starter yeast', value: 'D' },
             { label: 'E. Yoghurt', value: 'E' }
-          ],
-          correctAnswersCount: 2,
-          questionNumbers: [12, 13]
+          ]
         }
       ]
     },
