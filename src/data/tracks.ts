@@ -41,6 +41,7 @@ export const allTracks: Track[] = [
   track3MReading,
   track4MReading,
   track5MReading,
+  track6MReading,
   // Writing Tracks
   track1MWriting,
   track2MWriting,
