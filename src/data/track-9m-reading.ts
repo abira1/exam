@@ -181,7 +181,7 @@ There are a great number more cookery books published than is really necessary a
           type: 'table-selection',
           instruction: 'Reading Passage 2 has nine paragraphs A-I. Which paragraph contains the following information? Select the correct letter A-I by marking the checkbox in the appropriate column for each question below.',
           headers: ['', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'],
-          items: [
+          rows: [
             {
               questionNumber: 17,
               label: 'Cookery books providing a sense of stability during periods of unrest.'
