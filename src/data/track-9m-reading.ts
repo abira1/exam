@@ -268,38 +268,35 @@ Questions like this illustrate why those famous collapses of past civilisations 
       questions: [
         {
           type: 'multiple-choice',
-          instruction: 'Choose the correct letter A, B, C or D.',
-          items: [
-            {
-              questionNumber: 27,
-              question: 'When the writer describes the impact of monumental ruins today, he emphasizes',
-              options: [
-                { label: 'A. the income they generate from tourism.', value: 'A' },
-                { label: 'B. the area of land they occupy.', value: 'B' },
-                { label: 'C. their archaeological value.', value: 'C' },
-                { label: 'D. their romantic appeal.', value: 'D' }
-              ]
-            },
-            {
-              questionNumber: 28,
-              question: 'Recent findings concerning vanished civilizations',
-              options: [
-                { label: 'A. have overturned long-held beliefs.', value: 'A' },
-                { label: 'B. caused controversy amongst scientists.', value: 'B' },
-                { label: 'C. come from a variety of disciplines.', value: 'C' },
-                { label: 'D. identified one main cause of environmental damage.', value: 'D' }
-              ]
-            },
-            {
-              questionNumber: 29,
-              question: 'What does the writer say about ways in which former societies collapsed?',
-              options: [
-                { label: 'A. The pace of decline was usually similar.', value: 'A' },
-                { label: 'B. The likelihood of collapse would have been foreseeable.', value: 'B' },
-                { label: 'C. Deterioration invariably led to total collapse.', value: 'C' },
-                { label: 'D. Individual citizens could sometimes influence the course of events.', value: 'D' }
-              ]
-            }
+          questionNumber: 27,
+          question: 'When the writer describes the impact of monumental ruins today, he emphasizes',
+          options: [
+            { label: 'A. the income they generate from tourism.', value: 'A' },
+            { label: 'B. the area of land they occupy.', value: 'B' },
+            { label: 'C. their archaeological value.', value: 'C' },
+            { label: 'D. their romantic appeal.', value: 'D' }
+          ]
+        },
+        {
+          type: 'multiple-choice',
+          questionNumber: 28,
+          question: 'Recent findings concerning vanished civilizations',
+          options: [
+            { label: 'A. have overturned long-held beliefs.', value: 'A' },
+            { label: 'B. caused controversy amongst scientists.', value: 'B' },
+            { label: 'C. come from a variety of disciplines.', value: 'C' },
+            { label: 'D. identified one main cause of environmental damage.', value: 'D' }
+          ]
+        },
+        {
+          type: 'multiple-choice',
+          questionNumber: 29,
+          question: 'What does the writer say about ways in which former societies collapsed?',
+          options: [
+            { label: 'A. The pace of decline was usually similar.', value: 'A' },
+            { label: 'B. The likelihood of collapse would have been foreseeable.', value: 'B' },
+            { label: 'C. Deterioration invariably led to total collapse.', value: 'C' },
+            { label: 'D. Individual citizens could sometimes influence the course of events.', value: 'D' }
           ]
         },
         {
