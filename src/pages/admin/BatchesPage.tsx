@@ -422,9 +422,29 @@ export function BatchesPage() {
 
               {/* Assigned Tracks */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Assigned Tracks
-                </label>
+                <div className="flex items-center justify-between mb-2">
+                  <label className="block text-sm font-medium text-gray-700">
+                    Assigned Tracks
+                  </label>
+                  <div className="flex gap-2">
+                    <button
+                      type="button"
+                      onClick={handleSelectAllTracks}
+                      className="px-3 py-1 text-xs font-medium bg-blue-50 hover:bg-blue-100 text-blue-700 rounded transition-colors"
+                      data-testid="select-all-tracks-button"
+                    >
+                      Select All
+                    </button>
+                    <button
+                      type="button"
+                      onClick={handleDeselectAllTracks}
+                      className="px-3 py-1 text-xs font-medium bg-gray-50 hover:bg-gray-100 text-gray-700 rounded transition-colors"
+                      data-testid="deselect-all-tracks-button"
+                    >
+                      Deselect All
+                    </button>
+                  </div>
+                </div>
                 <div className="border border-gray-300 rounded-lg p-4 space-y-2 max-h-48 overflow-y-auto">
                   {allTracks.map((track) => (
                     <label
