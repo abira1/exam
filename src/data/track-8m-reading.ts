@@ -230,14 +230,14 @@ It is yet to be seen if history will truly redeem Vincent Holt and his suggestio
           instruction: 'Complete the notes below. Choose NO MORE THAN THREE WORDS from the passage for each answer. Write your answers in boxes 22–26 on your answer sheet.',
           paragraph: `Van Huis
 • Insects are cleaner & do not release as many harmful gases
-• Insects use food intake economically in the production of protein as they waste less 22…………………
+• Insects use food intake economically in the production of protein as they waste less (22)…………………
 
 Durst
-• Traditional knowledge could be combined with modern methods for mass production instead of just covering 23…………………
-• This could help 24………………… people gain access to world markets.
+• Traditional knowledge could be combined with modern methods for mass production instead of just covering (23)…………………
+• This could help (24)………………… people gain access to world markets.
 
 Dunkel
-• Due to increased 25…………………, more children in Mali are suffering from 26…………………`,
+• Due to increased (25)…………………, more children in Mali are suffering from (26)…………………`,
           questionNumbers: [22, 23, 24, 25, 26]
         }
       ]
