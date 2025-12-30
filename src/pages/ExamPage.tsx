@@ -1193,22 +1193,7 @@ export function ExamPage({
               >
                 <div 
                   className="prose prose-sm max-w-none text-gray-700 leading-relaxed select-text pt-4"
-                  onMouseUp={(e) => {
-                    const selection = window.getSelection();
-                    if (selection && selection.toString().trim().length > 0) {
-                      e.preventDefault();
-                      const range = selection.getRangeAt(0);
-                      const span = document.createElement('span');
-                      span.className = 'bg-yellow-200';
-                      span.style.backgroundColor = '#fef08a';
-                      try {
-                        range.surroundContents(span);
-                        selection.removeAllRanges();
-                      } catch (err) {
-                        // If surroundContents fails, do nothing
-                      }
-                    }
-                  }}
+                  onContextMenu={handleContextMenu}
                   onCopy={(e) => e.preventDefault()}
                   onCut={(e) => e.preventDefault()}
                   onPaste={(e) => e.preventDefault()}
