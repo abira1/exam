@@ -1,6 +1,7 @@
 import { getDatabase, ref, get, set, push, remove } from 'firebase/database';
 import { app } from '../firebase';
 import bcrypt from 'bcryptjs';
+import { batchService } from './batchService';
 
 export interface Student {
   studentId: string;
