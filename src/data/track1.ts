@@ -126,9 +126,12 @@ export const track1: Track = {
           questionNumber: 12
         }
       }, {
-        label: {
+        label: 'Event name: _______',
+        value: {
           questionNumber: 13
-        },
+        }
+      }, {
+        label: 'Event location:',
         value: 'Central Park'
       }, {
         label: '',
@@ -139,9 +142,12 @@ export const track1: Track = {
           questionNumber: 14
         }
       }, {
-        label: {
+        label: 'Event name: _______',
+        value: {
           questionNumber: 15
-        },
+        }
+      }, {
+        label: 'Event location:',
         value: 'Exhibition Ct.'
       }, {
         label: '',
