@@ -82,6 +82,19 @@ export function ExamPage({
   // Text highlighting for reading passages
   const [highlights, setHighlights] = useState<Record<string, string[]>>({});
   
+  // Context menu for text highlighting
+  const [contextMenu, setContextMenu] = useState<{
+    isOpen: boolean;
+    position: { x: number; y: number };
+    selectedRange: Range | null;
+    targetElement: HTMLElement | null;
+  }>({
+    isOpen: false,
+    position: { x: 0, y: 0 },
+    selectedRange: null,
+    targetElement: null
+  });
+  
   // Phase 2: Section submission tracking for mock tests
   const [sectionSubmissions, setSectionSubmissions] = useState<{
     listening?: SectionSubmission;
