@@ -99,6 +99,9 @@ export const studentService = {
 
       await set(ref(db, `students/${studentId}`), student);
 
+      // Update batch student count
+      await batchService.updateStudentCount(data.batchId);
+
       return {
         success: true,
         studentId,
