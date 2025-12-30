@@ -1291,35 +1291,10 @@ export function ExamPage({
           /* Standard Layout for Non-Reading Tracks (Listening & Writing) */
           <div 
             className="bg-white rounded-lg shadow-sm border border-gray-200 p-8 mb-6"
-            onMouseUp={(e) => {
+            onContextMenu={(e) => {
               // Only enable highlighting for listening tracks
               if (currentTrack.trackType === 'listening') {
-                const selection = window.getSelection();
-                if (selection && selection.toString().trim().length > 0) {
-                  // Don't highlight if selection is within an input, textarea, select, or button
-                  const target = e.target as HTMLElement;
-                  if (
-                    target.tagName === 'INPUT' ||
-                    target.tagName === 'TEXTAREA' ||
-                    target.tagName === 'SELECT' ||
-                    target.tagName === 'BUTTON' ||
-                    target.closest('input, textarea, select, button')
-                  ) {
-                    return;
-                  }
-
-                  e.preventDefault();
-                  const range = selection.getRangeAt(0);
-                  const span = document.createElement('span');
-                  span.className = 'bg-yellow-200';
-                  span.style.backgroundColor = '#fef08a';
-                  try {
-                    range.surroundContents(span);
-                    selection.removeAllRanges();
-                  } catch (err) {
-                    // If surroundContents fails, do nothing
-                  }
-                }
+                handleContextMenu(e);
               }
             }}
             onCopy={(e) => {
