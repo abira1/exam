@@ -28,6 +28,7 @@ export function SentenceCompletionQuestion({
     const dotPattern = /(\.{3,}|…{3,})/;
     
     const parts = text.split(dotPattern);
+    const hasDots = dotPattern.test(text);
     
     return (
       <div className="space-y-2" key={questionNumber}>
@@ -58,6 +59,18 @@ export function SentenceCompletionQuestion({
               </span>
             );
           })}
+          {/* If no dots found in text, add input box after the question */}
+          {!hasDots && (
+            <input
+              type="text"
+              value={answers[questionNumber] || ''}
+              onChange={(e) => onAnswerChange(questionNumber, e.target.value)}
+              disabled={disabled}
+              className="px-3 py-1 border-b-2 border-gray-400 focus:outline-none focus:border-purple-500 min-w-[150px] max-w-[250px] bg-transparent text-gray-900 disabled:opacity-50 disabled:cursor-not-allowed"
+              placeholder="Type answer"
+              data-testid={`sentence-input-${questionNumber}`}
+            />
+          )}
         </div>
       </div>
     );
