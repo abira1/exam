@@ -832,10 +832,29 @@ export function ExamPage({
 
   const goToNextTrack = () => {
     if (currentTrackIndex < trackDataList.length - 1) {
+      // For mock tests, show instructions before next module
+      if (testType === 'mock') {
+        setExamStarted(false);
+        setShowInstructions(true);
+      }
       setCurrentTrackIndex(prev => prev + 1);
       setCurrentSection(0);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
+  };
+
+  // Handle accepting the important notice
+  const handleAcceptNotice = () => {
+    setShowNotice(false);
+    setNoticeAccepted(true);
+    setShowInstructions(true);
+  };
+
+  // Handle starting the exam after reading instructions
+  const handleStartExam = () => {
+    setShowInstructions(false);
+    setInstructionsRead(prev => ({ ...prev, [currentTrackIndex]: true }));
+    setExamStarted(true);
   };
 
   const renderQuestion = (question: any, idx: number) => {
