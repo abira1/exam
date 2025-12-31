@@ -29,6 +29,8 @@ import { Section } from '../data/examData';
 import { storage, ExamSubmission, SectionSubmission } from '../utils/storage';
 import { Loader, Headphones, BookOpen, PenTool, ChevronRight, ChevronLeft, AlertCircle, CheckCircle, Highlighter, Eraser } from 'lucide-react';
 import { ContextMenu, ContextMenuItem } from '../components/ui/context-menu';
+import { ImportantNotice } from '../components/ImportantNotice';
+import { ExamInstructions } from '../components/ExamInstructions';
 
 interface ExamPageProps {
   studentId: string;
