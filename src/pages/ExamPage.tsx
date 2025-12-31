@@ -1082,6 +1082,17 @@ export function ExamPage({
     );
   }
 
+  // Show Important Notice first (for both mock and partial tests)
+  if (showNotice) {
+    return <ImportantNotice onAccept={handleAcceptNotice} />;
+  }
+
+  // Show Instructions after notice is accepted
+  if (showInstructions && !examStarted) {
+    const currentExamType = trackOrder[currentTrackIndex];
+    return <ExamInstructions examType={currentExamType} onStart={handleStartExam} />;
+  }
+
   const trackInfo = getTrackIcon(currentTrack.trackType);
 
   return (
