@@ -635,6 +635,9 @@ export function ExamPage({
     // Move to next section if not last
     if (currentTrackIndex < trackDataList.length - 1) {
       console.log('Moving to next track...');
+      // Show instructions for the next module
+      setExamStarted(false);
+      setShowInstructions(true);
       setCurrentTrackIndex(prev => prev + 1);
       setCurrentSection(0);
       setIsTimeWarning(false);
