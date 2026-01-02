@@ -6,9 +6,9 @@ export const track1SICU: Track = {
   id: 'track-1-sicu',
   name: '1-SICU Integrated Skills Test',
   shortName: '1-SICU',
-  description: 'SICU Practice Test - Mixed question types combining listening, reading, and writing skills',
+  description: 'SICU Practice Test - Demo version',
   duration: 45,
-  totalQuestions: 25,
+  totalQuestions: 0,
   trackType: 'sicu',
   audioURL: null,
   sections: [
