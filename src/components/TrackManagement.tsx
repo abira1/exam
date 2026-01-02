@@ -551,12 +551,14 @@ export function TrackManagement() {
       <div className={`border rounded-lg p-4 ${
         activeTab === 'listening' ? 'bg-blue-50 border-blue-200' :
         activeTab === 'reading' ? 'bg-green-50 border-green-200' :
-        'bg-orange-50 border-orange-200'
+        activeTab === 'writing' ? 'bg-orange-50 border-orange-200' :
+        'bg-slate-50 border-slate-200'
       }`}>
         <p className={`text-sm ${
           activeTab === 'listening' ? 'text-blue-900' :
           activeTab === 'reading' ? 'text-green-900' :
-          'text-orange-900'
+          activeTab === 'writing' ? 'text-orange-900' :
+          'text-slate-900'
         }`}>
           <span className="font-semibold">💡 Info:</span>{' '}
           {activeTab === 'listening' && (
@@ -567,6 +569,9 @@ export function TrackManagement() {
           )}
           {activeTab === 'writing' && (
             'Writing tracks contain Task 1 (report/description) and Task 2 (essay) with word count requirements. No audio required.'
+          )}
+          {activeTab === 'sicu' && (
+            'SICU (Specialized Integrated Class Unit) tracks can contain any combination of Listening, Reading, or Writing questions for specialized class tests. These tracks are used exclusively for Partial Tests and will not appear in Mock Test workflows.'
           )}
         </p>
       </div>
