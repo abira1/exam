@@ -86,7 +86,8 @@ export const getAllTracksByType = () => {
   return {
     listening: getTracksByType('listening'),
     reading: getTracksByType('reading'),
-    writing: getTracksByType('writing')
+    writing: getTracksByType('writing'),
+    sicu: getTracksByType('sicu')
   };
 };
 
