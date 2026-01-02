@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Music, FileText, Clock, List as ListIcon, Link, Save, CheckCircle, AlertCircle, Loader, Headphones, BookOpen, PenTool } from 'lucide-react';
+import { Music, FileText, Clock, List as ListIcon, Link, Save, CheckCircle, AlertCircle, Loader, Headphones, BookOpen, PenTool, Layers } from 'lucide-react';
 import { getDatabase, ref, get, set } from 'firebase/database';
 import { app } from '../firebase';
 import { Track } from '../data/track1';
@@ -9,7 +9,7 @@ interface TrackWithAudio extends Track {
   loadedAudioURL?: string | null;
 }
 
-type TrackTypeTab = 'listening' | 'reading' | 'writing';
+type TrackTypeTab = 'listening' | 'reading' | 'writing' | 'sicu';
 
 export function TrackManagement() {
   const [tracks, setTracks] = useState<TrackWithAudio[]>([]);
