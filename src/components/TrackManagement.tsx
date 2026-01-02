@@ -348,6 +348,22 @@ export function TrackManagement() {
           </div>
         )}
 
+        {activeTab === 'sicu' && (
+          <div className="bg-white p-6 rounded-lg border border-gray-200">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center">
+                <Layers className="w-5 h-5 text-slate-600" />
+              </div>
+              <div>
+                <div className="text-sm text-gray-600">Mixed Skills</div>
+                <div className="text-2xl font-bold text-gray-900">
+                  {filteredTracks.reduce((sum, t) => sum + t.totalQuestions, 0)}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
         <div className="bg-white p-6 rounded-lg border border-gray-200">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
