@@ -66,7 +66,9 @@ export const allTracks: Track[] = [
   track7MWriting,
   track8MWriting,
   track9MWriting,
-  track10MWriting
+  track10MWriting,
+  // SICU Tracks
+  track1SICU
 ];
 
 // Helper function to get track by ID
