@@ -123,6 +123,12 @@ export const getTrackOptionsGrouped = () => {
       name: track.name,
       duration: track.duration,
       totalQuestions: track.totalQuestions
+    })),
+    sicu: grouped.sicu.map(track => ({
+      id: track.id,
+      name: track.name,
+      duration: track.duration,
+      totalQuestions: track.totalQuestions
     }))
   };
 };
