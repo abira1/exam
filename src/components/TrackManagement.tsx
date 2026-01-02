@@ -202,14 +202,14 @@ export function TrackManagement() {
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-2xl font-bold text-gray-900">Track Management</h2>
-          <p className="text-gray-600 mt-1">Manage tracks across three exam types</p>
+          <p className="text-gray-600 mt-1">Manage tracks across four exam types</p>
         </div>
       </div>
 
       {/* Tab Navigation */}
       <div className="border-b border-gray-200">
         <nav className="flex gap-8" aria-label="Track types">
-          {(['listening', 'reading', 'writing'] as TrackTypeTab[]).map((type) => {
+          {(['listening', 'reading', 'writing', 'sicu'] as TrackTypeTab[]).map((type) => {
             const tabInfo = getTabInfo(type);
             const Icon = tabInfo.icon;
             const isActive = activeTab === type;
@@ -225,6 +225,10 @@ export function TrackManagement() {
               writing: {
                 active: 'border-orange-600 text-orange-600',
                 inactive: 'border-transparent text-gray-500 hover:text-orange-600 hover:border-orange-300'
+              },
+              sicu: {
+                active: 'border-slate-600 text-slate-600',
+                inactive: 'border-transparent text-gray-500 hover:text-slate-600 hover:border-slate-300'
               }
             };
             
