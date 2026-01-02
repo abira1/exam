@@ -14,7 +14,8 @@ import {
   Eye,
   Headphones,
   BookOpen,
-  PenTool
+  PenTool,
+  Layers
 } from 'lucide-react';
 import { examSessionService, ExamSession } from '../../services/examSessionService';
 import { batchService } from '../../services/batchService';
@@ -25,7 +26,7 @@ import { app } from '../../firebase';
 import { useNavigate } from 'react-router-dom';
 
 type TestType = 'partial' | 'mock';
-type TrackType = 'listening' | 'reading' | 'writing';
+type TrackType = 'listening' | 'reading' | 'writing' | 'sicu';
 
 export function ExamControlPage() {
   const navigate = useNavigate();
