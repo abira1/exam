@@ -77,7 +77,7 @@ export const getTrackById = (trackId: string): Track | undefined => {
 };
 
 // Helper function to get tracks by type
-export const getTracksByType = (type: 'listening' | 'reading' | 'writing'): Track[] => {
+export const getTracksByType = (type: 'listening' | 'reading' | 'writing' | 'sicu'): Track[] => {
   return allTracks.filter(track => track.trackType === type);
 };
 
