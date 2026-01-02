@@ -180,6 +180,8 @@ export function TrackManagement() {
         return { icon: BookOpen, color: 'green', label: 'Reading' };
       case 'writing':
         return { icon: PenTool, color: 'orange', label: 'Writing' };
+      case 'sicu':
+        return { icon: Layers, color: 'slate', label: 'SICU' };
     }
   };
 
