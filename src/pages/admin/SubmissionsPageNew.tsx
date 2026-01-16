@@ -1073,10 +1073,10 @@ export function SubmissionsPageNew() {
       </header>
 
       {/* Main Content: Split Layout */}
-      <main className="max-w-full mx-auto px-6 py-8">
-        <div className="flex gap-6 h-[calc(100vh-200px)]">
+      <main className="max-w-full mx-auto px-4 sm:px-6 py-6 sm:py-8">
+        <div className="flex flex-col lg:flex-row gap-4 sm:gap-6 min-h-[calc(100vh-180px)]">
           {/* Left Sidebar: File Tree (1/3 width) */}
-          <div className="w-1/3 overflow-y-auto">
+          <div className="w-full lg:w-1/3 max-h-[400px] lg:max-h-[calc(100vh-180px)] overflow-y-auto border-b lg:border-b-0 lg:border-r border-gray-200 pb-4 lg:pb-0 lg:pr-4">
             <FileTree
               data={treeData}
               onNodeClick={handleNodeClick}
@@ -1087,7 +1087,7 @@ export function SubmissionsPageNew() {
           </div>
 
           {/* Right Content Area: Submission Details (2/3 width) */}
-          <div className="w-2/3 overflow-y-auto">
+          <div className="w-full lg:w-2/3 max-h-[calc(100vh-180px)] overflow-y-auto pb-8">
             {!selectedSubmission ? (
               <div className="bg-white rounded-lg border border-gray-200 p-12 text-center">
                 <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
