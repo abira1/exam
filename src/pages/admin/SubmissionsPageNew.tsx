@@ -1189,42 +1189,42 @@ export function SubmissionsPageNew() {
                       })()}
 
                       {/* Section Navigation Tabs */}
-                      <div className="flex items-center gap-4 border-b border-gray-300 pb-2">
+                      <div className="flex flex-wrap items-center gap-2 sm:gap-4 border-b border-gray-300 pb-2 overflow-x-auto">
                         <button
                           onClick={() => setCurrentSectionSlide('listening')}
-                          className={`px-6 py-3 font-medium transition-colors rounded-t-lg flex items-center gap-2 ${
+                          className={`px-3 sm:px-6 py-2 sm:py-3 text-sm sm:text-base font-medium transition-colors rounded-t-lg flex items-center gap-2 whitespace-nowrap ${
                             currentSectionSlide === 'listening'
                               ? 'bg-blue-500 text-white'
                               : 'bg-white text-gray-600 hover:text-gray-900 hover:bg-gray-100'
                           }`}
                         >
-                          🎧 Listening
+                          🎧 <span className="hidden sm:inline">Listening</span><span className="sm:hidden">L</span>
                           {selectedSubmission.sectionScores?.listening !== undefined && (
                             <CheckIcon className="w-4 h-4" />
                           )}
                         </button>
                         <button
                           onClick={() => setCurrentSectionSlide('reading')}
-                          className={`px-6 py-3 font-medium transition-colors rounded-t-lg flex items-center gap-2 ${
+                          className={`px-3 sm:px-6 py-2 sm:py-3 text-sm sm:text-base font-medium transition-colors rounded-t-lg flex items-center gap-2 whitespace-nowrap ${
                             currentSectionSlide === 'reading'
                               ? 'bg-green-500 text-white'
                               : 'bg-white text-gray-600 hover:text-gray-900 hover:bg-gray-100'
                           }`}
                         >
-                          📖 Reading
+                          📖 <span className="hidden sm:inline">Reading</span><span className="sm:hidden">R</span>
                           {selectedSubmission.sectionScores?.reading !== undefined && (
                             <CheckIcon className="w-4 h-4" />
                           )}
                         </button>
                         <button
                           onClick={() => setCurrentSectionSlide('writing')}
-                          className={`px-6 py-3 font-medium transition-colors rounded-t-lg flex items-center gap-2 ${
+                          className={`px-3 sm:px-6 py-2 sm:py-3 text-sm sm:text-base font-medium transition-colors rounded-t-lg flex items-center gap-2 whitespace-nowrap ${
                             currentSectionSlide === 'writing'
                               ? 'bg-orange-500 text-white'
                               : 'bg-white text-gray-600 hover:text-gray-900 hover:bg-gray-100'
                           }`}
                         >
-                          ✍️ Writing
+                          ✍️ <span className="hidden sm:inline">Writing</span><span className="sm:hidden">W</span>
                           {selectedSubmission.sectionScores?.writing !== undefined && (
                             <CheckIcon className="w-4 h-4" />
                           )}
