@@ -1099,9 +1099,9 @@ export function SubmissionsPageNew() {
                 </p>
               </div>
             ) : (
-              <div className="bg-white rounded-lg border border-gray-200 shadow-sm">
+              <div className="bg-white rounded-lg border border-gray-200 shadow-sm mb-6">
                 {/* Submission Header */}
-                <div className="border-b border-gray-200 p-6">
+                <div className="border-b border-gray-200 p-4 sm:p-6">
                   <div className="flex items-start justify-between">
                     <div>
                       <h2 className="text-2xl font-bold text-gray-900 mb-2">
