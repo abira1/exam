@@ -1062,10 +1062,10 @@ export function SubmissionsPageNew() {
 
               <button
                 onClick={handleRefresh}
-                className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+                className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors text-sm"
               >
                 <RefreshCwIcon className={`w-4 h-4 ${isRefreshing ? 'animate-spin' : ''}`} />
-                <span className="text-sm font-medium">Refresh</span>
+                <span className="font-medium hidden sm:inline">Refresh</span>
               </button>
             </div>
           </div>
