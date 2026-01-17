@@ -130,12 +130,36 @@ export function ExamPage({
 
   // Fetch exam tracks, times and audio from Firebase
   useEffect(() => {
+    // Phase 3: Sync client time with Firebase server time
+    const syncServerTime = async () => {
+      try {
+        const db = getDatabase(app);
+        const serverTimeRef = ref(db, '.info/serverTimeOffset');
+        
+        const snapshot = await get(serverTimeRef);
+        if (snapshot.exists()) {
+          const offset = snapshot.val();
+          setServerTimeOffset(offset);
+          setIsTimeSynced(true);
+          console.log('✓ Server time synced. Offset:', offset, 'ms');
+        }
+      } catch (error) {
+        console.error('Failed to sync server time:', error);
+        // Fallback: use client time with warning
+        setIsTimeSynced(true);
+        console.warn('⚠️ Using client time as fallback');
+      }
+    };
+    
     const fetchExamData = async () => {
       const db = getDatabase(app);
       setIsLoadingTrack(true);
       setTrackError(null);
       
       try {
+        // Sync server time first
+        await syncServerTime();
+        
         console.log('=== FETCHING EXAM DATA ===');
         console.log('Student ID:', studentId);
         console.log('Student Name:', studentName);
