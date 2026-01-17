@@ -614,6 +614,8 @@ export function ExamPage({
 
   // Phase 2: Handle section submission for mock tests
   const handleSectionSubmit = async (sectionType: 'listening' | 'reading' | 'writing') => {
+    setHasAutoSubmitted(false); // Reset for next section
+    
     const currentTrackData = trackDataList[currentTrackIndex];
     
     console.log(`=== SUBMITTING ${sectionType.toUpperCase()} SECTION ===`);
