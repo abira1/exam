@@ -295,7 +295,7 @@ export function SectionSubmissionCard({
               </div>
               <p className="text-xs text-gray-500">
                 {taskBandScores && Object.keys(taskBandScores).length === 2
-                  ? 'Calculated as average of Task 1 and Task 2 scores'
+                  ? 'Calculated using official IELTS formula: (Task 1 + Task 2 × 2) ÷ 3'
                   : 'Mark both tasks to calculate overall score'}
               </p>
             </div>
