@@ -643,7 +643,7 @@ export function ExamPage({
   };
 
   const calculateTimeSpent = () => {
-    const elapsed = Date.now() - startTime;
+    const elapsed = getServerTime() - startTime;
     const minutes = Math.floor(elapsed / 60000);
     const seconds = Math.floor(elapsed % 60000 / 1000);
     return `${minutes}m ${seconds}s`;
