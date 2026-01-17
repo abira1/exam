@@ -345,7 +345,8 @@ export function ExamPage({
         // Set exam end time
         if (examTestType === 'mock' && examSession.trackDurations) {
           // Mock test: Set individual track end times
-          const now = Date.now();
+          // Note: This runs after syncServerTime, so server offset is already applied
+          const now = Date.now() + serverTimeOffset;
           const endTimes: number[] = [];
           let cumulativeTime = now;
           
