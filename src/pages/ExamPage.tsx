@@ -1121,19 +1121,18 @@ export function ExamPage({
         trackType={currentTrack.trackType}
       />
 
-      {/* Phase 2: Time Expired Warning Banner for Mock Tests */}
+      {/* Phase 2: Auto-Submit Notification Banner for Mock Tests */}
       {testType === 'mock' && 
-       timeExpiredWarningShown[currentTrackIndex] && 
        currentTrackTimeRemaining === '00:00' && 
-       !sectionSubmissions[trackOrder[currentTrackIndex]]?.locked && (
-        <div className="bg-red-100 border-l-4 border-red-500 p-4 mx-4 mt-4" data-testid="time-expired-warning">
+       hasAutoSubmitted && (
+        <div className="bg-blue-100 border-l-4 border-blue-500 p-4 mx-4 mt-4" data-testid="auto-submit-notification">
           <div className="flex items-center gap-3">
-            <AlertCircle className="w-6 h-6 text-red-600 flex-shrink-0" />
+            <CheckCircle className="w-6 h-6 text-blue-600 flex-shrink-0" />
             <div>
-              <h3 className="text-lg font-bold text-red-900">⏰ Time Expired for {trackInfo.label} Section</h3>
-              <p className="text-red-800">
-                The allocated time for this section has ended. You can still submit your answers, 
-                but please do so now. Click the Submit button at the bottom of the page.
+              <h3 className="text-lg font-bold text-blue-900">⏰ Time Expired - Section Auto-Submitted</h3>
+              <p className="text-blue-800">
+                The allocated time for the {trackInfo.label} section has ended. Your answers have been automatically submitted. 
+                {currentTrackIndex < trackDataList.length - 1 && ' The next section will load shortly.'}
               </p>
             </div>
           </div>
