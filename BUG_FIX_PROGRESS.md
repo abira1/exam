@@ -594,8 +594,8 @@ After all phases are complete, perform comprehensive testing:
 2. ✅ `/app/src/components/questions/YesNoNotGiven.tsx` - 4 lines changed
 3. ✅ `/app/src/components/questions/TrueFalseNotGivenCollapsible.tsx` - 5 lines changed
 
-### **Phase 2 (Pending):**
-4. ⏳ `/app/src/pages/ExamPage.tsx` - Auto-submit logic (~50 lines)
+### **Phase 2 (Completed):**
+4. ✅ `/app/src/pages/ExamPage.tsx` - Auto-submit logic (~50 lines changed)
 
 ### **Phase 3 (Pending):**
 5. ⏳ `/app/src/pages/ExamPage.tsx` - Server time sync (~60 lines)
