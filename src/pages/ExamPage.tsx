@@ -397,7 +397,7 @@ export function ExamPage({
     if (!examEndTime) return;
 
     const timer = setInterval(() => {
-      const now = Date.now();
+      const now = getServerTime(); // Phase 3: Use server time
       
       // For mock tests with individual track timers
       if (testType === 'mock' && trackEndTimes.length > 0) {
