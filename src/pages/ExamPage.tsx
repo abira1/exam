@@ -62,7 +62,7 @@ export function ExamPage({
   const answers = trackAnswers[currentTrackIndex] || {};
   const writingAnswers = trackWritingAnswers[currentTrackIndex] || {};
   const [timeRemaining, setTimeRemaining] = useState('--:--');
-  const [startTime] = useState(Date.now());
+  const [startTime] = useState(() => Date.now()); // Will be corrected after sync
   const [examEndTime, setExamEndTime] = useState<number | null>(null);
   const [isTimeWarning, setIsTimeWarning] = useState(false);
   const [isTimeCritical, setIsTimeCritical] = useState(false);
