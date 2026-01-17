@@ -844,8 +844,10 @@ export function SubmissionsPageNew() {
         const task2Score = taskKeys[1] === taskKey ? bandScore : (updatedMarks[taskKeys[1]] as number);
 
         if (task1Score !== undefined && task2Score !== undefined && !isNaN(task1Score) && !isNaN(task2Score)) {
-          // Calculate raw average and round to nearest 0.5 for valid IELTS band score
-          const rawAverage = (task1Score + task2Score) / 2;
+          // Calculate writing band score using official IELTS formula
+          // Task 1 counts 1/3, Task 2 counts 2/3 (double weight)
+          // Formula: (Task 1 + Task 2 × 2) ÷ 3
+          const rawAverage = (task1Score + task2Score * 2) / 3;
           averageBandScore = roundToNearestHalf(rawAverage);
         }
       }
