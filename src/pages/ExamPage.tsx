@@ -67,6 +67,10 @@ export function ExamPage({
   const [isTimeWarning, setIsTimeWarning] = useState(false);
   const [isTimeCritical, setIsTimeCritical] = useState(false);
   
+  // Phase 3: Server time synchronization
+  const [serverTimeOffset, setServerTimeOffset] = useState<number>(0); // Difference between server and client time
+  const [isTimeSynced, setIsTimeSynced] = useState(false);
+  
   // Mock test: Individual track timers
   const [trackEndTimes, setTrackEndTimes] = useState<number[]>([]);
   const [currentTrackTimeRemaining, setCurrentTrackTimeRemaining] = useState('--:--');
