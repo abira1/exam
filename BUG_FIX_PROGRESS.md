@@ -170,12 +170,120 @@ interface TrueFalseNotGivenCollapsibleProps {
 
 ---
 
-## 🔄 PHASE 2: Fix Submit Button Auto-Submit Behavior (PENDING)
+## ✅ PHASE 2: Fix Submit Button Auto-Submit Behavior (COMPLETED)
 
 ### 🎯 **Objective**
 Implement automatic submission when timer reaches 00:00 in mock tests, preventing students from working indefinitely after time expires.
 
-### 📝 **Planned Changes**
+### 📝 **Changes Made**
+
+#### **File: ExamPage.tsx** - `/app/src/pages/ExamPage.tsx`
+
+**Change 1: Add Auto-Submit State Variable** ✅
+- **Location**: Line 119 (after line 118)
+- **Action**: Added `hasAutoSubmitted` state variable to track auto-submission status
+```typescript
+// Phase 2: Auto-submit state
+const [hasAutoSubmitted, setHasAutoSubmitted] = useState(false);
+```
+
+**Change 2: Update Timer Logic for Mock Tests** ✅
+- **Location**: Lines 372-398 (timer useEffect for mock tests)
+- **Action**: Implemented auto-submit when timer reaches 00:00
+```typescript
+// AUTO-SUBMIT: If time expired and section not already submitted
+const currentSectionType = trackOrder[currentTrackIndex];
+const isAlreadySubmitted = sectionSubmissions[currentSectionType]?.locked;
+
+if (!isAlreadySubmitted && !hasAutoSubmitted) {
+  console.log(`⏰ Time expired for ${currentSectionType} - Auto-submitting...`);
+  setHasAutoSubmitted(true);
+  
+  // Trigger auto-submission after a brief delay (1 second) to show 00:00
+  setTimeout(() => {
+    handleSectionSubmit(currentSectionType);
+  }, 1000);
+}
+```
+
+**Logic Implemented:**
+- Check if section is already submitted (avoid double submission)
+- Check if auto-submit hasn't already been triggered
+- Log console message for debugging
+- Show 00:00 for 1 second before auto-submitting
+- Call handleSectionSubmit to process submission
+
+**Change 3: Reset Auto-Submit Flag** ✅
+- **Location**: Line 617 (inside handleSectionSubmit function)
+- **Action**: Reset `hasAutoSubmitted` to false when moving to next section
+```typescript
+const handleSectionSubmit = async (sectionType: 'listening' | 'reading' | 'writing') => {
+  setHasAutoSubmitted(false); // Reset for next section
+  // ... rest of function
+```
+
+**Change 4: Update Submit Button Visibility for Reading Tracks** ✅
+- **Location**: Lines 1293-1305 (Reading track navigation buttons)
+- **Action**: Hide submit button when timer = 00:00 unless already submitted
+```typescript
+{currentSection === (examData?.length || 0) - 1 ? (
+  // Only show submit button if time hasn't expired or already submitted
+  (currentTrackTimeRemaining !== '00:00' || sectionSubmissions[trackOrder[currentTrackIndex]]?.locked) && (
+    <button
+      onClick={() => handleSectionSubmit(trackOrder[currentTrackIndex])}
+      disabled={sectionSubmissions[trackOrder[currentTrackIndex]]?.locked}
+      // ... button props
+    >
+      {sectionSubmissions[trackOrder[currentTrackIndex]]?.locked 
+        ? '✓ Section Submitted' 
+        : `Submit ${trackInfo.label} Section`}
+    </button>
+  )
+) : (
+```
+
+**Change 5: Update Submit Button Visibility for Non-Reading Tracks** ✅
+- **Location**: Lines 1424-1436 (Non-reading track navigation buttons)
+- **Action**: Same logic as reading tracks - hide button when timer = 00:00
+```typescript
+// Same pattern applied to listening and writing tracks
+(currentTrackTimeRemaining !== '00:00' || sectionSubmissions[trackOrder[currentTrackIndex]]?.locked) && (
+  // Submit button
+)
+```
+
+**Change 6: Replace Time Expired Warning with Auto-Submit Notification** ✅
+- **Location**: Lines 1124-1137 (Warning banner section)
+- **Action**: Changed from red warning banner to blue auto-submit notification
+```typescript
+{/* Phase 2: Auto-Submit Notification Banner for Mock Tests */}
+{testType === 'mock' && 
+ currentTrackTimeRemaining === '00:00' && 
+ hasAutoSubmitted && (
+  <div className="bg-blue-100 border-l-4 border-blue-500 p-4 mx-4 mt-4" data-testid="auto-submit-notification">
+    <div className="flex items-center gap-3">
+      <CheckCircle className="w-6 h-6 text-blue-600 flex-shrink-0" />
+      <div>
+        <h3 className="text-lg font-bold text-blue-900">⏰ Time Expired - Section Auto-Submitted</h3>
+        <p className="text-blue-800">
+          The allocated time for the {trackInfo.label} section has ended. Your answers have been automatically submitted. 
+          {currentTrackIndex < trackDataList.length - 1 && ' The next section will load shortly.'}
+        </p>
+      </div>
+    </div>
+  </div>
+)}
+```
+
+**Visual Changes:**
+- **Before**: Red warning banner asking students to click submit
+- **After**: Blue notification confirming auto-submission occurred
+- Uses CheckCircle icon instead of AlertCircle
+- Informative message about next section loading
+
+---
+
+### 🧪 **Testing Phase 2 - How to Verify**
 
 #### **File: ExamPage.tsx** - `/app/src/pages/ExamPage.tsx`
 
