@@ -8,13 +8,15 @@ interface YesNoNotGivenProps {
   }>;
   answers: Record<number, string>;
   onAnswerChange: (questionNumber: number, value: string) => void;
+  disabled?: boolean;
 }
 
 export function YesNoNotGiven({
   instruction,
   statements,
   answers,
-  onAnswerChange
+  onAnswerChange,
+  disabled = false
 }: YesNoNotGivenProps) {
   const options = [
     { value: 'YES', label: 'YES' },
@@ -42,11 +44,11 @@ export function YesNoNotGiven({
               {options.map((option) => (
                 <label
                   key={option.value}
-                  className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 border-2 rounded-lg cursor-pointer transition-all ${
+                  className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 border-2 rounded-lg transition-all ${
                     answers[item.questionNumber] === option.value
                       ? 'border-green-500 bg-green-50 text-green-700 font-semibold'
                       : 'border-gray-300 hover:border-gray-400 text-gray-700'
-                  }`}
+                  } ${disabled ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer'}`}
                 >
                   <input
                     type="radio"
@@ -54,6 +56,7 @@ export function YesNoNotGiven({
                     value={option.value}
                     checked={answers[item.questionNumber] === option.value}
                     onChange={(e) => onAnswerChange(item.questionNumber, e.target.value)}
+                    disabled={disabled}
                     className="sr-only"
                   />
                   <span className="text-sm">{option.label}</span>
