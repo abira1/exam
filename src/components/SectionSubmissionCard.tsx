@@ -76,14 +76,22 @@ export function SectionSubmissionCard({
   const displayBandScore = section === 'writing'
     ? (() => {
         if (taskBandScores) {
-          const scores = Object.values(taskBandScores).filter(s => s !== undefined && s !== null);
-          if (scores.length === 2) {
-            // Both tasks scored - return rounded average (must end in .0 or .5)
-            const rawAverage = (scores[0] + scores[1]) / 2;
+          const task1Score = taskBandScores['task1'];
+          const task2Score = taskBandScores['task2'];
+          
+          if (task1Score !== undefined && task1Score !== null && 
+              task2Score !== undefined && task2Score !== null) {
+            // Both tasks scored - use official IELTS formula
+            // Task 1 counts 1/3, Task 2 counts 2/3 (double weight)
+            // Formula: (Task 1 + Task 2 × 2) ÷ 3
+            const rawAverage = (task1Score + task2Score * 2) / 3;
             return roundToNearestHalf(rawAverage);
-          } else if (scores.length > 0) {
-            // Partial scoring - show what we have
-            return scores[0];
+          } else if (task1Score !== undefined && task1Score !== null) {
+            // Only Task 1 scored
+            return task1Score;
+          } else if (task2Score !== undefined && task2Score !== null) {
+            // Only Task 2 scored
+            return task2Score;
           }
         }
         return parseFloat(manualBandScore) || null;
