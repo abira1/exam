@@ -370,17 +370,22 @@ export function ExamPage({
         
         // Check if current track time expired
         if (trackRemainingMs <= 0) {
-          // Show warning but DON'T auto-advance (Phase 2 change)
           setCurrentTrackTimeRemaining('00:00');
           setIsTimeCritical(true);
           setIsTimeWarning(true);
           
-          // Show time expired warning banner
-          if (!timeExpiredWarningShown[currentTrackIndex]) {
-            setTimeExpiredWarningShown(prev => ({
-              ...prev,
-              [currentTrackIndex]: true
-            }));
+          // AUTO-SUBMIT: If time expired and section not already submitted
+          const currentSectionType = trackOrder[currentTrackIndex];
+          const isAlreadySubmitted = sectionSubmissions[currentSectionType]?.locked;
+          
+          if (!isAlreadySubmitted && !hasAutoSubmitted) {
+            console.log(`⏰ Time expired for ${currentSectionType} - Auto-submitting...`);
+            setHasAutoSubmitted(true);
+            
+            // Trigger auto-submission after a brief delay (1 second) to show 00:00
+            setTimeout(() => {
+              handleSectionSubmit(currentSectionType);
+            }, 1000);
           }
           
           // Update overall time remaining
@@ -389,7 +394,7 @@ export function ExamPage({
           const totalMins = Math.floor(totalSeconds / 60);
           const totalSecs = totalSeconds % 60;
           setTimeRemaining(`${String(totalMins).padStart(2, '0')}:${String(totalSecs).padStart(2, '0')}`);
-          return; // Stop here, no auto-advance
+          return;
         }
         
         // Update current track timer display
