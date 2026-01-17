@@ -666,7 +666,7 @@ export function ExamPage({
       trackId: currentTrackData.track.id,
       trackName: currentTrackData.track.name,
       answers: sectionType === 'writing' ? currentTrackWritingAnswers : currentTrackAnswers,
-      submittedAt: new Date().toISOString(),
+      submittedAt: new Date(getServerTime()).toISOString(), // Phase 3: Use server time
       timeSpent: calculateTimeSpent(),
       locked: true
     };
