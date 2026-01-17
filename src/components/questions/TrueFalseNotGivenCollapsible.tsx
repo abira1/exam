@@ -10,6 +10,7 @@ interface TrueFalseNotGivenCollapsibleProps {
   }>;
   answers: Record<number, string>;
   onAnswerChange: (questionNumber: number, value: string) => void;
+  disabled?: boolean;
 }
 
 export function TrueFalseNotGivenCollapsible({
@@ -17,7 +18,8 @@ export function TrueFalseNotGivenCollapsible({
   boxInstruction,
   statements,
   answers,
-  onAnswerChange
+  onAnswerChange,
+  disabled = false
 }: TrueFalseNotGivenCollapsibleProps) {
   const [expandedQuestions, setExpandedQuestions] = useState<Set<number>>(new Set());
 
@@ -68,7 +70,10 @@ export function TrueFalseNotGivenCollapsible({
               {/* Collapsed header - clickable to expand */}
               <button
                 onClick={() => toggleQuestion(item.questionNumber)}
-                className="w-full flex items-center justify-between px-4 py-3 hover:bg-gray-50 transition-colors text-left"
+                disabled={disabled}
+                className={`w-full flex items-center justify-between px-4 py-3 hover:bg-gray-50 transition-colors text-left ${
+                  disabled ? 'opacity-60 cursor-not-allowed' : ''
+                }`}
               >
                 <div className="flex items-center gap-3 flex-1">
                   <span className="inline-block bg-gray-100 text-gray-800 font-semibold px-3 py-1 rounded text-sm">
@@ -97,11 +102,11 @@ export function TrueFalseNotGivenCollapsible({
                     {options.map((option) => (
                       <label
                         key={option.value}
-                        className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 border-2 rounded-lg cursor-pointer transition-colors ${
+                        className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 border-2 rounded-lg transition-colors ${
                           answers[item.questionNumber] === option.value
                             ? 'border-blue-500 bg-blue-50 text-blue-700 font-semibold'
                             : 'border-gray-300 hover:border-gray-400 text-gray-700 bg-white'
-                        }`}
+                        } ${disabled ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer'}`}
                       >
                         <input
                           type="radio"
@@ -109,6 +114,7 @@ export function TrueFalseNotGivenCollapsible({
                           value={option.value}
                           checked={answers[item.questionNumber] === option.value}
                           onChange={(e) => handleAnswerSelection(item.questionNumber, e.target.value)}
+                          disabled={disabled}
                           className="sr-only"
                           data-testid={`tfng-collapsible-${item.questionNumber}-${option.value}`}
                         />
